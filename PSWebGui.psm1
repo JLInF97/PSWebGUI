@@ -36,7 +36,7 @@
             "/showServices" = {
                 <div>
                     <h1>Services</h1>
-                    Get-Service | Format-Html
+                    Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html
                 </div>
             }
 
@@ -500,7 +500,7 @@ function Format-Html {
 
     Depending on the set of parameters, the output can be converted to table format, card format, or raw. If no parameters are set, by default it is converted to table format.
         
-    In essence, it is like "Format-Html -Fragment" PowerShell cmdlet but with Bootstrap styling built-in and another features.
+    In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Bootstrap styling built-in and another features.
 
 
     .PARAMETER InputObject
