@@ -346,22 +346,6 @@
             $htmlhead="<!Doctype html>`n<html>`n<head>`n$charset`n$httpequiv`n$viewport`n$faviconlink`n<title>$title</title>`n$style`n</head>`n<body>`n"
 
             
-            # If $inputobject is just a string
-            if($InputObject -is [string]){
-                
-                Write-Verbose "A [string] object was returned."
-                $result="$htmlhead $InputObject`n</body>`n</html>"
-
-                # Convert the result to bytes from UTF8 encoded text
-                $buffer = [System.Text.Encoding]::UTF8.GetBytes($Result)
-
-                # Let the browser know how many bytes we are going to be sending
-                $context.Response.ContentLength64 = $buffer.Length
-
-
-            # If $InputObject is a full object with routes
-            } else {
-                
                 #region Method processing
 
                 # POST processing
@@ -397,7 +381,7 @@
                 $localpath=$Context.Request.Url.LocalPath
 
 
-                # If $localpath is not defined in $InputObject, means its a filesystem path
+                # If $localpath is not a custom defined path in $InputObject, means it can be a filesystem path or a string
                 if ($InputObject[$LocalPath] -eq $null){
                     
                     # $localpath is a file
@@ -412,12 +396,24 @@
                         # Let the browser know the MIME type of content
                         $Context.Response.ContentType = [System.Web.MimeMapping]::GetMimeMapping($localpath)
 
-
                     
-                    # $localpath is neither a file nor a defined route, its not found
-                    }else{
-                        $result="$htmlhead <h1>404 Not found</h1></body></html>"
+                    # $InputObject is a string and $localpath is in /
+                    }elseif (($InputObject -is [string]) -and ($localpath -eq '/')){
+                        
+                        Write-Verbose "A [string] object was returned."
+                        $result="$htmlhead $InputObject`n</body>`n</html>"
+
+                        $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
+                        $context.Response.ContentLength64 = $buffer.Length
+                    }
+                    
+                    # $localpath is neither a file nor a defined route but is representing a path that its not found
+                    else{
+                        $result="$htmlhead <h1>404 Not found</h1>`n</body>`n</html>"
                         $Context.Response.StatusCode=404
+
+                        $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
+                        $context.Response.ContentLength64 = $buffer.Length
                     }
 
 
@@ -450,7 +446,6 @@
 
                 #endregion
                 
-            }
         }
 
         #endregion
