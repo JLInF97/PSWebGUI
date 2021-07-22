@@ -12,7 +12,7 @@
 RootModule = 'PSWebGui.psm1'
 
 # Número de versión de este módulo.
-ModuleVersion = '0.8'
+ModuleVersion = '0.10'
 
 # PSEditions compatibles
 # CompatiblePSEditions = @()
