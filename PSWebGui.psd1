@@ -12,7 +12,7 @@
 RootModule = 'PSWebGui.psm1'
 
 # Número de versión de este módulo.
-ModuleVersion = '0.10'
+ModuleVersion = '0.10.1'
 
 # PSEditions compatibles
 # CompatiblePSEditions = @()
@@ -30,7 +30,7 @@ Author = 'JLInF'
 Copyright = '(c) 2021 JLInF. All rights reserved.'
 
 # Descripción de la funcionalidad proporcionada por este módulo.
-# Description = ''
+Description = 'A fast way to create and display PowewrShell graphical interfaces with HTML'
 
 # Versión mínima del motor de Windows PowerShell requerida por este módulo.
 PowerShellVersion = '5.0'
@@ -87,7 +87,7 @@ AliasesToExport = "Start-PSGUI","Show-PSGUI","Start-GUI","Show-GUI","Show-POSHGU
 # ModuleList = @()
 
 # Lista de todos los paquetes con este módulo.
-FileList = @("bootstrap.min.css","panel.png")
+FileList = @("Assets\bootstrap.min.css","Assets\panel.png")
 
 # Datos privados que se pasan al módulo especificado en RootModule/ModuleToProcess. Pueden contener también una tabla hash PSData con metadatos del módulo adicionales usados por PowerShell.
 PrivateData = @{
