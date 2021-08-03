@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Format-Html</command:name>
+      <command:verb>Format</command:verb>
+      <command:noun>Html</command:noun>
+      <maml:description>
+        <maml:para>Format and style PowerShell commands in HTML and Bootstrap.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Converts the output of PowerShell commands, passed by pipeline, to HTML format and adds Bootstrap style classes.</maml:para>
+      <maml:para>Depending on the set of parameters, the output can be converted to table format, card format, or raw. If no parameters are set, by default it is converted to table format.
+In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Bootstrap styling built-in and another features.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Format-Html</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>InputObject</maml:name>
+          <maml:description>
+            <maml:para>Command or object to be converted, passed by pipeline.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+          <dev:type>
+            <maml:name>PSObject</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Tabledark, Table-dark">
+          <maml:name>Darktable</maml:name>
+          <maml:description>
+            <maml:para>Set this parameter to display a dark table.</maml:para>
+            <maml:para>&lt;table class="table table-dark"&gt;...&lt;/table&gt;</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Theaddark, Thead-dark">
+          <maml:name>Darkheader</maml:name>
+          <maml:description>
+            <maml:para>Set this parameter to display a table with dark header.</maml:para>
+            <maml:para>&lt;table class="table"&gt;     &lt;thead class="thead-dark"&gt;...&lt;/thead&gt; &lt;/table&gt;</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Striped</maml:name>
+          <maml:description>
+            <maml:para>Set this parameter to display a striped table.</maml:para>
+            <maml:para>&lt;table class="table table-striped"&gt;...&lt;/table&gt;</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Hover</maml:name>
+          <maml:description>
+            <maml:para>Set this parameter to display a hoverable rows table.</maml:para>
+            <maml:para>&lt;table class="table table-hover"&gt;...&lt;/table&gt;</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Format-Html</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>InputObject</maml:name>
+          <maml:description>
+            <maml:para>Command or object to be converted, passed by pipeline.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+          <dev:type>
+            <maml:name>PSObject</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Cards</maml:name>
+          <maml:description>
+            <maml:para>Specifies a number, between 1 and 6, to display the command output in Bootstrap card style. The number specified is the number of cards displayed per row.</maml:para>
+            <maml:para>This parameter only displays the first two properties of the object passed. The first one will be dipslayed as the card title, the second will be th card text. (See the cards section of the Bootstrap v4.6 documentation for more info about card layout)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Format-Html</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>InputObject</maml:name>
+          <maml:description>
+            <maml:para>Command or object to be converted, passed by pipeline.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+          <dev:type>
+            <maml:name>PSObject</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Raw</maml:name>
+          <maml:description>
+            <maml:para>Set this parameter to display output in HTML format but without style.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>InputObject</maml:name>
+        <maml:description>
+          <maml:para>Command or object to be converted, passed by pipeline.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+        <dev:type>
+          <maml:name>PSObject</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Tabledark, Table-dark">
+        <maml:name>Darktable</maml:name>
+        <maml:description>
+          <maml:para>Set this parameter to display a dark table.</maml:para>
+          <maml:para>&lt;table class="table table-dark"&gt;...&lt;/table&gt;</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Theaddark, Thead-dark">
+        <maml:name>Darkheader</maml:name>
+        <maml:description>
+          <maml:para>Set this parameter to display a table with dark header.</maml:para>
+          <maml:para>&lt;table class="table"&gt;     &lt;thead class="thead-dark"&gt;...&lt;/thead&gt; &lt;/table&gt;</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Striped</maml:name>
+        <maml:description>
+          <maml:para>Set this parameter to display a striped table.</maml:para>
+          <maml:para>&lt;table class="table table-striped"&gt;...&lt;/table&gt;</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Hover</maml:name>
+        <maml:description>
+          <maml:para>Set this parameter to display a hoverable rows table.</maml:para>
+          <maml:para>&lt;table class="table table-hover"&gt;...&lt;/table&gt;</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Cards</maml:name>
+        <maml:description>
+          <maml:para>Specifies a number, between 1 and 6, to display the command output in Bootstrap card style. The number specified is the number of cards displayed per row.</maml:para>
+          <maml:para>This parameter only displays the first two properties of the object passed. The first one will be dipslayed as the card title, the second will be th card text. (See the cards section of the Bootstrap v4.6 documentation for more info about card layout)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Raw</maml:name>
+        <maml:description>
+          <maml:para>Set this parameter to display output in HTML format but without style.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Get-Service | Format-Html</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Hover</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
+        <dev:code>Get-Service | Select-Object Status, DisplayName | Format-Html -Cards 3</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
+        <dev:code>Get-Date | Format-Html -Raw</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Show-PSWebGUI</command:name>
+      <command:verb>Show</command:verb>
+      <command:noun>PSWebGUI</command:noun>
+      <maml:description>
+        <maml:para>Displays a styled graphical user interface (GUI) for PowerShell from passed HTML format.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Starts a simple web server, listening on localhost, to display content in HTML format with integrated Bootstrap style. By default, it shows up a very simple web browser in a WPF window to display the content passed by parameter.</maml:para>
+      <maml:para>The content can be a string, an HTML page, cmdlets, functions or complex powershell scripts. The server can execute and display local HTML or PS1 files. Custom CSS and Javascript are also compatible.</maml:para>
+      <maml:para>POST and GET method are available and can be accesses by $_POST and $_GET variables, just like within PHP.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Show-PSWebGUI</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Routes, Input">
+          <maml:name>InputObject</maml:name>
+          <maml:description>
+            <maml:para>Specifies the object to display in the GUI.</maml:para>
+            <maml:para>The way to define custom routes with associated HTML and PowerShell content is through a hash table and scriptblocks whitin it. The hash table is made up of keys and their associated values. Keys are custom defined localhost relative paths, and must always start with "/"; values are strings, HTML and PowerShell scripts enclosed within a scriptblock.</maml:para>
+            <maml:para>This is an example of a GUI structure passed as an input object:</maml:para>
+            <maml:para>$routes=@{</maml:para>
+            <maml:para>    "/"={         "&lt;div&gt;             &lt;h1&gt;Menú&lt;/h1&gt;             &lt;a href='showProcesses'&gt;&lt;h2&gt;Show Running Processes&lt;/h2&gt;&lt;/a&gt;             &lt;a href='/showServices'&gt;&lt;h2&gt;Show Running Services&lt;/h2&gt;&lt;/a&gt;         &lt;/div&gt;"     }</maml:para>
+            <maml:para>    "/showProcesses" = { Get-Process | Select-Object name, cpu | Format-Html }</maml:para>
+            <maml:para>    "/showServices" = {         &lt;div&gt;             &lt;h1&gt;Services&lt;/h1&gt;             Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html         &lt;/div&gt;     }</maml:para>
+            <maml:para>}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Port</maml:name>
+          <maml:description>
+            <maml:para>Specifies TCP port number to listen to. Default 80.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>80</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Title</maml:name>
+          <maml:description>
+            <maml:para>Specifies the window title and the HTML page title.</maml:para>
+            <maml:para>Reassign $title variable within script blocks (custom routes) to change the page title on each path.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>PoweShell Web GUI</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Icon</maml:name>
+          <maml:description>
+            <maml:para>Specifies the path for the icon used on the window and on the HTML page. This path can be absolute or relative to the document root. If the path is not within the document root, it will only be displayed on window.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>CssUri</maml:name>
+          <maml:description>
+            <maml:para>Specifies the CSS URI to use in addition to bootstrap. It can be a local file or an Internet URL. It can not be relative path, must be absolute.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Root">
+          <maml:name>DocumentRoot</maml:name>
+          <maml:description>
+            <maml:para>Specifies the root path for the files that the server will access. Do not put final slash. Default $PWD</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$PWD.path</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="WebGui, Silent, Hidden">
+          <maml:name>NoWindow</maml:name>
+          <maml:description>
+            <maml:para>Set this parameter to not display a web browser in a WPF window. The content can only be viewed within a third-party web browser.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NoHeadTags</maml:name>
+          <maml:description>
+            <maml:para>Set this parameter to not display &lt;html&gt;, &lt;head&gt;, &lt;meta&gt;, &lt;link&gt;, &lt;style&gt; and &lt;body&gt; tags. With this option, the content will not be formated.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Routes, Input">
+        <maml:name>InputObject</maml:name>
+        <maml:description>
+          <maml:para>Specifies the object to display in the GUI.</maml:para>
+          <maml:para>The way to define custom routes with associated HTML and PowerShell content is through a hash table and scriptblocks whitin it. The hash table is made up of keys and their associated values. Keys are custom defined localhost relative paths, and must always start with "/"; values are strings, HTML and PowerShell scripts enclosed within a scriptblock.</maml:para>
+          <maml:para>This is an example of a GUI structure passed as an input object:</maml:para>
+          <maml:para>$routes=@{</maml:para>
+          <maml:para>    "/"={         "&lt;div&gt;             &lt;h1&gt;Menú&lt;/h1&gt;             &lt;a href='showProcesses'&gt;&lt;h2&gt;Show Running Processes&lt;/h2&gt;&lt;/a&gt;             &lt;a href='/showServices'&gt;&lt;h2&gt;Show Running Services&lt;/h2&gt;&lt;/a&gt;         &lt;/div&gt;"     }</maml:para>
+          <maml:para>    "/showProcesses" = { Get-Process | Select-Object name, cpu | Format-Html }</maml:para>
+          <maml:para>    "/showServices" = {         &lt;div&gt;             &lt;h1&gt;Services&lt;/h1&gt;             Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html         &lt;/div&gt;     }</maml:para>
+          <maml:para>}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Port</maml:name>
+        <maml:description>
+          <maml:para>Specifies TCP port number to listen to. Default 80.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>80</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Title</maml:name>
+        <maml:description>
+          <maml:para>Specifies the window title and the HTML page title.</maml:para>
+          <maml:para>Reassign $title variable within script blocks (custom routes) to change the page title on each path.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>PoweShell Web GUI</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Icon</maml:name>
+        <maml:description>
+          <maml:para>Specifies the path for the icon used on the window and on the HTML page. This path can be absolute or relative to the document root. If the path is not within the document root, it will only be displayed on window.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>CssUri</maml:name>
+        <maml:description>
+          <maml:para>Specifies the CSS URI to use in addition to bootstrap. It can be a local file or an Internet URL. It can not be relative path, must be absolute.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Root">
+        <maml:name>DocumentRoot</maml:name>
+        <maml:description>
+          <maml:para>Specifies the root path for the files that the server will access. Do not put final slash. Default $PWD</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$PWD.path</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="WebGui, Silent, Hidden">
+        <maml:name>NoWindow</maml:name>
+        <maml:description>
+          <maml:para>Set this parameter to not display a web browser in a WPF window. The content can only be viewed within a third-party web browser.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>NoHeadTags</maml:name>
+        <maml:description>
+          <maml:para>Set this parameter to not display &lt;html&gt;, &lt;head&gt;, &lt;meta&gt;, &lt;link&gt;, &lt;style&gt; and &lt;body&gt; tags. With this option, the content will not be formated.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Debug and Verbose modes write request and response information to the console.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Show-PSWebGUI -InputObject "Hello Wordl!"</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Show-PSWebGUI -InputObject $routes -Title "My custom GUI"</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
+        <dev:code>Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\style.css"</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
+        <dev:code>Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/style.css"</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Show-PSWebGUIExample</command:name>
+      <command:verb>Show</command:verb>
+      <command:noun>PSWebGUIExample</command:noun>
+      <maml:description>
+        <maml:para>Display an example GUI.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Displays a basic example GUI to show how this module runs.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Show-PSWebGUIExample</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Show-PSWebGUIExample</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+</helpItems>
