@@ -259,28 +259,28 @@ In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Boot
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 1 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
         <dev:code>Get-Service | Format-Html</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 2 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
         <dev:code>Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Hover</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 3 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
         <dev:code>Get-Service | Select-Object Status, DisplayName | Format-Html -Cards 3</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 4 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
         <dev:code>Get-Date | Format-Html -Raw</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
@@ -559,28 +559,28 @@ In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Boot
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 1 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
         <dev:code>Show-PSWebGUI -InputObject "Hello Wordl!"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 2 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
         <dev:code>Show-PSWebGUI -InputObject $routes -Title "My custom GUI"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 3 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
         <dev:code>Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\style.css"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 4 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
         <dev:code>Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/style.css"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
@@ -634,7 +634,7 @@ In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Boot
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- EJEMPLO 1 --------------------------</maml:title>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
         <dev:code>Show-PSWebGUIExample</dev:code>
         <dev:remarks>
           <maml:para></maml:para>

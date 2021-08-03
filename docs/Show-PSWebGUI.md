@@ -29,22 +29,22 @@ POST and GET method are available and can be accesses by $_POST and $_GET variab
 
 ## EXAMPLES
 
-### EJEMPLO 1
+### EXAMPLE 1
 ```
 Show-PSWebGUI -InputObject "Hello Wordl!"
 ```
 
-### EJEMPLO 2
+### EXAMPLE 2
 ```
 Show-PSWebGUI -InputObject $routes -Title "My custom GUI"
 ```
 
-### EJEMPLO 3
+### EXAMPLE 3
 ```
 Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\style.css"
 ```
 
-### EJEMPLO 4
+### EXAMPLE 4
 ```
 Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/style.css"
 ```

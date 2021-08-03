@@ -37,22 +37,22 @@ In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Boot
 
 ## EXAMPLES
 
-### EJEMPLO 1
+### EXAMPLE 1
 ```
 Get-Service | Format-Html
 ```
 
-### EJEMPLO 2
+### EXAMPLE 2
 ```
 Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Hover
 ```
 
-### EJEMPLO 3
+### EXAMPLE 3
 ```
 Get-Service | Select-Object Status, DisplayName | Format-Html -Cards 3
 ```
 
-### EJEMPLO 4
+### EXAMPLE 4
 ```
 Get-Date | Format-Html -Raw
 ```

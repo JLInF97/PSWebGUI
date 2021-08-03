@@ -21,7 +21,7 @@ Displays a basic example GUI to show how this module runs.
 
 ## EXAMPLES
 
-### EJEMPLO 1
+### EXAMPLE 1
 ```
 Show-PSWebGUIExample
 ```
