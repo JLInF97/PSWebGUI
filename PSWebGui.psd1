@@ -12,7 +12,7 @@
 RootModule = 'PSWebGui.psm1'
 
 # Número de versión de este módulo.
-ModuleVersion = '0.10.1'
+ModuleVersion = '0.10.2'
 
 # PSEditions compatibles
 # CompatiblePSEditions = @()
@@ -110,7 +110,7 @@ PrivateData = @{
         # ReleaseNotes = ''
 
         # Prerelease string of this module
-        Prerelease = 'This module is a prerelease version'
+        Prerelease = 'Beta'
 
     } # Fin de la tabla hash PSData
 
