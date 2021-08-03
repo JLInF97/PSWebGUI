@@ -12,7 +12,7 @@
 RootModule = 'PSWebGui.psm1'
 
 # Número de versión de este módulo.
-ModuleVersion = '0.8'
+ModuleVersion = '0.10'
 
 # PSEditions compatibles
 # CompatiblePSEditions = @()
@@ -24,7 +24,7 @@ GUID = 'efbaa9db-ea59-4170-88db-1e5ef5f11fc9'
 Author = 'JLInF'
 
 # Compañía o proveedor de este módulo.
-CompanyName = 'Desconocido'
+# CompanyName = 'Desconocido'
 
 # Instrucción de copyright de este módulo.
 Copyright = '(c) 2021 JLInF. All rights reserved.'
@@ -98,10 +98,10 @@ PrivateData = @{
         # Tags = @()
 
         # Dirección URL a la licencia de este módulo.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/JLInF97/PSWebGUI/blob/main/LICENSE'
 
         # Una dirección URL al sitio web principal de este proyecto.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/JLInF97/PSWebGUI'
 
         # Una dirección URL a un icono que representa este módulo.
         # IconUri = ''

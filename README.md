@@ -6,7 +6,7 @@ This PowerShell module allows you to quickly display stylish HTML content and Po
 ## Show-PSWebGui
 ### Syntax
 ```powershell
-Show-PSWebGUI [-InputObject] <Object> [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>] [-NoWindow] [-DocumentRoot <String>] [<CommonParameters>]
+Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>] [-NoWindow] [-DocumentRoot <String>] [<CommonParameters>]
 ```
 
 ### Description
