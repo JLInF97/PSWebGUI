@@ -275,17 +275,17 @@ Function Show-PSWebGUI
                 $body = [system.text.encoding]::ascii.getstring($buffer)
                     
                 # Split post data
-                $_POST = @{}
+                $global:_POST = @{}
                 $body.split('&') | ForEach-Object {
                     $part = $_.split('=')
-                    $_POST.add($part[0], $part[1])
+                    $global:_POST.add($part[0], $part[1])
                 }
 
 
             # GET processing
             }else{
 
-                $_GET = $Context.Request.QueryString
+                $global:_GET = $Context.Request.QueryString
             }
 
             #endregion
