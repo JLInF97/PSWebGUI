@@ -228,8 +228,8 @@ Function Show-PSWebGUI
         {
 
             $Context.Response.Close()
-            #$SimpleServer.Close()
             $SimpleServer.Stop()
+            $RunspacePool.Close()
             break
 
         }
@@ -579,7 +579,7 @@ $routes=@{
         Get-Service $_POST["Name"] | Select-Object Status,Name,DisplayName | Format-Html    
     }
 
-    "/showDate" = {"<a href='/'>Main Menu</a><tr/>$(Get-Date | Format-Html -Raw)"}
+    "/showDate" = {"<a href='/'>Main Menu</a><br/>$(Get-Date | Format-Html -Raw)"}
 
     "/" = {
         $title="Index"
