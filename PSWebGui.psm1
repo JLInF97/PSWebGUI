@@ -574,12 +574,12 @@ function Write-CredentialForm {
         <form method='post' action=$action>
             <div class='form-group'>
                 <label for='usernameInput'>$UsernameLabel</label>
-                <input type='text' class='from-control' id='usernameInput' name='userName' autofocus>
+                <input type='text' class='form-control' id='usernameInput' name='userName' autofocus>
             </div>
 
             <div class='form-group'>
                 <label for='passwordInput'>$PasswordLabel</label>
-                <input type='password' class='from-control' id='passwordInput' name='Password'>
+                <input type='password' class='form-control' id='passwordInput' name='Password'>
             </div>
 
             <button type='submit' class='btn btn-primary'>$SubmitLabel</button>
@@ -638,6 +638,19 @@ $routes=@{
 
     "/showDate" = {"<a href='/'>Main Menu</a><br/>$(Get-Date | Format-Html -Raw)"}
 
+
+    "/loginform"={
+        Write-CredentialForm -FormTitle "Login" -Action "/login"
+    }
+
+    "/login"={
+        $creds=Get-CredentialForm
+
+        "<a href='/'>Main Menu</a>"
+        $creds | Format-Html
+    }
+
+
     "/" = {
         $title="Index"
         "<div class='container-fluid'>
@@ -645,6 +658,7 @@ $routes=@{
             <a href='showProcesses'><h2>Show Running Processes</h2></a>
             <a href='/showServices'><h2>Show Running Services</h2></a>
             <a href='/showDate'><h2>Show current datetime</h2></a>
+            <a href='/loginform'><h2>Login</h2></a>
         </div>"
     }
 
