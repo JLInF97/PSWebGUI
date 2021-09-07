@@ -229,7 +229,12 @@ Function Show-PSWebGUI
 
             $Context.Response.Close()
             $SimpleServer.Stop()
-            $RunspacePool.Close()
+
+            # If -NoWindow, dont close a non-existent Window
+            if ($NoWindow -eq $false){
+                $RunspacePool.Close()
+            }
+
             break
 
         }
@@ -385,19 +390,6 @@ Function Show-PSWebGUI
 }
 
 
-#region Function alias
-Set-Alias -Name Start-PSGUI -Value Show-PSWebGUI
-Set-Alias -Name Show-PSGUI -Value Show-PSWebGUI
-Set-Alias -Name Start-GUI -Value Show-PSWebGUI
-Set-Alias -Name Show-GUI -Value Show-PSWebGUI
-Set-Alias -Name Show-POSHGUI -Value Show-PSWebGUI
-Set-Alias -Name Start-POSHGUI -Value Show-PSWebGUI
-Set-Alias -Name Show-WebGUI -Value Show-PSWebGUI
-Set-Alias -Name Start-WebGUI -Value Show-PSWebGUI
-#endregion
-
-
-
 #.ExternalHelp en-us\PSWebGui-help.xml
 function Format-Html {
 
@@ -548,6 +540,71 @@ function Format-Html {
 
 
 #.ExternalHelp en-us\PSWebGui-help.xml
+function GoTo-Location{
+
+    param(
+        [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)]
+        [ValidatePattern("^\/(([A-z0-9\-\%]+\/)*[A-z0-9\-\%]+$)?")]
+        [Alias("URL","Path")]
+        [string]$Location
+    )
+
+    '<script>window.location.href="'+$Location+'"</script>'
+}
+
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
+function Write-CredentialForm {
+    
+    param(
+        [Parameter(Mandatory=$false)][string]$FormTitle="Credential input",
+        [Parameter(Mandatory=$false)][string]$Description="Enter your credential",
+        [Parameter(Mandatory=$false)][ValidatePattern("^\/(([A-z0-9\-\%]+\/)*[A-z0-9\-\%]+$)?")][string]$Action,
+        [Parameter(Mandatory=$false)][string]$UsernameLabel="Enter your username",
+        [Parameter(Mandatory=$false)][string]$PasswordLabel="Enter your pasword",
+        [Parameter(Mandatory=$false)][string]$SubmitLabel="Submit"
+    )
+
+    "
+    <div class='container'>
+        <h2 class='mt-3'>$FormTitle</h2>
+        <p>$Description</p>
+
+        <form method='post' action=$action>
+            <div class='form-group'>
+                <label for='usernameInput'>$UsernameLabel</label>
+                <input type='text' class='from-control' id='usernameInput' name='userName' autofocus>
+            </div>
+
+            <div class='form-group'>
+                <label for='passwordInput'>$PasswordLabel</label>
+                <input type='password' class='from-control' id='passwordInput' name='Password'>
+            </div>
+
+            <button type='submit' class='btn btn-primary'>$SubmitLabel</button>
+        </form>
+    </div>
+    "
+}
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
+function Get-CredentialForm {
+    
+    # Get username and password from form
+    $username=$_POST["userName"]
+    $password=ConvertTo-SecureString $_POST["Password"] -AsPlainText -Force
+
+    # Create the credential psobject
+    $credential= New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$password
+
+    return $credential
+
+}
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
 function Show-PSWebGUIExample{
 
 $routes=@{
@@ -602,6 +659,18 @@ return $routes
 [System.GC]::Collect()
 
 }
+
+
+#region Function alias
+Set-Alias -Name Start-PSGUI -Value Show-PSWebGUI
+Set-Alias -Name Show-PSGUI -Value Show-PSWebGUI
+Set-Alias -Name Start-GUI -Value Show-PSWebGUI
+Set-Alias -Name Show-GUI -Value Show-PSWebGUI
+Set-Alias -Name Show-WebGUI -Value Show-PSWebGUI
+Set-Alias -Name Start-WebGUI -Value Show-PSWebGUI
+Set-Alias -Name FH -Value Format-Html
+Set-Alias -Name GTL -Value GoTo-Location
+#endregion
 
 
 Export-ModuleMember -Function * -Alias *
