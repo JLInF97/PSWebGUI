@@ -350,11 +350,6 @@ Function Show-PSWebGUI
                 # Execute the scriptblock
                 $result="$htmlhead $(.$routecontent)"
 
-                # If $title is present in the scriptblock, write javascript to inmdiately change it. Only in web browser
-                if ($title -ne $originaltitle){
-                    $result+="<script>document.title='$title'</script>"
-                }
-
                 # Add closing html tags
                 $result+="$htmlclosing"
 
@@ -540,6 +535,19 @@ function Format-Html {
 
 
 #.ExternalHelp en-us\PSWebGui-help.xml
+function Set-Title {
+    
+    param (
+    [Parameter(Mandatory=$true)][string]$Title
+    )
+
+    # Write javascript to inmdiately change page title. Only in web browser
+    "<script>document.title='$Title'</script>"
+
+}
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
 function GoTo-Location{
 
     param(
@@ -558,7 +566,7 @@ function GoTo-Location{
 function Write-CredentialForm {
     
     param(
-        [Parameter(Mandatory=$false)][string]$FormTitle="Credential input",
+        [Parameter(Mandatory=$false)][string]$Title="Credential input",
         [Parameter(Mandatory=$false)][string]$Description="Enter your credential",
         [Parameter(Mandatory=$false)][ValidatePattern("^\/(([A-z0-9\-\%]+\/)*[A-z0-9\-\%]+$)?")][string]$Action,
         [Parameter(Mandatory=$false)][string]$UsernameLabel="Enter your username",
@@ -566,9 +574,11 @@ function Write-CredentialForm {
         [Parameter(Mandatory=$false)][string]$SubmitLabel="Submit"
     )
 
+    Set-Title -Title $Title
+
     "
     <div class='container'>
-        <h2 class='mt-3'>$FormTitle</h2>
+        <h2 class='mt-3'>$Title</h2>
         <p>$Description</p>
 
         <form method='post' action=$action>
@@ -604,13 +614,14 @@ function Get-CredentialForm {
 }
 
 
+
 #.ExternalHelp en-us\PSWebGui-help.xml
 function Show-PSWebGUIExample{
 
 $routes=@{
 
     "/showProcesses" = {
-        $title="Processes"
+        Set-Title -Title "Processes"
         "<div class='container-fluid'>
             <a href='/'>Main Menu</a>
             <form action='/filterProcesses'>Filter:<input Name='Name'></input></form>"
