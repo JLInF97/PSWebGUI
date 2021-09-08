@@ -229,7 +229,12 @@ Function Show-PSWebGUI
 
             $Context.Response.Close()
             $SimpleServer.Stop()
-            $RunspacePool.Close()
+
+            # If -NoWindow, dont close a non-existent Window
+            if ($NoWindow -eq $false){
+                $RunspacePool.Close()
+            }
+
             break
 
         }
@@ -345,11 +350,6 @@ Function Show-PSWebGUI
                 # Execute the scriptblock
                 $result="$htmlhead $(.$routecontent)"
 
-                # If $title is present in the scriptblock, write javascript to inmdiately change it. Only in web browser
-                if ($title -ne $originaltitle){
-                    $result+="<script>document.title='$title'</script>"
-                }
-
                 # Add closing html tags
                 $result+="$htmlclosing"
 
@@ -383,19 +383,6 @@ Function Show-PSWebGUI
     #endregion
 
 }
-
-
-#region Function alias
-Set-Alias -Name Start-PSGUI -Value Show-PSWebGUI
-Set-Alias -Name Show-PSGUI -Value Show-PSWebGUI
-Set-Alias -Name Start-GUI -Value Show-PSWebGUI
-Set-Alias -Name Show-GUI -Value Show-PSWebGUI
-Set-Alias -Name Show-POSHGUI -Value Show-PSWebGUI
-Set-Alias -Name Start-POSHGUI -Value Show-PSWebGUI
-Set-Alias -Name Show-WebGUI -Value Show-PSWebGUI
-Set-Alias -Name Start-WebGUI -Value Show-PSWebGUI
-#endregion
-
 
 
 #.ExternalHelp en-us\PSWebGui-help.xml
@@ -548,12 +535,93 @@ function Format-Html {
 
 
 #.ExternalHelp en-us\PSWebGui-help.xml
+function Set-Title {
+    
+    param (
+    [Parameter(Mandatory=$true)][string]$Title
+    )
+
+    # Write javascript to inmdiately change page title. Only in web browser
+    "<script>document.title='$Title'</script>"
+
+}
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
+function GoTo-Location{
+
+    param(
+        [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)]
+        [ValidatePattern("^\/(([A-z0-9\-\%]+\/)*[A-z0-9\-\%]+$)?")]
+        [Alias("URL","Path")]
+        [string]$Location
+    )
+
+    '<script>window.location.href="'+$Location+'"</script>'
+}
+
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
+function Write-CredentialForm {
+    
+    param(
+        [Parameter(Mandatory=$false)][string]$Title="Credential input",
+        [Parameter(Mandatory=$false)][string]$Description="Enter your credential",
+        [Parameter(Mandatory=$false)][ValidatePattern("^\/(([A-z0-9\-\%]+\/)*[A-z0-9\-\%]+$)?")][string]$Action,
+        [Parameter(Mandatory=$false)][string]$UsernameLabel="Enter your username",
+        [Parameter(Mandatory=$false)][string]$PasswordLabel="Enter your pasword",
+        [Parameter(Mandatory=$false)][string]$SubmitLabel="Submit"
+    )
+
+    Set-Title -Title $Title
+
+    "
+    <div class='container'>
+        <h2 class='mt-3'>$Title</h2>
+        <p>$Description</p>
+
+        <form method='post' action=$action>
+            <div class='form-group'>
+                <label for='usernameInput'>$UsernameLabel</label>
+                <input type='text' class='form-control' id='usernameInput' name='userName' autofocus>
+            </div>
+
+            <div class='form-group'>
+                <label for='passwordInput'>$PasswordLabel</label>
+                <input type='password' class='form-control' id='passwordInput' name='Password'>
+            </div>
+
+            <button type='submit' class='btn btn-primary'>$SubmitLabel</button>
+        </form>
+    </div>
+    "
+}
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
+function Get-CredentialForm {
+    
+    # Get username and password from form
+    $username=$_POST["userName"]
+    $password=ConvertTo-SecureString $_POST["Password"] -AsPlainText -Force
+
+    # Create the credential psobject
+    $credential= New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$password
+
+    return $credential
+
+}
+
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
 function Show-PSWebGUIExample{
 
 $routes=@{
 
     "/showProcesses" = {
-        $title="Processes"
+        Set-Title -Title "Processes"
         "<div class='container-fluid'>
             <a href='/'>Main Menu</a>
             <form action='/filterProcesses'>Filter:<input Name='Name'></input></form>"
@@ -581,6 +649,19 @@ $routes=@{
 
     "/showDate" = {"<a href='/'>Main Menu</a><br/>$(Get-Date | Format-Html -Raw)"}
 
+
+    "/loginform"={
+        Write-CredentialForm -FormTitle "Login" -Action "/login"
+    }
+
+    "/login"={
+        $creds=Get-CredentialForm
+
+        "<a href='/'>Main Menu</a>"
+        $creds | Format-Html
+    }
+
+
     "/" = {
         $title="Index"
         "<div class='container-fluid'>
@@ -588,6 +669,7 @@ $routes=@{
             <a href='showProcesses'><h2>Show Running Processes</h2></a>
             <a href='/showServices'><h2>Show Running Services</h2></a>
             <a href='/showDate'><h2>Show current datetime</h2></a>
+            <a href='/loginform'><h2>Login</h2></a>
         </div>"
     }
 
@@ -602,6 +684,18 @@ return $routes
 [System.GC]::Collect()
 
 }
+
+
+#region Function alias
+Set-Alias -Name Start-PSGUI -Value Show-PSWebGUI
+Set-Alias -Name Show-PSGUI -Value Show-PSWebGUI
+Set-Alias -Name Start-GUI -Value Show-PSWebGUI
+Set-Alias -Name Show-GUI -Value Show-PSWebGUI
+Set-Alias -Name Show-WebGUI -Value Show-PSWebGUI
+Set-Alias -Name Start-WebGUI -Value Show-PSWebGUI
+Set-Alias -Name FH -Value Format-Html
+Set-Alias -Name GTL -Value GoTo-Location
+#endregion
 
 
 Export-ModuleMember -Function * -Alias *

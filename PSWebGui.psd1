@@ -12,7 +12,7 @@
 RootModule = 'PSWebGui.psm1'
 
 # Número de versión de este módulo.
-ModuleVersion = '0.10.3'
+ModuleVersion = '0.11.0'
 
 # PSEditions compatibles
 # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@ PowerShellVersion = '5.0'
 # NestedModules = @()
 
 # Funciones para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay funciones que exportar.
-FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html"
+FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html","GoTo-Location","Write-CredentialForm","Get-CredentialForm","Set-Title"
 
 # Cmdlets para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay cmdlets que exportar.
 CmdletsToExport = @()
@@ -78,7 +78,7 @@ CmdletsToExport = @()
 VariablesToExport = '*'
 
 # Alias para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay alias que exportar.
-AliasesToExport = "Start-PSGUI","Show-PSGUI","Start-GUI","Show-GUI","Show-POSHGUI","Start-POSHGUI","Show-WebGUI","Start-WebGUI"
+AliasesToExport = "Start-PSGUI","Show-PSGUI","Start-GUI","Show-GUI","Show-WebGUI","Start-WebGUI","FH","GTL"
 
 # Recursos de DSC que se exportarán de este módulo
 # DscResourcesToExport = @()
