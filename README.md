@@ -1,7 +1,30 @@
 # PSWebGUI
-A fast way to create and display PowewrShell graphical interfaces with HTML.
+A fast way to create and display PowerShell graphical interfaces with HTML.
 
-This PowerShell module allows you to quickly display stylish HTML content and PowerShell commands in a window and a web browser. You can display any HTML content and interact with PowerShell cmdlets, functions or scripts. You can define custom routes or navigate through your file system.
+This PowerShell module is a set of tools that allows you to quickly create and display fancy HTML graphical user interfaces. The module allows to interact with PowerShell cmdlets, functions, or scripts and join the result to the graphic design in HTML.
+
+PowerShell acts, in this module, as a web server language, like PHP. You can define custom routes or navigate through your file system.
+
+The HTML is styled with Bootstrap CSS framework to provide better look and responsive content in a fast way.
+
+**Important note!** To use this module, PowerShell must have been **_run as Administrator_**.
+
+[Visit about file for more detailed info](../docs/about_PSWebGui.md)
+
+
+## How to install
+This module is in prerelease version, there may be serious bugs and cause stability problems in your computer. The core is frequently modified. Install at your own risk.
+
+### Download from PowerShell Gallery
+The module is available in PowerShell Gallery. Use this cmdlet to get the lastest version.
+```powershell
+PS> Install-Module -Name PSWebGui -AllowPrerelease
+```
+
+### Download from Github repository
+1. Download the lastest version of the module from this Github repository.
+2. Extract the content of the ZIP into ```C:\Program Files\WindowsPowerShell\Modules```
+
 
 ## Show-PSWebGui
 ### Syntax
@@ -15,7 +38,7 @@ Starts a simple web server, listening on localhost, to display content in HTML f
 The content can be a string, an HTML page, cmdlets, functions or complex powershell scripts.
 The server can execute and display local HTML or PS1 files. Custom CSS and Javascript are also compatible.
     
-POST and GET method are available and can be accesses by ``$_POST`` and ``$_GET`` variables, just like within PHP.
+POST and GET method are available and can be accesses by ```$_POST[]``` and ```$_GET[]``` variables, just like within PHP.
 
 ### Example
 ```powershell

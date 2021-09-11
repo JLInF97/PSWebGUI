@@ -25,7 +25,7 @@ The content can be a string, an HTML page, cmdlets, functions or complex powersh
 The server can execute and display local HTML or PS1 files.
 Custom CSS and Javascript are also compatible.
 
-POST and GET method are available and can be accesses by $_POST and $_GET variables, just like within PHP.
+POST and GET method are available and can be accesses by ```$_POST[]``` and ```$_GET[]``` variables, just like within PHP.
 
 ## EXAMPLES
 

@@ -21,16 +21,16 @@ ModuleVersion = '0.11.0'
 GUID = 'efbaa9db-ea59-4170-88db-1e5ef5f11fc9'
 
 # Autor de este módulo.
-Author = 'JLInF'
+Author = 'JLInF97'
 
 # Compañía o proveedor de este módulo.
 # CompanyName = 'Desconocido'
 
 # Instrucción de copyright de este módulo.
-Copyright = '(c) 2021 JLInF. All rights reserved.'
+Copyright = '(c) 2021 JLInF97. All rights reserved.'
 
 # Descripción de la funcionalidad proporcionada por este módulo.
-Description = 'A fast way to create and display PowewrShell graphical interfaces with HTML'
+Description = 'A fast way to create and display PowerShell graphical interfaces with HTML'
 
 # Versión mínima del motor de Windows PowerShell requerida por este módulo.
 PowerShellVersion = '5.0'
@@ -95,7 +95,7 @@ PrivateData = @{
     PSData = @{
 
         # Etiquetas aplicadas a este módulo. Ayudan a encontrar el módulo en las galerías en línea.
-        # Tags = @()
+        Tags = @("gui","ui","html")
 
         # Dirección URL a la licencia de este módulo.
         LicenseUri = 'https://github.com/JLInF97/PSWebGUI/blob/main/LICENSE'
