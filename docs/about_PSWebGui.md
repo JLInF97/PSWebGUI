@@ -38,7 +38,7 @@ $routes = @{
 
 ```$routes``` is a PowerShell hastable object (```@{}```) where all the content will be saved.
 
-Inside the main hashtable, the different urls for the pages are defined as hashtable keys. The associated values ​​will be the HTML and PowerShell code, always between braces ```{}```
+Inside the main hashtable, the different urls for the pages are defined as hashtable keys. The associated values ​​will be the HTML and PowerShell code, always between braces ```{}```.
 HTML code must be between quotes.
 
 Once the structure and content has been created, the main function ```Show-PSWebGui``` must be invoked with the defined object passed as parameter.
