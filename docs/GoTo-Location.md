@@ -11,10 +11,8 @@ schema: 2.0.0
 Redirect to another URL passed by parameter.
 
 ## SYNTAX
-
-### Table (Default)
 ```powershell
-GoTo-Location [-Location] <string>  [<CommonParameters>]
+GoTo-Location [-URL] <string>  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,23 +22,23 @@ Redirect, without user intervention, to another location, passing the URL by par
 
 ### EXAMPLE 1
 ```powershell
-GoTo-Location -Location "/"
+GoTo-Location -URL "/"
 ```
 
 ## PARAMETERS
 
-### -Location
+### -URL
 Specifies the URL to be redirected to.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases:
+Aliases: Location, Path
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: True (ByValue)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
