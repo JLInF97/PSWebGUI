@@ -56,7 +56,7 @@ Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentR
 Specifies the object with the structure and content to display in the GUI.
 
 The way to define custom routes with associated HTML and PowerShell content is through a hash table and scriptblocks whitin it.
-The hash table is made up of keys and their associated values.
+The hash table are made up of keys and their associated values.
 Keys are custom defined relative paths, and must always start with ```"/"```; values are strings, HTML and PowerShell scripts enclosed within a scriptblock.
 
 This is an example of a GUI structure passed as an input object:

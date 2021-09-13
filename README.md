@@ -9,7 +9,7 @@ The HTML is styled with Bootstrap CSS framework to provide better look and respo
 
 **Important note!** To use this module, PowerShell must have been **_run as Administrator_**.
 
-[Visit about file for more detailed info](../blob/main/docs/about_PSWebGui.md)
+[Visit about file for more detailed info](../main/docs/about_PSWebGui.md)
 
 
 ## How to install
