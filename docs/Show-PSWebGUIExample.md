@@ -8,7 +8,7 @@ schema: 2.0.0
 # Show-PSWebGUIExample
 
 ## SYNOPSIS
-Display an example GUI.
+Displays an example GUI.
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Show-PSWebGUIExample
 ```
 
 ## DESCRIPTION
-Displays a basic example GUI to show how this module runs.
+Displays a basic GUI example to show how this module runs. This funtion returns the object with the structure and content used to display the graphical interface.
 
 ## EXAMPLES
 

@@ -43,8 +43,6 @@ POST and GET methods are available and can be accesses by ```$_POST[]``` and ```
 
 #### Example: How to create basic graphic interface
 ```powershell
-Import-Module PSWebGUI
-
 PS> $routes = @{
   "/"={
     "<div>
@@ -123,7 +121,7 @@ PS> Get-Help Format-Html -Full
 
 ### Show-PSWebGuiExample
 #### Description
-Displays a basic example GUI to show how this module works.
+Displays a basic GUI example to show how this module runs. This funtion returns the object with the structure and content used to display the graphical interface.
 
 #### Example
 ```powershell
