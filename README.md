@@ -82,9 +82,9 @@ Format-Html [-InputObject] <PSObject> -Raw [<CommonParameters>]
 #### Description
 PowerShell cmdlets need to be formated in HTML with Bootstrap style before being displayed. This function converts the output of PowerShell commands, passed by pipeline, to HTML format and adds Bootstrap style classes.
     
-Depending on the set of parameters, the output can be converted to table format, card format, or raw. If no parameters are set, by default it is converted to table format.
+Depending on the set of parameters, the output can be converted to table format, card format, or raw (no style). If no parameters are set, by default it is converted to table format.
         
-In essence, it is like "ConvertTo-Html -Fragment" PowerShell cmdlet but with Bootstrap styling built-in and another features.
+In essence, it is like ```ConvertTo-Html -Fragment``` PowerShell cmdlet but with Bootstrap styling built-in and another features.
 
 #### Example
 Get the name and the CPU usage of all running processes in a table format (Bootstrap style).

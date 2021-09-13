@@ -8,29 +8,29 @@ schema: 2.0.0
 # Format-Html
 
 ## SYNOPSIS
-Format and style PowerShell commands in HTML and Bootstrap.
+Format and style PowerShell commands output in HTML and Bootstrap.
 
 ## SYNTAX
 
 ### Table (Default)
-```
+```powershell
 Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [<CommonParameters>]
 ```
 
 ### Cards
-```
+```powershell
 Format-Html [-InputObject] <PSObject> -Cards <Int32> [<CommonParameters>]
 ```
 
 ### Raw
-```
+```powershell
 Format-Html [-InputObject] <PSObject> [-Raw] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Converts the output of PowerShell commands, passed by pipeline, to HTML format and adds Bootstrap style classes.
 
-Depending on the set of parameters, the output can be converted to table format, card format, or raw.
+Depending on the set of parameters, the output can be converted to table format, card format, or raw (no style).
 If no parameters are set, by default it is converted to table format.
     
 In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Bootstrap styling built-in and another features.
@@ -149,7 +149,7 @@ Specifies a number, between 1 and 6, to display the command output in Bootstrap 
 The number specified is the number of cards displayed per row.
 
 This parameter only displays the first two properties of the object passed.
-The first one will be dipslayed as the card title, the second will be th card text.
+The first one will be dipslayed as the card title, the second will be the card text.
 (See the cards section of the Bootstrap v4.6 documentation for more info about card layout)
 
 ```yaml
