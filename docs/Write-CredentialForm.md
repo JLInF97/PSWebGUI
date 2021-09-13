@@ -20,9 +20,9 @@ Write and display a web page with a basic form to enter credentials. The form ha
 
 By default, the function writes the labels for the inputs and the button, form title and description, but this is all customizable using parameters.
 
-Because credentials will be sent with this form, the method is always POST, it can not be modified.
+Because credentials will be sent with this form, the method is always POST, it can not be modified. The POST variables for the inputs are ```$_POST["userName"]``` and ```$_POST["Password"]```.
 
-This form is the HTML+Bootstrap version of ```Get-Credential``` PowerShell cmdlet.
+This form is the HTML+Bootstrap version of PowerShell ```Get-Credential``` cmdlet.
 
 ## EXAMPLES
 
