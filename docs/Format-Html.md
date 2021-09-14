@@ -142,7 +142,9 @@ Accept wildcard characters: False
 ### -Darktable
 Set this parameter to display a dark table.
 
-```<table class="table table-dark">...</table>```
+```html
+<table class="table table-dark">...</table>
+```
 
 ```yaml
 Type: SwitchParameter
@@ -159,9 +161,11 @@ Accept wildcard characters: False
 ### -Darkheader
 Set this parameter to display a table with dark header.
 
-\<table class="table"\>
-    \<thead class="thead-dark"\>...\</thead\>
-\</table\>
+```html
+<table class="table">
+    <thead class="thead-dark">...</thead>
+</table>
+```
 
 ```yaml
 Type: SwitchParameter
@@ -178,7 +182,9 @@ Accept wildcard characters: False
 ### -Striped
 Set this parameter to display a striped table.
 
-\<table class="table table-striped"\>...\</table\>
+```html
+<table class="table table-striped">...</table>
+```
 
 ```yaml
 Type: SwitchParameter
@@ -195,7 +201,9 @@ Accept wildcard characters: False
 ### -Hover
 Set this parameter to display a hoverable rows table.
 
-\<table class="table table-hover"\>...\</table\>
+```html
+<table class="table table-hover">...</table>
+```
 
 ```yaml
 Type: SwitchParameter

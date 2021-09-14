@@ -65,20 +65,20 @@ This is an example of a GUI structure passed as an input object:
 $routes=@{
 
     "/"={
-        "\<div\>
-            \<h1\>Menú\</h1\>
-            \<a href='showProcesses'\>\<h2\>Show Running Processes\</h2\>\</a\>
-            \<a href='/showServices'\>\<h2\>Show Running Services\</h2\>\</a\>
-        \</div\>"
+        "<div>
+            <h1>Menú</h1>
+            <a href='showProcesses'><h2>Show Running Processes</h2></a>
+            <a href='/showServices'><h2>Show Running Services</h2></a>
+        </div>"
     }
 
     "/showProcesses" = { Get-Process | Select-Object name, cpu | Format-Html }
 
     "/showServices" = {
-        \<div\>
-            \<h1\>Services\</h1\>
+        <div>
+            <h1>Services</h1>
             Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html
-        \</div\>
+        </div>
     }
 
 }
@@ -195,7 +195,7 @@ Accept wildcard characters: False
 ```
 
 ### -NoHeadTags
-Set this parameter to not display \<html\>, \<head\>, \<meta\>, \<link\>, \<style\> and \<body\> tags.
+Set this parameter to not display ```<html>```, ```<head>```, ```<meta>```, ```<link>```, ```<style>``` and ```<body>``` tags.
 With this option, the content will not be formated.
 
 ```yaml
