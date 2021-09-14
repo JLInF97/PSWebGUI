@@ -8,59 +8,124 @@ schema: 2.0.0
 # Format-Html
 
 ## SYNOPSIS
-Format and style PowerShell commands in HTML and Bootstrap.
+Formats and stylizes PowerShell commands output using HTML and Bootstrap.
 
 ## SYNTAX
 
 ### Table (Default)
-```
+```powershell
 Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [<CommonParameters>]
 ```
 
 ### Cards
-```
+```powershell
 Format-Html [-InputObject] <PSObject> -Cards <Int32> [<CommonParameters>]
 ```
 
 ### Raw
-```
+```powershell
 Format-Html [-InputObject] <PSObject> [-Raw] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Converts the output of PowerShell commands, passed by pipeline, to HTML format and adds Bootstrap style classes.
 
-Depending on the set of parameters, the output can be converted to table format, card format, or raw.
+Depending on the set of parameters, the output can be converted to table format, card format, or raw (no style).
 If no parameters are set, by default it is converted to table format.
     
-In essence, it is like "ConverTo-Html -Fragment" PowerShell cmdlet but with Bootstrap styling built-in and another features.
+In essence, it is like ```ConverTo-Html -Fragment``` PowerShell cmdlet but with Bootstrap styling built-in and another features.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
-Get-Service | Format-Html
+```powershell
+PS> Get-Service | Format-Html
+
+<table class='table'>
+<thead>
+<tr>
+<th>Name</th>
+<th>RequiredServices</th>
+<th>CanPauseAndContinue</th>
+...
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AJRouter</td>
+<td>System.ServiceProcess.ServiceController[]</td>
+<td>False</td>
+...
+</tr>
+<tr>
+<td>ALG</td>
+<td>System.ServiceProcess.ServiceController[]</td>
+<td>False</td>
+...
+</tr>
+...
+</tbody>
+</table>
 ```
 
 ### EXAMPLE 2
-```
-Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Hover
+```powershell
+PS> Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Hover
+
+
+<table class='table table-striped table-hover'>
+<thead class='thead-dark'>
+<tr>
+<th>CPU</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1475,09375</td>
+<td>msedge.exe</td>
+</tr>
+<tr>
+<td>0,671875</td>
+<td>explorer.exe</td>
+</tr>
+...
+</tbody>
+</table>
 ```
 
 ### EXAMPLE 3
-```
-Get-Service | Select-Object Status, DisplayName | Format-Html -Cards 3
+```powershell
+PS> Get-Service | Select-Object Status, DisplayName | Format-Html -Cards 3
+
+<div class='row row-cols-3'>
+<div class='card col'>
+<div class='card-body'>
+<h5 class='card-title'>Stopped</h5>
+<p class='card-text'>AJRouter</p>
+</div>
+</div>
+<div class='card col'>
+<div class='card-body'>
+<h5 class='card-title'>Running</h5>
+<p class='card-text'>ALG</p>
+</div>
+</div>
+...
+</div>
 ```
 
 ### EXAMPLE 4
-```
-Get-Date | Format-Html -Raw
+```powershell
+PS> Get-Date | Format-Html -Raw
+
+Tuesday, June 25, 2019 14:53:32
 ```
 
 ## PARAMETERS
 
 ### -InputObject
-Command or object to be converted, passed by pipeline.
+Command or object to be formated in HTML, passed by pipeline.
 
 ```yaml
 Type: PSObject
@@ -77,7 +142,9 @@ Accept wildcard characters: False
 ### -Darktable
 Set this parameter to display a dark table.
 
-\<table class="table table-dark"\>...\</table\>
+```html
+<table class="table table-dark">...</table>
+```
 
 ```yaml
 Type: SwitchParameter
@@ -94,9 +161,11 @@ Accept wildcard characters: False
 ### -Darkheader
 Set this parameter to display a table with dark header.
 
-\<table class="table"\>
-    \<thead class="thead-dark"\>...\</thead\>
-\</table\>
+```html
+<table class="table">
+    <thead class="thead-dark">...</thead>
+</table>
+```
 
 ```yaml
 Type: SwitchParameter
@@ -113,7 +182,9 @@ Accept wildcard characters: False
 ### -Striped
 Set this parameter to display a striped table.
 
-\<table class="table table-striped"\>...\</table\>
+```html
+<table class="table table-striped">...</table>
+```
 
 ```yaml
 Type: SwitchParameter
@@ -130,7 +201,9 @@ Accept wildcard characters: False
 ### -Hover
 Set this parameter to display a hoverable rows table.
 
-\<table class="table table-hover"\>...\</table\>
+```html
+<table class="table table-hover">...</table>
+```
 
 ```yaml
 Type: SwitchParameter
@@ -149,7 +222,7 @@ Specifies a number, between 1 and 6, to display the command output in Bootstrap 
 The number specified is the number of cards displayed per row.
 
 This parameter only displays the first two properties of the object passed.
-The first one will be dipslayed as the card title, the second will be th card text.
+The first one will be dipslayed as the card title, the second will be the card text.
 (See the cards section of the Bootstrap v4.6 documentation for more info about card layout)
 
 ```yaml

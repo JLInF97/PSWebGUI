@@ -8,78 +8,81 @@ schema: 2.0.0
 # Show-PSWebGUI
 
 ## SYNOPSIS
-Displays a styled graphical user interface (GUI) for PowerShell from passed HTML format.
+Displays a styled graphical user interface (GUI) for PowerShell from an object passed with HTML and PowerShell content.
 
 ## SYNTAX
 
-```
+```powershell
 Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>]
  [-DocumentRoot <String>] [-NoWindow] [-NoHeadTags] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Starts a simple web server, listening on localhost, to display content in HTML format with integrated Bootstrap style.
+Starts a simple web server, listening on localhost, to display the structure and content passed within an object.
+
 By default, it shows up a very simple web browser in a WPF window to display the content passed by parameter.
 
-The content can be a string, an HTML page, cmdlets, functions or complex powershell scripts.
+The content can be a string, an HTML page, cmdlets, functions or complex powershell scripts. The HTML content will be stylized with Bootstrap CSS framework.
 The server can execute and display local HTML or PS1 files.
 Custom CSS and Javascript are also compatible.
 
-POST and GET method are available and can be accesses by $_POST and $_GET variables, just like within PHP.
+POST and GET methods are available and can be accesses by ```$_POST[]``` and ```$_GET[]``` variables, just like within PHP.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Show-PSWebGUI -InputObject "Hello Wordl!"
 ```
 
 ### EXAMPLE 2
-```
+```powershell
 Show-PSWebGUI -InputObject $routes -Title "My custom GUI"
 ```
 
 ### EXAMPLE 3
-```
+```powershell
 Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\style.css"
 ```
 
 ### EXAMPLE 4
-```
+```powershell
 Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/style.css"
 ```
 
 ## PARAMETERS
 
 ### -InputObject
-Specifies the object to display in the GUI.
+Specifies the object with the structure and content to display in the GUI.
 
 The way to define custom routes with associated HTML and PowerShell content is through a hash table and scriptblocks whitin it.
-The hash table is made up of keys and their associated values.
-Keys are custom defined localhost relative paths, and must always start with "/"; values are strings, HTML and PowerShell scripts enclosed within a scriptblock.
+The hash table are made up of keys and their associated values.
+Keys are custom defined relative paths, and must always start with ```"/"```; values are strings, HTML and PowerShell scripts enclosed within a scriptblock.
 
 This is an example of a GUI structure passed as an input object:
 
+```powershell
 $routes=@{
 
     "/"={
-        "\<div\>
-            \<h1\>Menú\</h1\>
-            \<a href='showProcesses'\>\<h2\>Show Running Processes\</h2\>\</a\>
-            \<a href='/showServices'\>\<h2\>Show Running Services\</h2\>\</a\>
-        \</div\>"
+        "<div>
+            <h1>Menú</h1>
+            <a href='showProcesses'><h2>Show Running Processes</h2></a>
+            <a href='/showServices'><h2>Show Running Services</h2></a>
+        </div>"
     }
 
     "/showProcesses" = { Get-Process | Select-Object name, cpu | Format-Html }
 
     "/showServices" = {
-        \<div\>
-            \<h1\>Services\</h1\>
+        <div>
+            <h1>Services</h1>
             Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html
-        \</div\>
+        </div>
     }
 
 }
+```
 
 ```yaml
 Type: Object
@@ -112,8 +115,6 @@ Accept wildcard characters: False
 ### -Title
 Specifies the window title and the HTML page title.
 
-Reassign $title variable within script blocks (custom routes) to change the page title on each path.
-
 ```yaml
 Type: String
 Parameter Sets: (All)
@@ -144,7 +145,7 @@ Accept wildcard characters: False
 ```
 
 ### -CssUri
-Specifies the CSS URI to use in addition to bootstrap.
+Specifies the CSS URI to use in addition to Bootstrap.
 It can be a local file or an Internet URL.
 It can not be relative path, must be absolute.
 
@@ -194,7 +195,7 @@ Accept wildcard characters: False
 ```
 
 ### -NoHeadTags
-Set this parameter to not display \<html\>, \<head\>, \<meta\>, \<link\>, \<style\> and \<body\> tags.
+Set this parameter to not display ```<html>```, ```<head>```, ```<meta>```, ```<link>```, ```<style>``` and ```<body>``` tags.
 With this option, the content will not be formated.
 
 ```yaml
