@@ -8,7 +8,7 @@ schema: 2.0.0
 # Write-CredentialForm
 
 ## SYNOPSIS
-Write and display a web page with basic form to enter credentials.
+Writes and displays a web page with basic form to enter credentials.
 
 ## SYNTAX
 ```powershell
@@ -16,7 +16,7 @@ Write-CredentialForm [[-Title] <string>] [[-Description] <string>] [[-Action] <s
 ```
 
 ## DESCRIPTION
-Write and display a web page with a basic form to enter credentials. The form has user and password inputs and a submit button.
+Writes and displays a web page with a basic form to enter credentials. The form has user and password inputs and a submit button.
 
 By default, the function writes the labels for the inputs and the button, form title and description, but this is all customizable using parameters.
 
@@ -28,17 +28,77 @@ This form is the HTML+Bootstrap version of PowerShell ```Get-Credential``` cmdle
 
 ### EXAMPLE 1
 ```powershell
-Write-CredentialForm -Action "/login"
+PS> Write-CredentialForm -Action "/login"
+
+<script>document.title='Credential input'</script>
+<div class='container'>
+<h2 class='mt-3'>Credential input</h2>
+<p>Enter your credential</p>
+
+<form method='post' action="/login">
+<div class='form-group'>
+<label for='usernameInput'>Enter your username</label>
+<input type='text' class='form-control' id='usernameInput' name='userName' autofocus>
+</div>
+
+<div class='form-group'>
+<label for='passwordInput'>Enter your pasword</label>
+<input type='password' class='form-control' id='passwordInput' name='Password'>
+</div>
+
+<button type='submit' class='btn btn-primary'>Submit</button>
+</form>
+</div>
 ```
 
 ### EXAMPLE 2
 ```powershell
-Write-CredentialForm -Action "/login" -Title "Login form" -Description "Please, enter your credential"
+PS> Write-CredentialForm -Action "/login" -Title "Login form" -Description "Please, enter your credential to log into the system"
+
+<script>document.title='Login form'</script>
+<div class='container'>
+<h2 class='mt-3'>Login form</h2>
+<p>Please, enter your credential to log into the system</p>
+
+<form method='post' action="/login">
+<div class='form-group'>
+<label for='usernameInput'>Enter your username</label>
+<input type='text' class='form-control' id='usernameInput' name='userName' autofocus>
+</div>
+
+<div class='form-group'>
+<label for='passwordInput'>Enter your pasword</label>
+<input type='password' class='form-control' id='passwordInput' name='Password'>
+</div>
+
+<button type='submit' class='btn btn-primary'>Submit</button>
+</form>
+</div>
 ```
 
 ### EXAMPLE 3
 ```powershell
-Write-CredentialForm -Action "/login" -Title "Login form" -Description "Please, enter your credential" -UsernameLabel "Enter your user name" -PasswordLabel "Enter your password" -SubmitLabel "Login"
+PS> Write-CredentialForm -Action "/login" -Title "Login form" -Description "Please, enter your credential to log into the system" -UsernameLabel "Enter your computer login username" -PasswordLabel "Enter your computer login password" -SubmitLabel "Login"
+
+<script>document.title='Login form'</script>
+<div class='container'>
+<h2 class='mt-3'>Login form</h2>
+<p>Please, enter your credential to log into the system</p>
+
+<form method='post' action="/login">
+<div class='form-group'>
+<label for='usernameInput'>Enter your computer login username</label>
+<input type='text' class='form-control' id='usernameInput' name='userName' autofocus>
+</div>
+
+<div class='form-group'>
+<label for='passwordInput'>Enter your computer login pasword</label>
+<input type='password' class='form-control' id='passwordInput' name='Password'>
+</div>
+
+<button type='submit' class='btn btn-primary'>Login</button>
+</form>
+</div>
 ```
 
 ## PARAMETERS

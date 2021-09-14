@@ -8,7 +8,7 @@ schema: 2.0.0
 # GoTo-Location
 
 ## SYNOPSIS
-Redirect to another URL passed by parameter.
+Redirects to another URL passed by parameter.
 
 ## SYNTAX
 ```powershell
@@ -16,13 +16,15 @@ GoTo-Location [-URL] <string>  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Redirect, without user intervention, to another location, passing the URL by parameter.
+Redirects, without user intervention, to another location, passing the URL by parameter.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```powershell
-GoTo-Location -URL "/"
+PS> GoTo-Location -URL "/"
+
+<script>window.location.href="/"</script>
 ```
 
 ## PARAMETERS

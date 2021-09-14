@@ -8,7 +8,7 @@ schema: 2.0.0
 # Set-Title
 
 ## SYNOPSIS
-Set the web page title.
+Sets the web page title.
 
 ## SYNTAX
 ```powershell
@@ -16,14 +16,16 @@ Set-Title [-Title] <string>  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Set the web page title. Override the current title for this page (set in Show-PSWebGui function).
+Sets the web page title. Override the current title for this page (set in Show-PSWebGui function).
 Only for web page title, not for window title.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```powershell
-Set-Title -Title "Page title"
+PS> Set-Title -Title "Page title"
+
+<script>document.title='Page title'</script>
 ```
 
 ## PARAMETERS

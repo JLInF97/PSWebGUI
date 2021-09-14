@@ -12,7 +12,7 @@ Displays an example GUI.
 
 ## SYNTAX
 
-```
+```powershell
 Show-PSWebGUIExample
 ```
 
@@ -22,7 +22,7 @@ Displays a basic GUI example to show how this module runs. This funtion returns 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Show-PSWebGUIExample
 ```
 

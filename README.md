@@ -1,5 +1,5 @@
 # PSWebGUI
-A fast way to create and display PowerShell graphical interfaces with HTML.
+A fast way to create and display PowerShell graphical interfaces using HTML.
 
 This PowerShell module is a set of tools that allows you to quickly create and display fancy HTML graphical user interfaces. The module allows to interact with PowerShell cmdlets, functions, or scripts and join the result to the graphic design in HTML.
 
@@ -7,7 +7,7 @@ PowerShell acts, in this module, as a web server language, like PHP. You can def
 
 The HTML is styled with Bootstrap CSS framework to provide better look and responsive content in a fast way.
 
-**Important note!** To use this module, PowerShell must have been **_run as Administrator_**.
+**Important note!** To use this module, you must **_run PowerShell as an Administrator_**.
 
 [Visit about file for more detailed info](../main/docs/about_PSWebGui.md)
 
@@ -99,6 +99,7 @@ PS> Get-Process | Select-Object Name, CPU | Sort-Object -Property CPU -Descendin
 </tr>
 </thead>
 <tbody>
+...
 <tr>
 <td>msedge</td>
 <td>2672,9375</td>

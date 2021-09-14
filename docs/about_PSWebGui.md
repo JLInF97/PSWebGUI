@@ -3,7 +3,7 @@
 
 
 # SHORT DESCRIPTION
-A fast way to create and display PowerShell graphical interfaces with HTML
+A fast way to create and display PowerShell graphical interfaces using HTML
 
 
 # LONG DESCRIPTION
@@ -13,7 +13,7 @@ PowerShell acts, in this module, as a web server language, like PHP. You can def
 
 The HTML is styled with Bootstrap CSS framework to provide better look and responsive content in a fast way.
 
-**Important note!** To use this module, PowerShell must have been **_run as Administrator_**.
+**Important note!** To use this module, you must **_run PowerShell as an Administrator_**.
 
 # CREATING A GRAPHIC INTERFACE
 To display a graphic interface, the structure and content needs to be created first, saved into a variable (hashtable) and then, passed to the main funtion `Show-PSWebGui`.

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-CredentialForm
 
 ## SYNOPSIS
-Get credential information from form.
+Gets credential information from form.
 
 ## SYNTAX
 ```powershell
@@ -24,7 +24,11 @@ Returns a PSCredential object with the username and password encrypted. Same as 
 
 ### EXAMPLE 1
 ```powershell
-Get-CredentialForm
+PS> Get-CredentialForm
+
+UserName                             Password
+--------                             --------
+Administrator    System.Security.SecureString
 ```
 
 ## PARAMETERS
