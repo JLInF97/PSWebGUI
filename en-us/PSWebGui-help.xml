@@ -408,9 +408,9 @@ Administrator    System.Security.SecureString</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>GoTo-Location</command:name>
-      <command:verb>GoTo</command:verb>
-      <command:noun>Location</command:noun>
+      <command:name>Set-GuiLocation</command:name>
+      <command:verb>Set</command:verb>
+      <command:noun>GuiLocation</command:noun>
       <maml:description>
         <maml:para>Redirects to another URL passed by parameter.</maml:para>
       </maml:description>
@@ -420,7 +420,7 @@ Administrator    System.Security.SecureString</dev:code>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>GoTo-Location</maml:name>
+        <maml:name>Set-GuiLocation</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="Location, Path">
           <maml:name>URL</maml:name>
           <maml:description>
@@ -477,7 +477,7 @@ Administrator    System.Security.SecureString</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>PS&gt; GoTo-Location -URL "/"
+        <dev:code>PS&gt; Set-GuiLocation -URL "/"
 
 &lt;script&gt;window.location.href="/"&lt;/script&gt;</dev:code>
         <dev:remarks>

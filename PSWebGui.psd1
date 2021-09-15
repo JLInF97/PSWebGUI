@@ -69,7 +69,7 @@ PowerShellVersion = '5.0'
 # NestedModules = @()
 
 # Funciones para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay funciones que exportar.
-FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html","GoTo-Location","Write-CredentialForm","Get-CredentialForm","Set-Title"
+FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html","Set-GuiLocation","Write-CredentialForm","Get-CredentialForm","Set-Title"
 
 # Cmdlets para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay cmdlets que exportar.
 CmdletsToExport = @()
