@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+    <Snippets  xmlns='http://schemas.microsoft.com/PowerShell/Snippets'>
+        <Snippet Version='1.0.0'>
+            <Header>
+                <Title>PSWebGui Basic Structure</Title>
+                <Description>Basic structure for a GUI</Description>
+                <Author>JLInF97</Author>
+                <SnippetTypes>
+                    <SnippetType>Expansion</SnippetType>
+                </SnippetTypes>
+            </Header>
+
+            <Code>
+                <Script Language='PowerShell' CaretOffset='30'>
+                    <![CDATA[$routes=@{
+
+    "/"={
+        # Here goes your content
+    }
+
+}]]>
+                </Script>
+            </Code>
+
+    </Snippet>
+</Snippets>
+

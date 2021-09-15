@@ -1,0 +1,29 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+    <Snippets  xmlns='http://schemas.microsoft.com/PowerShell/Snippets'>
+        <Snippet Version='1.0.0'>
+            <Header>
+                <Title>PSWebGui Login</Title>
+                <Description>Basic login structure with form page and process script</Description>
+                <Author>JLInF97</Author>
+                <SnippetTypes>
+                    <SnippetType>Expansion</SnippetType>
+                </SnippetTypes>
+            </Header>
+
+            <Code>
+                <Script Language='PowerShell' CaretOffset='0'>
+                    <![CDATA[    "/login"={
+        Write-CredentialForm -Action "/login/process" -Title "Login form"
+    }
+
+    "/login/process"={
+        $cred=Get-CredentialForm
+        Set-GuiLocation -URL "/"
+    }
+]]>
+                </Script>
+            </Code>
+
+    </Snippet>
+</Snippets>
+

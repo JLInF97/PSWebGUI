@@ -78,7 +78,7 @@ CmdletsToExport = @()
 VariablesToExport = '*'
 
 # Alias para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay alias que exportar.
-AliasesToExport = "Start-PSGUI","Show-PSGUI","Start-GUI","Show-GUI","Show-WebGUI","Start-WebGUI","FH","GTL"
+AliasesToExport = "Start-PSGUI","Show-PSGUI","Start-GUI","Show-GUI","Show-WebGUI","Start-WebGUI","FH","SGL"
 
 # Recursos de DSC que se exportarán de este módulo
 # DscResourcesToExport = @()
@@ -87,7 +87,7 @@ AliasesToExport = "Start-PSGUI","Show-PSGUI","Start-GUI","Show-GUI","Show-WebGUI
 # ModuleList = @()
 
 # Lista de todos los paquetes con este módulo.
-FileList = @("Assets\bootstrap.min.css","Assets\panel.png")
+FileList = @("Assets\bootstrap.min.css","Assets\panel.png","Snippets\PSWebGui Basic Structure.snippets.ps1xml","Snippets\PSWebGui Login.snippets.ps1xml")
 
 # Datos privados que se pasan al módulo especificado en RootModule/ModuleToProcess. Pueden contener también una tabla hash PSData con metadatos del módulo adicionales usados por PowerShell.
 PrivateData = @{
