@@ -5,14 +5,14 @@ online version:
 schema: 2.0.0
 ---
 
-# GoTo-Location
+# Set-GuiLocation
 
 ## SYNOPSIS
 Redirects to another URL passed by parameter.
 
 ## SYNTAX
 ```powershell
-GoTo-Location [-URL] <string>  [<CommonParameters>]
+Set-GuiLocation [-URL] <string>  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -22,7 +22,7 @@ Redirects, without user intervention, to another location, passing the URL by pa
 
 ### EXAMPLE 1
 ```powershell
-PS> GoTo-Location -URL "/"
+PS> Set-GuiLocation -URL "/"
 
 <script>window.location.href="/"</script>
 ```

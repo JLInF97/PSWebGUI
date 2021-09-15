@@ -548,7 +548,7 @@ function Set-Title {
 
 
 #.ExternalHelp en-us\PSWebGui-help.xml
-function GoTo-Location{
+function Set-GuiLocation{
 
     param(
         [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)]
@@ -694,7 +694,7 @@ Set-Alias -Name Show-GUI -Value Show-PSWebGUI
 Set-Alias -Name Show-WebGUI -Value Show-PSWebGUI
 Set-Alias -Name Start-WebGUI -Value Show-PSWebGUI
 Set-Alias -Name FH -Value Format-Html
-Set-Alias -Name GTL -Value GoTo-Location
+Set-Alias -Name SGL -Value Set-GuiLocation
 #endregion
 
 
