@@ -65,6 +65,16 @@ $_POST["username"]
 $_POST["password"]
 ```
 
+# ISE SNIPPETS
+This module has some snippets for using them with **PowerShell ISE**.
+
+To import the snippets in this session, enter the following cmdlet in *PowerShell ISE*:
+```powershell
+PS> Import-IseSnippet -Module PSWebGui -ListAvailable
+```
+
+Or copy them from ```Snippets``` module folder to ```%userprofile%\Documents\WindowsPowerShell\Snippets``` if you want them to be imported every time you open PowerShell ISE
+
 # See also
 Reading main function help is recomended
 ```powershell
