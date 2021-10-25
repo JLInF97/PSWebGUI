@@ -450,7 +450,6 @@ function Format-Html {
             $tableClass="table"
 
             if ($Darktable){
-                $tabledark="table-dark"
                 $tableClass+=" table-dark"
 
             }elseif ($Darkheader){
@@ -458,12 +457,10 @@ function Format-Html {
             }
 
             if ($Striped){
-                $tablestriped="table-striped"
                 $tableClass+=" table-striped"
             }
 
             if ($Hover){
-                $tablehover="table-hover"
                 $tableClass+=" table-hover"
             }
 
