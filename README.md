@@ -73,7 +73,7 @@ PS> Get-Help Show-PSWebGui -Full
 ### Format-Html
 #### Syntax
 ```powershell
-Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [<CommonParameters>]
+Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [-Id <String>] [<CommonParameters>]
 
 Format-Html [-InputObject] <PSObject> -Cards <Int32> [<CommonParameters>]
 

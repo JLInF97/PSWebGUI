@@ -396,6 +396,7 @@ function Format-Html {
         [Parameter(ParameterSetName="Table",Mandatory=$false)][Alias("Theaddark","Thead-dark")][switch]$Darkheader,
         [Parameter(ParameterSetName="Table",Mandatory=$false)][switch]$Striped,
         [Parameter(ParameterSetName="Table",Mandatory=$false)][switch]$Hover,
+        [Parameter(ParameterSetName="Table",Mandatory=$false)][string]$Id,
 
         [Parameter(ParameterSetName="Cards",Mandatory=$true)][ValidateRange(1,6)][int]$Cards,
 
@@ -446,8 +447,11 @@ function Format-Html {
                                   Process switch parameters
             ===================================================================
             #>
+            $tableClass="table"
+
             if ($Darktable){
                 $tabledark="table-dark"
+                $tableClass+=" table-dark"
 
             }elseif ($Darkheader){
                 $theaddark="class='thead-dark'"
@@ -455,10 +459,16 @@ function Format-Html {
 
             if ($Striped){
                 $tablestriped="table-striped"
+                $tableClass+=" table-striped"
             }
 
             if ($Hover){
                 $tablehover="table-hover"
+                $tableClass+=" table-hover"
+            }
+
+            if ($Id){
+                $idTag="id='$id'"
             }
             #endregion
 
@@ -500,7 +510,7 @@ function Format-Html {
             ===================================================================
             #>
             else{
-                "<table class='table $tabledark $tablestriped $tablehover'>"
+                "<table class='$tableClass' $idTag>"
                 "<thead $theaddark>"
                 "<tr>"
 

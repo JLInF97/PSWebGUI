@@ -14,7 +14,7 @@ Formats and stylizes PowerShell commands output using HTML and Bootstrap.
 
 ### Table (Default)
 ```powershell
-Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [<CommonParameters>]
+Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [-Id <String>] [<CommonParameters>]
 ```
 
 ### Cards
@@ -207,6 +207,25 @@ Set this parameter to display a hoverable rows table.
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: Table
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Use this parameter to set an id attribute for the table.
+
+```html
+<table id="table1">...</table>
+```
+
+```yaml
+Type: String
 Parameter Sets: Table
 Aliases:
 
