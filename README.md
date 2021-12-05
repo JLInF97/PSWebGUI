@@ -9,6 +9,8 @@ The HTML is styled with Bootstrap CSS framework to provide better look and respo
 
 **Important note!** To use this module, you must **_run PowerShell as an Administrator_**.
 
+**Important note!** From v0.13.0 the server exit URL has been modified, from ```/exit``` to ```/exit()``` or ```/stop()```.
+
 [Visit about file for more detailed info](../main/docs/about_PSWebGui.md)
 
 
