@@ -65,6 +65,9 @@ $_POST["username"]
 $_POST["password"]
 ```
 
+# STOPPING SERVER
+[...]
+
 # ISE SNIPPETS
 This module has some snippets for using them with **PowerShell ISE**.
 

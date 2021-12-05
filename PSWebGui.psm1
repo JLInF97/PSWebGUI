@@ -22,6 +22,8 @@ Function Show-PSWebGUI
     # Create virtual drive in root directory
     $fileserver=New-PSDrive -Name FileServer -PSProvider FileSystem -Root $DocumentRoot
 
+    # Scriptblock to execute when closing server
+    $global:_CLOSESCRIPT={}
 
 
     #region Favicon
@@ -132,7 +134,7 @@ Function Show-PSWebGUI
                 Start-Sleep -Seconds 1
 
                 # Once the end user closes out of the browser we send the exit url to tell the server to shut down.
-                $exiturl=$url+"exit"
+                $exiturl=$url+"exit()"
                 (New-Object System.Net.WebClient).DownloadString($exiturl);
         }
  
@@ -223,22 +225,66 @@ Function Show-PSWebGUI
         }
 
 
-        # Creating a friendly way to shutdown the server
-        if($Context.Request.Url.LocalPath -eq "/exit")
-        {
+        # Path to return the Powershell simple server PID (Process ID). Usefull for Close-PSWebGui function
+        if ($Context.Request.Url.LocalPath -eq '/$PID'){
+            do{
+                $result="$PID"
 
+                $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
+                $context.Response.ContentLength64 = $buffer.Length
+                $context.Response.OutputStream.Write($buffer, 0, $buffer.Length)
+                $Context.Response.Close()
+                $Context = $SimpleServer.GetContext()
+
+            }while ($Context.Request.Url.LocalPath -eq '/$PID')
+
+        }
+
+
+        <#
+            SERVER EXIT
+        #>
+
+        # Creating a friendly way to shutdown the server
+        if($Context.Request.Url.LocalPath -eq "/stop()" -or $Context.Request.Url.LocalPath -eq "/exit()")
+        {
+            
+            # Invoke scriptblock before stop server
+            $_CLOSESCRIPT.Invoke()
+
+
+            # Send a text to inform about the server stopped. Send different message dependig if -NoWindow was set
+            if ($NoWindow -eq $false){
+                $result="<script>document.title='Server stopped. Bye!'</script>Server stopped. Please, close the GUI window. Bye!"
+            }
+            # -NoWindow set
+            else{
+                $result="<script>document.title='Server stopped. Bye!'</script>Server stopped. Bye!"
+            }
+
+            $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
+            $context.Response.ContentLength64 = $buffer.Length
+            $context.Response.OutputStream.Write($buffer, 0, $buffer.Length)
+
+
+            # Close response and stop the server
             $Context.Response.Close()
             $SimpleServer.Stop()
+            Write-Verbose "Server stopped"
 
-            # If -NoWindow, dont close a non-existent Window
+            # -NoWindow, dont close a non-existent Window
             if ($NoWindow -eq $false){
                 $RunspacePool.Close()
+                Write-Verbose "GUI closed"
+     
             }
 
             break
 
         }
 
+
+        
     
 
         #region Handly URLs
@@ -693,11 +739,34 @@ return $routes
 }
 
 
+#.ExternalHelp en-us\PSWebGui-help.xml
+function Stop-PSWebGui {
+    param(
+        [Parameter(Mandatory=$false)][switch]$Force
+    )
+    
+
+    if ($Force){
+        # Get Powershell server PID from web request
+        $srvpid=(Invoke-WebRequest -Uri 'localhost/$PID').rawcontent.split([Environment]::NewLine)[10]
+
+        # Request a server stop
+        $n=Invoke-WebRequest -Uri "localhost/stop()"
+
+        # Close Powershell process
+        Stop-Process -Id $srvpid
+
+    }
+    else{
+        # Request a server stop
+        $n=Invoke-WebRequest -Uri "localhost/stop()"
+    }
+}
+
+
 #region Function alias
 Set-Alias -Name Start-PSGUI -Value Show-PSWebGUI
 Set-Alias -Name Show-PSGUI -Value Show-PSWebGUI
-Set-Alias -Name Start-GUI -Value Show-PSWebGUI
-Set-Alias -Name Show-GUI -Value Show-PSWebGUI
 Set-Alias -Name Show-WebGUI -Value Show-PSWebGUI
 Set-Alias -Name Start-WebGUI -Value Show-PSWebGUI
 Set-Alias -Name FH -Value Format-Html
