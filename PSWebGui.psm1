@@ -10,8 +10,9 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][string]$Icon,
     [Parameter(Mandatory=$false)][string]$CssUri,
     [Parameter(Mandatory=$false)][Alias("Root")][string]$DocumentRoot=$PWD.path,
-    [Parameter(Mandatory=$false)][Alias("WebGui","Silent","Hidden")][switch]$NoWindow,
-    [Parameter(Mandatory=$false)][switch]$NoHeadTags
+    [Parameter(Mandatory=$false)][Alias("NoConsole","Silent","Hidden")][switch]$NoWindow,
+    [Parameter(Mandatory=$false)][switch]$NoHeadTags,
+    [Parameter(Mandatory=$false)][string]$Page404
 
     )
 
@@ -42,7 +43,7 @@ Function Show-PSWebGUI
     # First, test if icon path has been passed (as parameter)
     if ($icon -ne ""){
         
-        # If icon path exists as absolute path (absolute path passed)
+        # If icon path exists as an absolute path (absolute path passed)
         if (Test-Path $icon){
             
             # $iconpath is icon path itself
@@ -66,6 +67,25 @@ Function Show-PSWebGUI
 
             # $favicon is icon relative path itself
             $favicon=$icon
+        }
+    }
+
+    #endregion
+
+
+    #region Page 404 processing
+    <#
+    ===================================================================
+                            PAGE 404 PROCESSING
+    ===================================================================
+    #>
+
+    if ($page404){
+        if (Test-Path $page404 -PathType Leaf -Include "*.html","*.htm","*.txt","*.xhtml"){
+            $page404HTML=Get-Content $page404
+        }
+        else{
+            Write-Error -Message "Page404 parameter must be a file with one of these extensions: html, hmt, xhtml, txt" -Category InvalidData -CategoryTargetName "$page404" -CategoryTargetType "Invalid file"
         }
     }
 
@@ -241,6 +261,7 @@ Function Show-PSWebGUI
         }
 
 
+
         <#
             SERVER EXIT
         #>
@@ -376,7 +397,13 @@ Function Show-PSWebGUI
                     
                 # $localpath is neither a file nor a defined route but is representing a path that its not found
                 else{
-                    $result="<html>`n<head>`n<title>404 Not found</title>`n<body>`n<h1>404 Not found</h1>`n</body>`n</html>"
+                    
+                    if ($page404HTML -ne ""){
+                        $result=$page404HTML
+                    }else{
+                        $result="<html>`n<head>`n<title>404 Not found</title>`n<body>`n<h1>404 Not found</h1>`n</body>`n</html>"
+                    }
+                    
                     $Context.Response.StatusCode=404
 
                     $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
@@ -742,16 +769,18 @@ return $routes
 #.ExternalHelp en-us\PSWebGui-help.xml
 function Stop-PSWebGui {
     param(
-        [Parameter(Mandatory=$false)][switch]$Force
+        [Parameter(Mandatory=$false)][switch]$Force,
+        [Parameter(Mandatory=$false)][int]$Port=80
     )
     
+    $url="http://localhost:$port"
 
     if ($Force){
         # Get Powershell server PID from web request
-        $srvpid=(Invoke-WebRequest -Uri 'localhost/$PID').rawcontent.split([Environment]::NewLine)[10]
+        $srvpid=(Invoke-WebRequest -Uri '$url/$PID').rawcontent.split([Environment]::NewLine)[10]
 
         # Request a server stop
-        $n=Invoke-WebRequest -Uri "localhost/stop()"
+        $n=Invoke-WebRequest -Uri "$url/stop()"
 
         # Close Powershell process
         Stop-Process -Id $srvpid
@@ -759,7 +788,7 @@ function Stop-PSWebGui {
     }
     else{
         # Request a server stop
-        $n=Invoke-WebRequest -Uri "localhost/stop()"
+        $n=Invoke-WebRequest -Uri "$url/stop()"
     }
 }
 
