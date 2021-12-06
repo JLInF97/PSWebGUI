@@ -27,6 +27,18 @@ Function Show-PSWebGUI
     $global:_CLOSESCRIPT={}
 
 
+    # Save PID and Port for this instance in a temp file
+    $instance_properties=[PSCustomObject]@{
+        "PID"="$PID"
+        "Port"="$port"
+        "URL"="$url"
+        "Start time"=Get-Date -Format "yyyy-MM-dd hh:mm:ss"
+    }
+
+    $instance_properties | ConvertTo-Json | Out-File -FilePath "$env:temp\pswebgui_$port.tmp"
+    Write-Verbose "Instance properties saved in $env:temp\pswebgui_$port.tmp"
+
+
     #region Favicon
     <#
     ===================================================================
@@ -245,23 +257,6 @@ Function Show-PSWebGUI
         }
 
 
-        # Path to return the Powershell simple server PID (Process ID). Usefull for Close-PSWebGui function
-        if ($Context.Request.Url.LocalPath -eq '/$PID'){
-            do{
-                $result="$PID"
-
-                $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
-                $context.Response.ContentLength64 = $buffer.Length
-                $context.Response.OutputStream.Write($buffer, 0, $buffer.Length)
-                $Context.Response.Close()
-                $Context = $SimpleServer.GetContext()
-
-            }while ($Context.Request.Url.LocalPath -eq '/$PID')
-
-        }
-
-
-
         <#
             SERVER EXIT
         #>
@@ -273,6 +268,9 @@ Function Show-PSWebGUI
             # Invoke scriptblock before stop server
             $_CLOSESCRIPT.Invoke()
 
+            # Write instance properties file again, in case it was deleted
+            $instance_properties | ConvertTo-Json | Out-File -FilePath "$env:temp\pswebgui_$port.tmp"
+            Write-Verbose "Instance properties saved in $env:temp\pswebgui_$port.tmp"
 
             # Send a text to inform about the server stopped. Send different message dependig if -NoWindow was set
             if ($NoWindow -eq $false){
@@ -299,6 +297,9 @@ Function Show-PSWebGUI
                 Write-Verbose "GUI closed"
      
             }
+
+            # Remove properties file
+            Remove-Item "$env:temp\pswebgui_$port.tmp" -Force
 
             break
 
@@ -774,21 +775,44 @@ function Stop-PSWebGui {
     )
     
     $url="http://localhost:$port"
+    $uri="$url/stop()"
 
     if ($Force){
-        # Get Powershell server PID from web request
-        $srvpid=(Invoke-WebRequest -Uri '$url/$PID').rawcontent.split([Environment]::NewLine)[10]
+        
+        # Check for server properties file
+        if (Test-Path -Path "$env:tmp\pswebgui_$port.tmp"){
+            
+            # Get Powershell server PID from temp file
+            $srvpid=(Get-Content -Path "$env:tmp\pswebgui_$port.tmp" | ConvertFrom-Json).PID
 
-        # Request a server stop
-        $n=Invoke-WebRequest -Uri "$url/stop()"
+            # Request a server stop in background job
+            $job=Start-Job -ScriptBlock {Invoke-WebRequest -Uri $args[0]} -ArgumentList $uri | Wait-Job -Timeout 5
 
-        # Close Powershell process
-        Stop-Process -Id $srvpid
+            # Close Powershell process
+            Stop-Process -Id $srvpid -Force
+
+            # Remove properties file
+            Remove-Item "$env:tmp\pswebgui_$port.tmp" -Force -ErrorAction SilentlyContinue
+        }
+        else{
+            Write-Error -Message "Unknown process ID. Server properties file not found" -Category ObjectNotFound -CategoryTargetName "$env:tmp\pswebgui_$port.tmp" -CategoryTargetType "File not found"
+            Write-Host "Trying to stop server..."
+
+            # Request a server stop
+            $n=Invoke-WebRequest -Uri $uri
+        }
+
+        # If job gets stuck, stop it
+        if ($job.State -eq "Running"){
+            Stop-Job -Job $job
+        }
+
+
 
     }
     else{
         # Request a server stop
-        $n=Invoke-WebRequest -Uri "$url/stop()"
+        $n=Invoke-WebRequest -Uri $uri
     }
 }
 
