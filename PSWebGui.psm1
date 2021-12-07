@@ -10,8 +10,9 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][string]$Icon,
     [Parameter(Mandatory=$false)][string]$CssUri,
     [Parameter(Mandatory=$false)][Alias("Root")][string]$DocumentRoot=$PWD.path,
-    [Parameter(Mandatory=$false)][Alias("WebGui","Silent","Hidden")][switch]$NoWindow,
-    [Parameter(Mandatory=$false)][switch]$NoHeadTags
+    [Parameter(Mandatory=$false)][Alias("NoConsole","Silent","Hidden")][switch]$NoWindow,
+    [Parameter(Mandatory=$false)][switch]$NoHeadTags,
+    [Parameter(Mandatory=$false)][string]$Page404
 
     )
 
@@ -24,6 +25,18 @@ Function Show-PSWebGUI
 
     # Scriptblock to execute when closing server
     $global:_CLOSESCRIPT={}
+
+
+    # Save PID and Port for this instance in a temp file
+    $instance_properties=[PSCustomObject]@{
+        "PID"="$PID"
+        "Port"="$port"
+        "URL"="$url"
+        "Start time"=Get-Date -Format "yyyy-MM-dd hh:mm:ss"
+    }
+
+    $instance_properties | ConvertTo-Json | Out-File -FilePath "$env:temp\pswebgui_$port.tmp"
+    Write-Verbose "Instance properties saved in $env:temp\pswebgui_$port.tmp"
 
 
     #region Favicon
@@ -42,7 +55,7 @@ Function Show-PSWebGUI
     # First, test if icon path has been passed (as parameter)
     if ($icon -ne ""){
         
-        # If icon path exists as absolute path (absolute path passed)
+        # If icon path exists as an absolute path (absolute path passed)
         if (Test-Path $icon){
             
             # $iconpath is icon path itself
@@ -66,6 +79,25 @@ Function Show-PSWebGUI
 
             # $favicon is icon relative path itself
             $favicon=$icon
+        }
+    }
+
+    #endregion
+
+
+    #region Page 404 processing
+    <#
+    ===================================================================
+                            PAGE 404 PROCESSING
+    ===================================================================
+    #>
+
+    if ($page404){
+        if (Test-Path $page404 -PathType Leaf -Include "*.html","*.htm","*.txt","*.xhtml"){
+            $page404HTML=Get-Content $page404
+        }
+        else{
+            Write-Error -Message "Page404 parameter must be a file with one of these extensions: html, hmt, xhtml, txt" -Category InvalidData -CategoryTargetName "$page404" -CategoryTargetType "Invalid file"
         }
     }
 
@@ -225,22 +257,6 @@ Function Show-PSWebGUI
         }
 
 
-        # Path to return the Powershell simple server PID (Process ID). Usefull for Close-PSWebGui function
-        if ($Context.Request.Url.LocalPath -eq '/$PID'){
-            do{
-                $result="$PID"
-
-                $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
-                $context.Response.ContentLength64 = $buffer.Length
-                $context.Response.OutputStream.Write($buffer, 0, $buffer.Length)
-                $Context.Response.Close()
-                $Context = $SimpleServer.GetContext()
-
-            }while ($Context.Request.Url.LocalPath -eq '/$PID')
-
-        }
-
-
         <#
             SERVER EXIT
         #>
@@ -252,6 +268,9 @@ Function Show-PSWebGUI
             # Invoke scriptblock before stop server
             $_CLOSESCRIPT.Invoke()
 
+            # Write instance properties file again, in case it was deleted
+            $instance_properties | ConvertTo-Json | Out-File -FilePath "$env:temp\pswebgui_$port.tmp"
+            Write-Verbose "Instance properties saved in $env:temp\pswebgui_$port.tmp"
 
             # Send a text to inform about the server stopped. Send different message dependig if -NoWindow was set
             if ($NoWindow -eq $false){
@@ -278,6 +297,9 @@ Function Show-PSWebGUI
                 Write-Verbose "GUI closed"
      
             }
+
+            # Remove properties file
+            Remove-Item "$env:temp\pswebgui_$port.tmp" -Force
 
             break
 
@@ -376,7 +398,13 @@ Function Show-PSWebGUI
                     
                 # $localpath is neither a file nor a defined route but is representing a path that its not found
                 else{
-                    $result="<html>`n<head>`n<title>404 Not found</title>`n<body>`n<h1>404 Not found</h1>`n</body>`n</html>"
+                    
+                    if ($page404HTML -ne ""){
+                        $result=$page404HTML
+                    }else{
+                        $result="<html>`n<head>`n<title>404 Not found</title>`n<body>`n<h1>404 Not found</h1>`n</body>`n</html>"
+                    }
+                    
                     $Context.Response.StatusCode=404
 
                     $buffer = [System.Text.Encoding]::UTF8.GetBytes($result)
@@ -742,24 +770,49 @@ return $routes
 #.ExternalHelp en-us\PSWebGui-help.xml
 function Stop-PSWebGui {
     param(
-        [Parameter(Mandatory=$false)][switch]$Force
+        [Parameter(Mandatory=$false)][switch]$Force,
+        [Parameter(Mandatory=$false)][int]$Port=80
     )
     
+    $url="http://localhost:$port"
+    $uri="$url/stop()"
 
     if ($Force){
-        # Get Powershell server PID from web request
-        $srvpid=(Invoke-WebRequest -Uri 'localhost/$PID').rawcontent.split([Environment]::NewLine)[10]
+        
+        # Check for server properties file
+        if (Test-Path -Path "$env:tmp\pswebgui_$port.tmp"){
+            
+            # Get Powershell server PID from temp file
+            $srvpid=(Get-Content -Path "$env:tmp\pswebgui_$port.tmp" | ConvertFrom-Json).PID
 
-        # Request a server stop
-        $n=Invoke-WebRequest -Uri "localhost/stop()"
+            # Request a server stop in background job
+            $job=Start-Job -ScriptBlock {Invoke-WebRequest -Uri $args[0]} -ArgumentList $uri | Wait-Job -Timeout 5
 
-        # Close Powershell process
-        Stop-Process -Id $srvpid
+            # Close Powershell process
+            Stop-Process -Id $srvpid -Force
+
+            # Remove properties file
+            Remove-Item "$env:tmp\pswebgui_$port.tmp" -Force -ErrorAction SilentlyContinue
+        }
+        else{
+            Write-Error -Message "Unknown process ID. Server properties file not found" -Category ObjectNotFound -CategoryTargetName "$env:tmp\pswebgui_$port.tmp" -CategoryTargetType "File not found"
+            Write-Host "Trying to stop server..."
+
+            # Request a server stop
+            $n=Invoke-WebRequest -Uri $uri
+        }
+
+        # If job gets stuck, stop it
+        if ($job.State -eq "Running"){
+            Stop-Job -Job $job
+        }
+
+
 
     }
     else{
         # Request a server stop
-        $n=Invoke-WebRequest -Uri "localhost/stop()"
+        $n=Invoke-WebRequest -Uri $uri
     }
 }
 
