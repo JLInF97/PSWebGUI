@@ -14,7 +14,7 @@ Displays a styled graphical user interface (GUI) for PowerShell from an object p
 
 ```powershell
 Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>]
- [-DocumentRoot <String>] [-NoWindow] [-NoHeadTags] [<CommonParameters>]
+ [-DocumentRoot <String>] [-NoWindow] [-NoHeadTags] [-Page404 <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -185,7 +185,7 @@ The content can only be viewed within a third-party web browser.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: WebGui, Silent, Hidden
+Aliases: NoConsole, Silent, Hidden
 
 Required: False
 Position: Named
@@ -200,6 +200,29 @@ With this option, the content will not be formated.
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Page404
+Use this parameter to set an **HTML file** as the 404 error page.
+
+This parameter must be an absolute or relative path to an HTML file. The content of the file will be displayed when the server cannot find the path (response code 404).
+
+Valid file extensions:
+- .html
+- .xhtml
+- .htm
+- .txt
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 

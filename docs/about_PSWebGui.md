@@ -18,7 +18,7 @@ The HTML is styled with Bootstrap CSS framework to provide better look and respo
 # CREATING A GRAPHIC INTERFACE
 To display a graphic interface, the structure and content needs to be created first, saved into a variable (hashtable) and then, passed to the main funtion `Show-PSWebGui`.
 
-This is the basic structure:
+This is a basic structure:
 ```powershell
 $routes = @{
 
@@ -66,7 +66,40 @@ $_POST["password"]
 ```
 
 # STOPPING SERVER
-[...]
+When you execute the ```Show-PSWebGui```function, a simple web server starts and a GUI window appears displaying the content.
+There are some ways to stop the server and close the GUI:
+
+- Closing GUI window clicking X button: This action will close the GUI window and oderly stop the server. This is the recomended way to stop the server when the GUI is displaying.
+- Sending ```/stop()``` or ```/exit()``` to the server: This will stop the web server, but will not close the GUI window. This is the recomended way to stop the server when the GUI is not displaying.
+- Executing ```Stop-PsWebGui``` function in another PowerShell process: This will stop the web server, but will not close the GUI window. This way is usefull when the GUI window is not displaying and you do not have access to any web browser.
+- Executing ```Stop-PsWebGui -Force``` function in another PowerShell process: This function will try to orderly stop the server and kill the PowerShell process. This way is usefull when you need to completely close an unresponsive instance or an open GUI window in a non-inteactive enviorement.
+- Killing PowerShell process: This is not a recomended action because the server will not stop correctly, the changes made may not be saved and another thread may still be running in background.
+
+## $_CLOSESCRIPT VARIABLE
+```$_CLOSESCRIPT``` is an empty scriptblock, defined in global scope, that will be invoked just before the web server is closed.
+If you need some code to be executed just when the server stops, put the code inside this scriptblock and, if it loads during runtime, it will invoked just before the server stops.
+
+Having this structure:
+```powershell
+$routes = @{
+
+	"/" = {
+		"
+		<h1>Index</h1>
+		<a href='/getdate'>Show date</a>
+		"
+	}
+	
+	"/getdate" = {
+		"<h1>Date</h1>"
+		"Today is:" Get-Date
+		$_CLOSESCRIPT={
+			Write-Host "Saying this before server stops"
+		}
+	}
+}
+```
+the code inside ```$_CLOSESCRIPT``` will only be invoked if you send ```/getdate``` to the server before stopping it.
 
 # ISE SNIPPETS
 This module has some snippets for using them with **PowerShell ISE**.
@@ -78,7 +111,7 @@ PS> Import-IseSnippet -Module PSWebGui -ListAvailable
 
 Or copy them from ```Snippets``` module folder to ```%userprofile%\Documents\WindowsPowerShell\Snippets``` if you want them to be imported every time you open PowerShell ISE
 
-# See also
+# SEE ALSO
 Reading main function help is recomended
 ```powershell
 PS> Get-Help Show-PSWebGui -Detailed
