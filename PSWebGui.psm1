@@ -79,6 +79,11 @@ Function Show-PSWebGUI
         # Foreach key
         $keys | foreach {
             $oldkey=$_
+
+            # If there are /exit() or /stop() urls, trow an error
+            if (($_ -eq "/exit()") -or ($_ -eq "/stop()")){
+                Write-Error -Message "$_ url is reserved" -Category InvalidData -CategoryTargetName "$_" -CategoryTargetType "Omited"
+            }
         
             # If key length > 1 (ignore root "/")
             if ($oldkey.length -gt 1){
