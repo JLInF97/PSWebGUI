@@ -475,7 +475,7 @@ Function Show-PSWebGUI
                 # $localpath is neither a file nor a defined route but is representing a path that its not found
                 else{
                     
-                    if ($page404HTML -ne ""){
+                    if ($page404HTML){
                         $result=$page404HTML
                     }else{
                         $result="<html>`n<head>`n<title>404 Not found</title>`n<body>`n<h1>404 Not found</h1>`n</body>`n</html>"
