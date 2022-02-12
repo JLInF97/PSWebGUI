@@ -39,6 +39,79 @@ Function Show-PSWebGUI
     Write-Verbose "Instance properties saved in $env:temp\pswebgui_$port.tmp"
 
 
+
+
+    #region Path cleaning
+    <#
+    ===================================================================
+                  INPUTOBJECT VALIDATION AND PATH CLEANING
+    ===================================================================
+     
+     Validates $InputObject.
+     Clean paths in $InputObject. Remove duplicated "/", dots and last "/"
+
+    #>
+
+    # If $InputObject is null, throw an error and stop execution
+    if ($InputObject -eq $null){
+        Write-Error -Message "Input object is null" -Category InvalidArgument -CategoryTargetName "-InputObject" -CategoryTargetType "Null" -RecommendedAction "Do not set -InputObject if you don't want to pass any value"
+        break
+    }
+
+    # If $InputObject is not string or hashtable, throw an error and stop execution
+    if (!($InputObject -is [hashtable]) -and !($InputObject -is [string])){
+        Write-Error -Message "Object type not valid for InputObject. Only [String] or [hashtable] accepted" -Category InvalidType -CategoryTargetName "-InputObject" -CategoryTargetType "InvalidObjectType"
+        break
+    }
+    
+    # If $InputObject is a hashtable (not a string)
+    if ($InputObject -is [hashtable]){
+        
+        # If $InputObject does not contain index key "/", throw an error and stops execution
+        If (!$InputObject.ContainsKey("/")){
+            Write-Error -Message "Index path ('/') not found in input object" -Category InvalidData -CategoryTargetName "'/'" -CategoryTargetType "Not found"
+            break
+        }
+
+        # Get keys
+        $keys=$($InputObject.Keys)
+
+        # Foreach key
+        $keys | foreach {
+            $oldkey=$_
+        
+            # If key length > 1 (ignore root "/")
+            if ($oldkey.length -gt 1){
+            
+                # Remove last "/". This not generate error
+                $oldkey=$oldkey -replace '\/+$',''
+
+                # Remove dots at the end and betwen "/" and whitespaces
+                $newkey=$oldkey -replace '\/*\.+\/*$|\.+(?=\/)|\s'
+
+                # Replace many "/" with just one of them
+                $newkey=$newkey -replace '\/{2,}','/'
+
+                # If a modifictaion has made. (Removed last "/" doesnt count)
+                if ($newkey -ne $oldkey){
+                    # Send a warning
+                    Write-Warning -Message "URL is not well formed. URL: $oldkey -> $newkey"
+
+                    # Create clean key with old content (value)
+                    $InputObject[$newkey]=$InputObject[$oldkey]
+
+                    # Remove old key
+                    $InputObject.Remove($oldkey)
+                }
+            }
+
+        }
+    }
+    #endregion
+
+
+
+
     #region Favicon
     <#
     ===================================================================
@@ -308,7 +381,6 @@ Function Show-PSWebGUI
 
         
     
-
         #region Handly URLs
         <#
         ===================================================================
@@ -369,6 +441,10 @@ Function Show-PSWebGUI
             # $localpath is the relative URL (/home, /user/support)
             $localpath=$Context.Request.Url.LocalPath
 
+            # Remove last / in URL, if URL is */
+            if ($localpath.Length -gt 1){
+                $localpath=$localpath -replace '\/+$',''
+            } 
 
             # If $localpath is not a custom defined path in $InputObject, means it can be a filesystem path or a string
             if ($InputObject[$LocalPath] -eq $null){
@@ -399,7 +475,7 @@ Function Show-PSWebGUI
                 # $localpath is neither a file nor a defined route but is representing a path that its not found
                 else{
                     
-                    if ($page404HTML -ne ""){
+                    if ($page404HTML){
                         $result=$page404HTML
                     }else{
                         $result="<html>`n<head>`n<title>404 Not found</title>`n<body>`n<h1>404 Not found</h1>`n</body>`n</html>"
@@ -414,7 +490,7 @@ Function Show-PSWebGUI
 
             # $localpath is defined in $InputObject, so is not a filesystem path
             }else{
-                    
+    
                 # Get the content or script defined for this path
                 $routecontent=$InputObject[$LocalPath]
 
