@@ -183,7 +183,36 @@ Function Show-PSWebGUI
 
 
 
-    #region Graphic interface
+    #region Starting server
+    <#
+    ===================================================================
+                               STARTING SERVER
+    ===================================================================
+    #>
+
+    # Create HttpListener Object
+    $SimpleServer = New-Object Net.HttpListener
+
+    # Tell the HttpListener what port to listen on
+    $SimpleServer.Prefixes.Add($url)
+
+    # Start up the server
+    $SimpleServer.Start()
+
+    # Load bootstrap
+    $bootstrap=Get-Content "$PSScriptRoot\Assets\bootstrap.min.css"
+
+    #Load CSS
+    if ($CssUri -ne ""){
+        $css=Get-Content $CssUri
+    }
+
+    Write-Host "GUI started" -ForegroundColor Green
+
+    #endregion
+
+
+     #region Graphic interface
     <#
     ===================================================================
                           GRAPHIC INTERFACE (GUI)
@@ -197,21 +226,6 @@ Function Show-PSWebGUI
         $UserWindow = {
             
             param ($url,$title,$iconpath)
-
-                # Wait-ServerLaunch will continually repeatedly attempt to get a response from the URL before continuing
-                function Wait-ServerLaunch
-                {
-
-                    try {
-                        $Test = New-Object System.Net.WebClient
-                        $Test.DownloadString($url);
-                    }
-                    catch
-                    { start-sleep -Milliseconds 500; Wait-ServerLaunch }
- 
-                }
-
-                Wait-ServerLaunch
 
                 # XAML
                 [void][System.Reflection.Assembly]::LoadWithPartialName('presentationframework')
@@ -270,35 +284,6 @@ Function Show-PSWebGUI
     #endregion
 
 
-    #region Starting server
-    <#
-    ===================================================================
-                               STARTING SERVER
-    ===================================================================
-    #>
-
-    # Create HttpListener Object
-    $SimpleServer = New-Object Net.HttpListener
-
-    # Tell the HttpListener what port to listen on
-    $SimpleServer.Prefixes.Add($url)
-
-    # Start up the server
-    $SimpleServer.Start()
-
-    # Load bootstrap
-    $bootstrap=Get-Content "$PSScriptRoot\Assets\bootstrap.min.css"
-
-    #Load CSS
-    if ($CssUri -ne ""){
-        $css=Get-Content $CssUri
-    }
-
-    Write-Host "GUI started" -ForegroundColor Green
-
-    #endregion
-
-
     #region Server requests
     <#
     ===================================================================
@@ -323,7 +308,7 @@ Function Show-PSWebGUI
 
 
         # Sometimes the browser will request the favicon.ico which we don't care about. We just drop that request and go to the next one.
-        if($Context.Request.Url.LocalPath -eq "/favicon.ico")
+        <#if($Context.Request.Url.LocalPath -eq "/favicon.ico")
         {
             do
             {
@@ -332,7 +317,7 @@ Function Show-PSWebGUI
                     $Context = $SimpleServer.GetContext()
 
             }while($Context.Request.Url.LocalPath -eq "/favicon.ico")
-        }
+        }#>
 
 
         <#
