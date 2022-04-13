@@ -8,118 +8,118 @@
 
 @{
 
-# Módulo de script o archivo de módulo binario asociado con este manifiesto.
+# Script module or binary module file associated with this manifest.
 RootModule = 'PSWebGui.psm1'
 
-# Número de versión de este módulo.
-ModuleVersion = '0.15.2'
+# Version number of this module.
+ModuleVersion = '0.15.3'
 
-# PSEditions compatibles
+# Supported PSEditions
 # CompatiblePSEditions = @()
 
-# Id. usado para identificar de forma única este módulo.
+# ID used to uniquely identify this module
 GUID = 'efbaa9db-ea59-4170-88db-1e5ef5f11fc9'
 
-# Autor de este módulo.
+# Author of this module.
 Author = 'JLInF97'
 
-# Compañía o proveedor de este módulo.
+# Company or vendor of this module
 # CompanyName = 'Desconocido'
 
-# Instrucción de copyright de este módulo.
+# Copyright statement for this module
 Copyright = '(c) 2021 JLInF97. All rights reserved.'
 
-# Descripción de la funcionalidad proporcionada por este módulo.
+# Description of the functionality provided by this module
 Description = 'A fast way to create and display PowerShell graphical interfaces using HTML'
 
-# Versión mínima del motor de Windows PowerShell requerida por este módulo.
+# Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.0'
 
-# El nombre del host de Windows PowerShell requerido por este módulo.
+# Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
 
-# Versión mínima del host de Windows PowerShell requerida por este módulo.
+# Minimum version of the Windows PowerShell host required by this module
 # PowerShellHostVersion = ''
 
-# Versión mínima de Microsoft .NET Framework requerida por este módulo. Este requisito previo únicamente es válido para la edición de escritorio de PowerShell.
+# Minimum version of Microsoft .NET Framework required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
 # DotNetFrameworkVersion = ''
 
-# Versión mínima de Common Language Runtime (CLR) requerida por este módulo. Este requisito previo únicamente es válido para la edición de escritorio de PowerShell.
+# Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
 # CLRVersion = ''
 
-# Arquitectura de procesador (None, X86, Amd64) que requiere este módulo
+# Processor architecture (None, X86, Amd64) required by this module
 # ProcessorArchitecture = ''
 
-# Módulos que se deben importar en el entorno global antes de importar este módulo.
+# Modules that must be imported into the global environment prior to importing this module
 # RequiredModules = @()
 
-# Ensamblados que se deben cargar antes de importar este módulo.
+# Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
 
-# Archivos de script (.ps1) que se ejecutan en el entorno del llamador antes de importar este módulo.
+# Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
 
-# Archivos de tipo (.ps1xml) que se van a cargar al importar este módulo.
+# Type files (.ps1xml) to be loaded when importing this module
 # TypesToProcess = @()
 
-# Archivos de formato (.ps1xml) que se van a cargar al importar este módulo.
+# Format files (.ps1xml) to be loaded when importing this module
 # FormatsToProcess = @()
 
-# Módulos para importar como módulos anidados del módulo especificado en RootModule/ModuleToProcess
+# Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 # NestedModules = @()
 
-# Funciones para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay funciones que exportar.
+# Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html","Set-GuiLocation","Write-CredentialForm","Get-CredentialForm","Set-Title","Stop-PsWebGui"
 
-# Cmdlets para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay cmdlets que exportar.
+# Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
 
-# Variables para exportar desde este módulo.
+# Variables to export from this module
 VariablesToExport = '*'
 
-# Alias para exportar desde este módulo; para conseguir el mejor rendimiento, no uses caracteres comodines ni elimines la entrada; usa una matriz vacía si no hay alias que exportar.
+# Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = "Start-PSGUI","Show-PSGUI","Show-WebGUI","Start-WebGUI","FH","SGL"
 
-# Recursos de DSC que se exportarán de este módulo
+# DSC resources to export from this module
 # DscResourcesToExport = @()
 
-# Lista de todos los módulos empaquetados con este módulo
+# List of all modules packaged with this module
 # ModuleList = @()
 
-# Lista de todos los paquetes con este módulo.
+# List of all files packaged with this module
 FileList = @("Assets\bootstrap.min.css","Assets\panel.png","Snippets\PSWebGui Basic Structure.snippets.ps1xml","Snippets\PSWebGui Login.snippets.ps1xml")
 
-# Datos privados que se pasan al módulo especificado en RootModule/ModuleToProcess. Pueden contener también una tabla hash PSData con metadatos del módulo adicionales usados por PowerShell.
+# Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
 
     PSData = @{
 
-        # Etiquetas aplicadas a este módulo. Ayudan a encontrar el módulo en las galerías en línea.
+        # Tags applied to this module. These help with module discovery in online galleries.
         Tags = @("gui","ui","html")
 
-        # Dirección URL a la licencia de este módulo.
+        # A URL to the license for this module.
         LicenseUri = 'https://github.com/JLInF97/PSWebGUI/blob/main/LICENSE'
 
-        # Una dirección URL al sitio web principal de este proyecto.
+        # A URL to the main website for this project.
         ProjectUri = 'https://github.com/JLInF97/PSWebGUI'
 
-        # Una dirección URL a un icono que representa este módulo.
+        # A URL to an icon representing this module.
         # IconUri = ''
 
-        # ReleaseNotes de este módulo
+        # ReleaseNotes of this module
         # ReleaseNotes = ''
 
         # Prerelease string of this module
         Prerelease = 'Beta'
 
-    } # Fin de la tabla hash PSData
+    } # End of PSData hashtable
 
-} # Fin de la tabla hash PrivateData
+} # End of PrivateData hashtable
 
-# URI de HelpInfo de este módulo
+# HelpInfo URI of this module
 # HelpInfoURI = ''
 
-# Prefijo predeterminado para los comandos exportados desde este módulo. Invalide el prefijo predeterminado mediante Import-Module -Prefix.
+# Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
 
 }

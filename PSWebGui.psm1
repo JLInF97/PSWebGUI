@@ -308,7 +308,7 @@ Function Show-PSWebGUI
 
 
         # Sometimes the browser will request the favicon.ico which we don't care about. We just drop that request and go to the next one.
-        <#if($Context.Request.Url.LocalPath -eq "/favicon.ico")
+        if($Context.Request.Url.LocalPath -eq "/favicon.ico")
         {
             do
             {
@@ -317,7 +317,7 @@ Function Show-PSWebGUI
                     $Context = $SimpleServer.GetContext()
 
             }while($Context.Request.Url.LocalPath -eq "/favicon.ico")
-        }#>
+        }
 
 
         <#
@@ -408,12 +408,19 @@ Function Show-PSWebGUI
 
                 [void]$request.inputstream.read($buffer, 0, $length)
                 $body = [system.text.encoding]::ascii.getstring($buffer)
-                    
+                                    
                 # Split post data
                 $global:_POST = @{}
                 $body.split('&') | ForEach-Object {
                     $part = $_.split('=')
-                    $global:_POST.add($part[0], $part[1])
+                    
+                    # If post variable name is already in $_POST collection, add new value to array
+                    if ($global:_POST.ContainsKey($part[0])){
+                        $global:_POST[$part[0]]+=$part[1]
+                    }
+                    else{
+                        $global:_POST.add($part[0], @($part[1]))
+                    }
                 }
 
 
