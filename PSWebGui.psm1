@@ -413,13 +413,19 @@ Function Show-PSWebGUI
                 $global:_POST = @{}
                 $body.split('&') | ForEach-Object {
                     $part = $_.split('=')
+
+                    # POST variable name
+                    $post_name=$part[0]
+
+                    # Decode POST variable value
+                    $post_value=[System.Web.HttpUtility]::UrlDecode($part[1])
                     
                     # If post variable name is already in $_POST collection, add new value to array
-                    if ($global:_POST.ContainsKey($part[0])){
-                        $global:_POST[$part[0]]+=$part[1]
+                    if ($global:_POST.ContainsKey($post_name)){
+                        [array]$global:_POST[$post_name]+=$post_value
                     }
                     else{
-                        $global:_POST.add($part[0], @($part[1]))
+                        $global:_POST.add($post_name, $post_value)
                     }
                 }
 
