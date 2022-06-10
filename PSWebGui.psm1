@@ -313,10 +313,10 @@ Function Show-PSWebGUI
             do
             {
 
-                    $Context.Response.Close()
-                    $Context = $SimpleServer.GetContext()
+                $Context.Response.Close()
+                $Context = $SimpleServer.GetContext()
 
-            }while($Context.Request.Url.LocalPath -eq "/favicon.ico")
+            }while ($Context.Request.Url.LocalPath -eq "/favicon.ico")
         }
 
 
@@ -527,6 +527,9 @@ Function Show-PSWebGUI
 
         # Close the response to let the browser know we are done sending the response
         $Context.Response.Close()
+
+        # Clear POST and GET variables before read another request
+        Clear-Variable -Name "_POST","_GET" -Scope Global
 
         Write-verbose $Context.Response
         
