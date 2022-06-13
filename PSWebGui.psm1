@@ -26,6 +26,14 @@ Function Show-PSWebGUI
     # Scriptblock to execute when closing server
     $global:_CLOSESCRIPT={}
 
+    # Global $_SERVER variables
+    $global:_SERVER=@{
+        "PORT"=$port
+        "Document_Root"=$DocumentRoot
+        "PID"=$PID
+        "URL"=$url
+    }
+
 
     # Save PID and Port for this instance in a temp file
     $instance_properties=[PSCustomObject]@{
@@ -313,10 +321,10 @@ Function Show-PSWebGUI
             do
             {
 
-                    $Context.Response.Close()
-                    $Context = $SimpleServer.GetContext()
+                $Context.Response.Close()
+                $Context = $SimpleServer.GetContext()
 
-            }while($Context.Request.Url.LocalPath -eq "/favicon.ico")
+            }while ($Context.Request.Url.LocalPath -eq "/favicon.ico")
         }
 
 
@@ -402,6 +410,7 @@ Function Show-PSWebGUI
             # POST processing
             if ($Context.Request.HasEntityBody){
                     
+                $global:_SERVER["REQUEST_METHOD"]="POST"
                 $request = $Context.Request
                 $length = $request.contentlength64
                 $buffer = new-object "byte[]" $length
@@ -432,7 +441,8 @@ Function Show-PSWebGUI
 
             # GET processing
             }else{
-
+                
+                $global:_SERVER["REQUEST_METHOD"]="GET"
                 $global:_GET = $Context.Request.QueryString
             }
 
@@ -443,6 +453,7 @@ Function Show-PSWebGUI
 
             # $localpath is the relative URL (/home, /user/support)
             $localpath=$Context.Request.Url.LocalPath
+            $global:_SERVER["REQUEST_URI"]=$localpath
 
             # Remove last / in URL, if URL is */
             if ($localpath.Length -gt 1){
@@ -527,6 +538,10 @@ Function Show-PSWebGUI
 
         # Close the response to let the browser know we are done sending the response
         $Context.Response.Close()
+
+        # Clear POST and GET variables before read another request
+        Clear-Variable -Name "_POST","_GET" -Scope Global -ErrorAction SilentlyContinue
+        $global:_SERVER.Remove("REQUEST_METHOD")
 
         Write-verbose $Context.Response
         
