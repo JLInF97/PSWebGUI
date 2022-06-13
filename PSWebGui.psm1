@@ -29,7 +29,7 @@ Function Show-PSWebGUI
     # Global $_SERVER variables
     $global:_SERVER=@{
         "PORT"=$port
-        "DocumentRoot"=$DocumentRoot
+        "Document_Root"=$DocumentRoot
         "PID"=$PID
         "URL"=$url
     }
