@@ -70,18 +70,12 @@ $_POST["password"]
 
 List of ```$_SERVER[]``` index:
 
-- **PORT**
-&nbsp;&nbsp;&nbsp;&nbsp; The port number that is using by the server.
-- **DOCUMENT_ROOT**
-&nbsp;&nbsp;&nbsp;&nbsp; The document root directory under which the server is executing.
-- **PID**
-&nbsp;&nbsp;&nbsp;&nbsp; Process ID number of the PowerShell server.
-- **URL**
-&nbsp;&nbsp;&nbsp;&nbsp; URL and port on wich the server is listening.
-- **REQUEST_METHOD**
-&nbsp;&nbsp;&nbsp;&nbsp; Which request method was used to access the page; 'GET' or 'POST'.
-- **REQUEST_URI**
-&nbsp;&nbsp;&nbsp;&nbsp; The URI which was given in order to access this page; for instance, '/services/get'.
+- **PORT**: The port number that is using by the server.
+- **DOCUMENT_ROOT**: The document root directory under which the server is executing.
+- **PID**: Process ID number of the PowerShell server.
+- **URL**: URL and port on wich the server is listening.
+- **REQUEST_METHOD**: Which request method was used to access the page; 'GET' or 'POST'.
+- **REQUEST_URI**: The URI which was given in order to access this page; for instance, '/services/get'.
 
 # STOPPING SERVER
 When you execute the ```Show-PSWebGui```function, a simple web server starts and a GUI window appears displaying the content.
