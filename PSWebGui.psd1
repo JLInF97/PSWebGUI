@@ -12,7 +12,7 @@
 RootModule = 'PSWebGui.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.16.0'
+ModuleVersion = '0.17.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@ PowerShellVersion = '5.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html","Set-GuiLocation","Write-CredentialForm","Get-CredentialForm","Set-Title","Stop-PsWebGui"
+FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html","Set-GuiLocation","Write-CredentialForm","Get-CredentialForm","Set-Title","Stop-PsWebGui","Hide-PSConsole","Show-PSConsole"
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
