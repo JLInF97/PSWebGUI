@@ -1,4 +1,16 @@
-﻿#.ExternalHelp en-us\PSWebGui-help.xml
+﻿# Load assembly to show/hide the powershell console
+Add-Type -Name Window -Namespace Console -MemberDefinition '
+[DllImport("Kernel32.dll")]
+public static extern IntPtr GetConsoleWindow();
+
+[DllImport("user32.dll")]
+public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
+'
+
+$global:console_display=1
+
+
+#.ExternalHelp en-us\PSWebGui-help.xml
 Function Show-PSWebGUI
 {
 
@@ -10,12 +22,16 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][string]$Icon,
     [Parameter(Mandatory=$false)][string]$CssUri,
     [Parameter(Mandatory=$false)][Alias("Root")][string]$DocumentRoot=$PWD.path,
-    [Parameter(Mandatory=$false)][Alias("NoConsole","Silent","Hidden")][switch]$NoWindow,
+    [Parameter(Mandatory=$false)][ValidateSet("NoGUI", "NoConsole")][string]$Display,
     [Parameter(Mandatory=$false)][switch]$NoHeadTags,
     [Parameter(Mandatory=$false)][string]$Page404
 
     )
 
+    # Hide the PS console if parameter -Display "NoConsole" is set
+    if ($Display -eq "NoConsole"){
+        Hide-PSConsole
+    }
 
     # URL + PORT to use
     $url="http://localhost:$port/"
@@ -227,8 +243,8 @@ Function Show-PSWebGUI
     ===================================================================
     #>
 
-    # If -NoWindow, dont create an internal WebBrowser
-    if ($NoWindow -eq $false){
+    # If -Display NoGUI, dont create an internal WebBrowser
+    if ($Display -ne "NoGUI"){
 
         # Create a scriptblock that waits for the server to launch and then opens a web browser control
         $UserWindow = {
@@ -243,6 +259,10 @@ Function Show-PSWebGUI
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     Title="PoweShell Web GUI" WindowStartupLocation="CenterScreen">
 
+                    <Window.TaskbarItemInfo>
+                        <TaskbarItemInfo/>
+                    </Window.TaskbarItemInfo>
+
                         <WebBrowser Name="WebBrowser"></WebBrowser>
 
                 </Window>
@@ -254,7 +274,8 @@ Function Show-PSWebGUI
 
                 # Set title and icon
                 $Form.Title=$title               
-                $Form.Icon=$iconpath
+                $Form.Icon=$iconpath # Icon for window title bar
+                $Form.TaskbarItemInfo.Overlay=$iconpath # Icon for taskbar
 
 
                 # WebBrowser navigate to localhost
@@ -343,11 +364,11 @@ Function Show-PSWebGUI
             $instance_properties | ConvertTo-Json | Out-File -FilePath "$env:temp\pswebgui_$port.tmp"
             Write-Verbose "Instance properties saved in $env:temp\pswebgui_$port.tmp"
 
-            # Send a text to inform about the server stopped. Send different message dependig if -NoWindow was set
-            if ($NoWindow -eq $false){
+            # Send a text to inform about the server stopped. Send different message dependig if -Display NoGUI was set
+            if ($Display -ne "NoGUI"){
                 $result="<script>document.title='Server stopped. Bye!'</script>Server stopped. Please, close the GUI window. Bye!"
             }
-            # -NoWindow set
+            # -Display NoGUI set
             else{
                 $result="<script>document.title='Server stopped. Bye!'</script>Server stopped. Bye!"
             }
@@ -362,8 +383,8 @@ Function Show-PSWebGUI
             $SimpleServer.Stop()
             Write-Verbose "Server stopped"
 
-            # -NoWindow, dont close a non-existent Window
-            if ($NoWindow -eq $false){
+            # -Display NoGUI, dont close a non-existent Window
+            if ($Display -ne "NoGUI"){
                 $RunspacePool.Close()
                 Write-Verbose "GUI closed"
      
@@ -788,6 +809,22 @@ function Get-CredentialForm {
 
 }
 
+
+#.ExternalHelp en-us\PSWebGui-help.xml
+function Show-PSConsole
+{
+    $global:console_display=1
+    $consolePtr = [Console.Window]::GetConsoleWindow()
+    [void][Console.Window]::ShowWindow($consolePtr, 4)
+}
+
+#.ExternalHelp en-us\PSWebGui-help.xml
+function Hide-PSConsole
+{
+    $global:console_display=0
+    $consolePtr = [Console.Window]::GetConsoleWindow()
+    [void][Console.Window]::ShowWindow($consolePtr, 0)
+}
 
 
 #.ExternalHelp en-us\PSWebGui-help.xml
