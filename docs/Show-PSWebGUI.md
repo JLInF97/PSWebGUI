@@ -14,7 +14,7 @@ Displays a styled graphical user interface (GUI) for PowerShell from an object p
 
 ```powershell
 Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>]
- [-DocumentRoot <String>] [-NoWindow] [-NoHeadTags] [-Page404 <String>] [<CommonParameters>]
+ [-DocumentRoot <String>] [-Display <String>] [-NoHeadTags] [-Page404 <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,12 +42,12 @@ Show-PSWebGUI -InputObject $routes -Title "My custom GUI"
 
 ### EXAMPLE 3
 ```powershell
-Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\style.css"
+Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\icon.png"
 ```
 
 ### EXAMPLE 4
 ```powershell
-Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/style.css"
+Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/icon.png"
 ```
 
 ## PARAMETERS
@@ -67,7 +67,7 @@ $routes=@{
     "/"={
         "<div>
             <h1>Menú</h1>
-            <a href='showProcesses'><h2>Show Running Processes</h2></a>
+            <a href='/showProcesses'><h2>Show Running Processes</h2></a>
             <a href='/showServices'><h2>Show Running Services</h2></a>
         </div>"
     }
@@ -75,10 +75,10 @@ $routes=@{
     "/showProcesses" = { Get-Process | Select-Object name, cpu | Format-Html }
 
     "/showServices" = {
-        <div>
-            <h1>Services</h1>
+        "<div>
+            <h1>Services</h1>"
             Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html
-        </div>
+        "</div>"
     }
 
 }
@@ -178,12 +178,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -NoWindow
-Set this parameter to not display a web browser in a WPF window.
-The content can only be viewed within a third-party web browser.
+### -Display
+This parameter accepts two values:
+- NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.
+- NoConsole: Hide the powershell console.
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: (All)
 Aliases: NoConsole, Silent, Hidden
 

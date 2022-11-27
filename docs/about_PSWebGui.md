@@ -123,8 +123,18 @@ PS> Import-IseSnippet -Module PSWebGui -ListAvailable
 
 Or copy them from ```Snippets``` module folder to ```%userprofile%\Documents\WindowsPowerShell\Snippets``` if you want them to be imported every time you open PowerShell ISE
 
+# Hide and show console
+This module brings two functions for hidding and showing the current PowerShell console window.
+
+Get more information about these functions.
+
+```powershell
+PS> Get-Help Show-PSConsole
+PS> Get-Help Hide-PSConsole
+```
+
 # SEE ALSO
-Reading main function help is recomended
+Reading main function help is recomended.
 ```powershell
 PS> Get-Help Show-PSWebGui -Detailed
 ```

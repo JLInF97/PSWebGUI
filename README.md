@@ -130,3 +130,13 @@ Displays a basic GUI example to show how this module runs. This funtion returns 
 ```powershell
 PS> Show-PSWebGuiExample
 ```
+
+### Hide-PSConsole
+#### Description
+Hide the current PowerShell console window.
+Usefull for any script that needs to hide the console.
+
+#### Example
+```powershell
+PS> Hide-PSConsole
+```

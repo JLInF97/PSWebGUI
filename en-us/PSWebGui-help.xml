@@ -426,7 +426,7 @@ Tuesday, June 25, 2019 14:53:32</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>## RELATED LINKS</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -437,6 +437,42 @@ Tuesday, June 25, 2019 14:53:32</dev:code>
 UserName                             Password
 --------                             --------
 Administrator    System.Security.SecureString</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Hide-PSConsole</command:name>
+      <command:verb>Hide</command:verb>
+      <command:noun>PSConsole</command:noun>
+      <maml:description>
+        <maml:para>Hide the PowerShell console.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Hide current PowerShell console window. Sets $GLOBAL:CONSOLE_DISPLAY to 0</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Hide-PSConsole</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Hide-PSConsole</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -509,7 +545,7 @@ Administrator    System.Security.SecureString</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>## RELATED LINKS</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -590,7 +626,7 @@ Administrator    System.Security.SecureString</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>## RELATED LINKS</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -599,6 +635,42 @@ Administrator    System.Security.SecureString</dev:code>
         <dev:code>PS&gt; Set-Title -Title "Page title"
 
 &lt;script&gt;document.title='Page title'&lt;/script&gt;</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Show-PSConsole</command:name>
+      <command:verb>Show</command:verb>
+      <command:noun>PSConsole</command:noun>
+      <maml:description>
+        <maml:para>Shows the PowerShell console.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Shows the current hidden PowerShell console window. Sets $GLOBAL:CONSOLE_DISPLAY to 1</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Show-PSConsole</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Show-PSConsole</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -636,7 +708,7 @@ Administrator    System.Security.SecureString</dev:code>
             <maml:para>    "/"={</maml:para>
             <maml:para>        "&lt;div&gt;</maml:para>
             <maml:para>            &lt;h1&gt;Menú&lt;/h1&gt;</maml:para>
-            <maml:para>            &lt;a href='showProcesses'&gt;&lt;h2&gt;Show Running Processes&lt;/h2&gt;&lt;/a&gt;</maml:para>
+            <maml:para>            &lt;a href='/showProcesses'&gt;&lt;h2&gt;Show Running Processes&lt;/h2&gt;&lt;/a&gt;</maml:para>
             <maml:para>            &lt;a href='/showServices'&gt;&lt;h2&gt;Show Running Services&lt;/h2&gt;&lt;/a&gt;</maml:para>
             <maml:para>        &lt;/div&gt;"</maml:para>
             <maml:para>    }</maml:para>
@@ -644,10 +716,10 @@ Administrator    System.Security.SecureString</dev:code>
             <maml:para>    "/showProcesses" = { Get-Process | Select-Object name, cpu | Format-Html }</maml:para>
             <maml:para></maml:para>
             <maml:para>    "/showServices" = {</maml:para>
-            <maml:para>        &lt;div&gt;</maml:para>
-            <maml:para>            &lt;h1&gt;Services&lt;/h1&gt;</maml:para>
+            <maml:para>        "&lt;div&gt;</maml:para>
+            <maml:para>            &lt;h1&gt;Services&lt;/h1&gt;"</maml:para>
             <maml:para>            Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html</maml:para>
-            <maml:para>        &lt;/div&gt;</maml:para>
+            <maml:para>        "&lt;/div&gt;"</maml:para>
             <maml:para>    }</maml:para>
             <maml:para></maml:para>
             <maml:para>}</maml:para>
@@ -720,12 +792,14 @@ Administrator    System.Security.SecureString</dev:code>
           <dev:defaultValue>$PWD.path</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NoConsole, Silent, Hidden">
-          <maml:name>NoWindow</maml:name>
+          <maml:name>Display</maml:name>
           <maml:description>
-            <maml:para>Set this parameter to not display a web browser in a WPF window. The content can only be viewed within a third-party web browser.</maml:para>
+            <maml:para>This parameter accepts two values: - NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.</maml:para>
+            <maml:para>- NoConsole: Hide the powershell console.</maml:para>
           </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>SwitchParameter</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
@@ -746,7 +820,8 @@ Administrator    System.Security.SecureString</dev:code>
           <maml:description>
             <maml:para>Use this parameter to set an HTML file as the 404 error page.</maml:para>
             <maml:para>This parameter must be an absolute or relative path to an HTML file. The content of the file will be displayed when the server cannot find the path (response code 404).</maml:para>
-            <maml:para>Valid file extensions: - .html</maml:para>
+            <maml:para>Valid file extensions:</maml:para>
+			<maml:para>- .html</maml:para>
             <maml:para>- .xhtml</maml:para>
             <maml:para>- .htm</maml:para>
             <maml:para>- .txt</maml:para>
@@ -773,7 +848,7 @@ Administrator    System.Security.SecureString</dev:code>
           <maml:para>    "/"={</maml:para>
           <maml:para>        "&lt;div&gt;</maml:para>
           <maml:para>            &lt;h1&gt;Menú&lt;/h1&gt;</maml:para>
-          <maml:para>            &lt;a href='showProcesses'&gt;&lt;h2&gt;Show Running Processes&lt;/h2&gt;&lt;/a&gt;</maml:para>
+          <maml:para>            &lt;a href='/showProcesses'&gt;&lt;h2&gt;Show Running Processes&lt;/h2&gt;&lt;/a&gt;</maml:para>
           <maml:para>            &lt;a href='/showServices'&gt;&lt;h2&gt;Show Running Services&lt;/h2&gt;&lt;/a&gt;</maml:para>
           <maml:para>        &lt;/div&gt;"</maml:para>
           <maml:para>    }</maml:para>
@@ -781,10 +856,10 @@ Administrator    System.Security.SecureString</dev:code>
           <maml:para>    "/showProcesses" = { Get-Process | Select-Object name, cpu | Format-Html }</maml:para>
           <maml:para></maml:para>
           <maml:para>    "/showServices" = {</maml:para>
-          <maml:para>        &lt;div&gt;</maml:para>
-          <maml:para>            &lt;h1&gt;Services&lt;/h1&gt;</maml:para>
+          <maml:para>        "&lt;div&gt;</maml:para>
+          <maml:para>            &lt;h1&gt;Services&lt;/h1&gt;"</maml:para>
           <maml:para>            Get-Service | Select-Object Name, Status | Where-Object Status -eq "Running" | Format-Html</maml:para>
-          <maml:para>        &lt;/div&gt;</maml:para>
+          <maml:para>        "&lt;/div&gt;"</maml:para>
           <maml:para>    }</maml:para>
           <maml:para></maml:para>
           <maml:para>}</maml:para>
@@ -857,13 +932,15 @@ Administrator    System.Security.SecureString</dev:code>
         <dev:defaultValue>$PWD.path</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NoConsole, Silent, Hidden">
-        <maml:name>NoWindow</maml:name>
+        <maml:name>Display</maml:name>
         <maml:description>
-          <maml:para>Set this parameter to not display a web browser in a WPF window. The content can only be viewed within a third-party web browser.</maml:para>
+          <maml:para>This parameter accepts two values:</maml:para>
+		  <maml:para>- NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.</maml:para>
+          <maml:para>- NoConsole: Hide the powershell console.</maml:para>
         </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>SwitchParameter</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
@@ -885,7 +962,8 @@ Administrator    System.Security.SecureString</dev:code>
         <maml:description>
           <maml:para>Use this parameter to set an HTML file as the 404 error page.</maml:para>
           <maml:para>This parameter must be an absolute or relative path to an HTML file. The content of the file will be displayed when the server cannot find the path (response code 404).</maml:para>
-          <maml:para>Valid file extensions: - .html</maml:para>
+          <maml:para>Valid file extensions:</maml:para>
+		  <maml:para>- .html</maml:para>
           <maml:para>- .xhtml</maml:para>
           <maml:para>- .htm</maml:para>
           <maml:para>- .txt</maml:para>
@@ -956,14 +1034,14 @@ Administrator    System.Security.SecureString</dev:code>
       </command:example>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
-        <dev:code>Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\style.css"</dev:code>
+        <dev:code>Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\icon.png"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
-        <dev:code>Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/style.css"</dev:code>
+        <dev:code>Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/icon.png"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -1100,7 +1178,7 @@ Administrator    System.Security.SecureString</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>## RELATED LINKS</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1307,7 +1385,7 @@ Administrator    System.Security.SecureString</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>## RELATED LINKS</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
