@@ -18,7 +18,7 @@ Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon
 ```
 
 ## DESCRIPTION
-Starts a simple web server, listening on localhost, to display the structure and content passed within an object.
+Starts a simple web server to display the structure and content passed within an object.
 
 By default, it shows up a very simple web browser in a WPF window to display the content passed by parameter.
 
@@ -48,6 +48,11 @@ Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:
 ### EXAMPLE 4
 ```powershell
 Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/icon.png"
+```
+
+### EXAMPLE 5
+```powershell
+Show-PSWebGUI -InputObject $routes -PublicServer
 ```
 
 ## PARAMETERS
@@ -198,6 +203,21 @@ Accept wildcard characters: False
 ### -NoHeadTags
 Set this parameter to not display ```<html>```, ```<head>```, ```<meta>```, ```<link>```, ```<style>``` and ```<body>``` tags.
 With this option, the content will not be formated.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PublicServer
+Use this parameter to set the server to listen on all interfaces, making the server reachable from any address. Otherwise the server will only listen on localhost.
 
 ```yaml
 Type: SwitchParameter

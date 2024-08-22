@@ -24,6 +24,7 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][Alias("Root")][string]$DocumentRoot=$PWD.path,
     [Parameter(Mandatory=$false)][ValidateSet("NoGUI", "NoConsole")][string]$Display,
     [Parameter(Mandatory=$false)][switch]$NoHeadTags,
+    [Parameter(Mandatory=$false)][switch][Alias("Public")]$PublicServer,
     [Parameter(Mandatory=$false)][string]$Page404
 
     )
@@ -34,7 +35,11 @@ Function Show-PSWebGUI
     }
 
     # URL + PORT to use
-    $url="http://localhost:$port/"
+    if ($PublicServer){
+        $url="http://+:$port/"
+    }else{
+        $url="http://localhost:$port/"
+    }
 
     # Create virtual drive in root directory
     $fileserver=New-PSDrive -Name FileServer -PSProvider FileSystem -Root $DocumentRoot
@@ -249,7 +254,7 @@ Function Show-PSWebGUI
         # Create a scriptblock that waits for the server to launch and then opens a web browser control
         $UserWindow = {
             
-            param ($url,$title,$iconpath)
+            param ($port,$title,$iconpath)
 
                 # XAML
                 [void][System.Reflection.Assembly]::LoadWithPartialName('presentationframework')
@@ -277,17 +282,19 @@ Function Show-PSWebGUI
                 $Form.Icon=$iconpath # Icon for window title bar
                 $Form.TaskbarItemInfo.Overlay=$iconpath # Icon for taskbar
 
+                # URL for GUI
+                $guiURL="http://localhost:$port/"
 
                 # WebBrowser navigate to localhost
                 $WebBrowser = $Form.FindName("WebBrowser")
-                $WebBrowser.Navigate($url)
+                $WebBrowser.Navigate($guiURL)
 
                 # Show GUI
                 $Form.ShowDialog()
                 Start-Sleep -Seconds 1
 
                 # Once the end user closes out of the browser we send the exit url to tell the server to shut down.
-                $exiturl=$url+"exit()"
+                $exiturl=$guiURL+"exit()"
                 (New-Object System.Net.WebClient).DownloadString($exiturl);
         }
  
@@ -299,7 +306,7 @@ Function Show-PSWebGUI
         $Jobs = @()
  
         # Create job and add to runspace
-        $Job = [powershell]::Create().AddScript($UserWindow).AddArgument($url).AddArgument($title).AddArgument($iconpath)#.AddArgument($_)
+        $Job = [powershell]::Create().AddScript($UserWindow).AddArgument($port).AddArgument($title).AddArgument($iconpath)#.AddArgument($_)
         $Job.RunspacePool = $RunspacePool
         $Jobs += New-Object PSObject -Property @{
             RunNum = $_
