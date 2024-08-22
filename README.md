@@ -32,16 +32,18 @@ PS> Install-Module -Name PSWebGui -AllowPrerelease
 ### Show-PSWebGui
 #### Syntax
 ```powershell
-Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>] [-NoWindow] [-DocumentRoot <String>] [<CommonParameters>]
+Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>] [-DocumentRoot <String>] [-Display <String>] [-NoHeadTags] [-PublicServer] [-Page404 <String>] [<CommonParameters>]
 ```
 
 #### Description
-Starts a simple web server, listening on localhost, to display the structure and content passed within an object.
+Starts a simple web server to display the structure and content passed within an object.
 
 The content can be a string, an HTML page, cmdlets, functions or complex powershell scripts. The HTML content will be stylized with Bootstrap CSS framework.
 The server can execute and display local HTML or PS1 files. Custom CSS and Javascript are also compatible.
     
 POST and GET methods are available and can be accesses by ```$_POST[]``` and ```$_GET[]``` variables, just like within PHP.
+
+Use ```-PublicServer``` switch parameter for the web server to listen on all interfaces, making the server reachable from any address. Otherwise the server will only listen on localhost.
 
 #### Example: How to create basic graphic interface
 ```powershell

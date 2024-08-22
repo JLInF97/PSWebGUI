@@ -454,7 +454,7 @@ Administrator    System.Security.SecureString</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Hide current PowerShell console window. Sets $GLOBAL:CONSOLE_DISPLAY to 0</maml:para>
+      <maml:para>Hide current PowerShell console window. Sets "$GLOBAL:CONSOLE_DISPLAY" to 0</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -652,7 +652,7 @@ Administrator    System.Security.SecureString</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Shows the current hidden PowerShell console window. Sets $GLOBAL:CONSOLE_DISPLAY to 1</maml:para>
+      <maml:para>Shows the current hidden PowerShell console window. Sets "$GLOBAL:CONSOLE_DISPLAY" to 1</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -688,7 +688,7 @@ Administrator    System.Security.SecureString</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Starts a simple web server, listening on localhost, to display the structure and content passed within an object.</maml:para>
+      <maml:para>Starts a simple web server to display the structure and content passed within an object.</maml:para>
       <maml:para>By default, it shows up a very simple web browser in a WPF window to display the content passed by parameter.</maml:para>
       <maml:para>The content can be a string, an HTML page, cmdlets, functions or complex powershell scripts. The HTML content will be stylized with Bootstrap CSS framework. The server can execute and display local HTML or PS1 files. Custom CSS and Javascript are also compatible.</maml:para>
       <maml:para>POST and GET methods are available and can be accesses by "$_POST[]" and "$_GET[]" variables, just like within PHP.</maml:para>
@@ -816,12 +816,22 @@ Administrator    System.Security.SecureString</dev:code>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PublicServer</maml:name>
+          <maml:description>
+            <maml:para>Use this parameter to set the server to listen on all interfaces, making the server reachable from any address. Otherwise the server will only listen on localhost.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Page404</maml:name>
           <maml:description>
             <maml:para>Use this parameter to set an HTML file as the 404 error page.</maml:para>
             <maml:para>This parameter must be an absolute or relative path to an HTML file. The content of the file will be displayed when the server cannot find the path (response code 404).</maml:para>
-            <maml:para>Valid file extensions:</maml:para>
-			<maml:para>- .html</maml:para>
+            <maml:para>Valid file extensions: - .html</maml:para>
             <maml:para>- .xhtml</maml:para>
             <maml:para>- .htm</maml:para>
             <maml:para>- .txt</maml:para>
@@ -934,8 +944,7 @@ Administrator    System.Security.SecureString</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NoConsole, Silent, Hidden">
         <maml:name>Display</maml:name>
         <maml:description>
-          <maml:para>This parameter accepts two values:</maml:para>
-		  <maml:para>- NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.</maml:para>
+          <maml:para>This parameter accepts two values: - NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.</maml:para>
           <maml:para>- NoConsole: Hide the powershell console.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -958,12 +967,23 @@ Administrator    System.Security.SecureString</dev:code>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PublicServer</maml:name>
+        <maml:description>
+          <maml:para>Use this parameter to set the server to listen on all interfaces, making the server reachable from any address. Otherwise the server will only listen on localhost.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Page404</maml:name>
         <maml:description>
           <maml:para>Use this parameter to set an HTML file as the 404 error page.</maml:para>
           <maml:para>This parameter must be an absolute or relative path to an HTML file. The content of the file will be displayed when the server cannot find the path (response code 404).</maml:para>
-          <maml:para>Valid file extensions:</maml:para>
-		  <maml:para>- .html</maml:para>
+          <maml:para>Valid file extensions: - .html</maml:para>
           <maml:para>- .xhtml</maml:para>
           <maml:para>- .htm</maml:para>
           <maml:para>- .txt</maml:para>
@@ -1042,6 +1062,13 @@ Administrator    System.Security.SecureString</dev:code>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
         <dev:code>Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/icon.png"</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 5 --------------------------</maml:title>
+        <dev:code>Show-PSWebGUI -InputObject $routes -PublicServer</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -1137,7 +1164,11 @@ Administrator    System.Security.SecureString</dev:code>
           <maml:name>Force</maml:name>
           <maml:description>
             <maml:para>Set this parameter to kill the powershell process where the instance is listening.</maml:para>
-            <maml:para>Use this parameter when the instance is not responding to "/stop()" requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
+            <maml:para>Use this parameter when the instance is not responding to</maml:para>
+            <maml:para></maml:para>
+            <maml:para>/stop()</maml:para>
+            <maml:para></maml:para>
+            <maml:para>requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1164,7 +1195,11 @@ Administrator    System.Security.SecureString</dev:code>
         <maml:name>Force</maml:name>
         <maml:description>
           <maml:para>Set this parameter to kill the powershell process where the instance is listening.</maml:para>
-          <maml:para>Use this parameter when the instance is not responding to "/stop()" requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
+          <maml:para>Use this parameter when the instance is not responding to</maml:para>
+          <maml:para></maml:para>
+          <maml:para>/stop()</maml:para>
+          <maml:para></maml:para>
+          <maml:para>requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1218,7 +1253,7 @@ Administrator    System.Security.SecureString</dev:code>
     <maml:description>
       <maml:para>Writes and displays a web page with a basic form to enter credentials. The form has user and password inputs and a submit button.</maml:para>
       <maml:para>By default, the function writes the labels for the inputs and the button, form title and description, but this is all customizable using parameters.</maml:para>
-      <maml:para>Because credentials will be sent with this form, the method is always POST, it can not be modified. The POST variables for the inputs are "$_POST["userName"]" and "$_POST["Password"]".</maml:para>
+      <maml:para>Because credentials will be sent with this form, the method is always POST, it can not be modified. The POST variables for the inputs are '$_POST["userName"]' and '$_POST["Password"]'.</maml:para>
       <maml:para>This form is the HTML+Bootstrap version of PowerShell "Get-Credential" cmdlet.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1227,7 +1262,11 @@ Administrator    System.Security.SecureString</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Title</maml:name>
           <maml:description>
-            <maml:para>Specifies a title for the form. This title will appear as "&lt;h2&gt;" tag at the top of the form. The web page title will be modified too.</maml:para>
+            <maml:para>Specifies a title for the form. This title will appear as</maml:para>
+            <maml:para></maml:para>
+            <maml:para>&lt;h2&gt;</maml:para>
+            <maml:para></maml:para>
+            <maml:para>tag at the top of the form. The web page title will be modified too.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1239,7 +1278,11 @@ Administrator    System.Security.SecureString</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Description</maml:name>
           <maml:description>
-            <maml:para>Specifies a description for the form. This description will appear as "&lt;p&gt;" tag at the top of the form.</maml:para>
+            <maml:para>Specifies a description for the form. This description will appear as</maml:para>
+            <maml:para></maml:para>
+            <maml:para>&lt;p&gt;</maml:para>
+            <maml:para></maml:para>
+            <maml:para>tag at the top of the form.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1314,7 +1357,11 @@ Administrator    System.Security.SecureString</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Description</maml:name>
         <maml:description>
-          <maml:para>Specifies a description for the form. This description will appear as "&lt;p&gt;" tag at the top of the form.</maml:para>
+          <maml:para>Specifies a description for the form. This description will appear as</maml:para>
+          <maml:para></maml:para>
+          <maml:para>&lt;p&gt;</maml:para>
+          <maml:para></maml:para>
+          <maml:para>tag at the top of the form.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1350,7 +1397,11 @@ Administrator    System.Security.SecureString</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Title</maml:name>
         <maml:description>
-          <maml:para>Specifies a title for the form. This title will appear as "&lt;h2&gt;" tag at the top of the form. The web page title will be modified too.</maml:para>
+          <maml:para>Specifies a title for the form. This title will appear as</maml:para>
+          <maml:para></maml:para>
+          <maml:para>&lt;h2&gt;</maml:para>
+          <maml:para></maml:para>
+          <maml:para>tag at the top of the form. The web page title will be modified too.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
