@@ -25,9 +25,23 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][ValidateSet("NoGUI", "NoConsole")][string]$Display,
     [Parameter(Mandatory=$false)][switch]$NoHeadTags,
     [Parameter(Mandatory=$false)][switch][Alias("Public")]$PublicServer,
-    [Parameter(Mandatory=$false)][string]$Page404
+    [Parameter(Mandatory=$false)][string]$Page404,
+    [Parameter(Mandatory=$false)][switch]$AsJob
 
     )
+
+    # Start the server in a background job. Calling the function itself in background and break the execution in foreground
+    if ($AsJob){
+        $parameters=$PSBoundParameters
+        $parameters.AsJob=$false
+
+        Start-Job -ScriptBlock {
+            $parameters=$using:parameters
+            Show-PSWebGUI @parameters
+        }
+
+        break # Avoid to continue normal execution in foreground
+    }
 
     # Hide the PS console if parameter -Display "NoConsole" is set
     if ($Display -eq "NoConsole"){
