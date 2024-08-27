@@ -14,7 +14,7 @@ Displays a styled graphical user interface (GUI) for PowerShell from an object p
 
 ```powershell
 Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>]
- [-DocumentRoot <String>] [-Display <String>] [-NoHeadTags] [-Page404 <String>] [<CommonParameters>]
+ [-DocumentRoot <String>] [-Display {NoGUI | NoConsole | Systray}] [-NoHeadTags] [-Page404 <String>] [-AsJob] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -184,17 +184,23 @@ Accept wildcard characters: False
 ```
 
 ### -Display
-This parameter accepts two values:
-- NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.
-- NoConsole: Hide the powershell console.
+This parameter specifies how the GUI and console are displayed.
+The acceptable values for this parameter are:
+- NoGUI: Set this value to not display the WPF GUI window. The content can only be viewed within a third-party web browser. The PowerShell console is still visible.
+- NoConsole: Hide the PowerShell console but keeps the main WPF GUI visible.
+- Systray: Minimize the GUI and PowerShell console to the system tray. The system tray icon will be the same as the window icon and a menu will be added to the system tray icon. The menu contains these options:
+	- Show GUI: Displays the GUI window. Use close (X) button on the GUI itself to hide the GUI again.
+	- Show/Hide PS console: Show or hide the PowerShell console. Use this option to show or hide the console, do not use the buttons on the console itself.
+	- Exit: Close the GUI, PowerShell console, stop the server and close PowerShell process.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: NoConsole, Silent, Hidden
+Aliases:
 
 Required: False
 Position: Named
+Accepted values: NoGUI, NoConsole, Systray
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -254,6 +260,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -AsJob
+Use this parameter to start the server in a PowerShell background job. The prompt will be released to continue working.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -261,6 +282,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.String
 ### System.Object
+
 ## OUTPUTS
 
 ### System.String

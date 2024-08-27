@@ -123,7 +123,7 @@ PS> Import-IseSnippet -Module PSWebGui -ListAvailable
 
 Or copy them from ```Snippets``` module folder to ```%userprofile%\Documents\WindowsPowerShell\Snippets``` if you want them to be imported every time you open PowerShell ISE
 
-# Hide and show console
+# HIDE AND SHOW CONSOLE
 This module brings two functions for hidding and showing the current PowerShell console window.
 
 Get more information about these functions.
@@ -133,8 +133,24 @@ PS> Get-Help Show-PSConsole
 PS> Get-Help Hide-PSConsole
 ```
 
+# SYTEM TRAY
+From version 0.19.0, it is posible to minimize the GUI and PowerShell windows to the system tray to continue working in the background and restore them when need it.
+
+To do that run:
+
+```powershell
+PS> Show-PSWebGUI -Display Systray [...]
+```
+
+The function will display the same icon as the GUI window on the system tray and add a context menu to it. The context menu, by default, will have these options:
+- Show GUI: Displays the GUI window. Use close (X) button on the GUI itself to hide the GUI again.
+- Show/Hide PS console: Show or hide the PowerShell console. Use this option to show or hide the console, do not use the buttons on the console itself.
+- Exit: Close the GUI, PowerShell console, stop the server and close PowerShell process.
+
+![Screenshot of the icon and menu in the system tray.](images/pswebgui_systray.png)
+
 # SEE ALSO
 Reading main function help is recomended.
 ```powershell
-PS> Get-Help Show-PSWebGui -Detailed
+PS> Get-Help Show-PSWebGui -Full
 ```

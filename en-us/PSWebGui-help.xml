@@ -791,12 +791,22 @@ Administrator    System.Security.SecureString</dev:code>
           </dev:type>
           <dev:defaultValue>$PWD.path</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NoConsole, Silent, Hidden">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Display</maml:name>
           <maml:description>
-            <maml:para>This parameter accepts two values: - NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.</maml:para>
-            <maml:para>- NoConsole: Hide the powershell console.</maml:para>
+            <maml:para>This parameter specifies how the GUI and console are displayed. The acceptable values for this parameter are:</maml:para>
+			<maml:para>- NoGUI: Set this value to not display the WPF GUI window. The content can only be viewed within a third-party web browser. The PowerShell console is still visible.</maml:para>
+            <maml:para>- NoConsole: Hide the PowerShell console but keeps the main WPF GUI visible.</maml:para>
+            <maml:para>- Systray: Minimize the GUI and PowerShell console to the system tray. The system tray icon will be the same as the window icon and a menu will be added to the system tray icon. The menu contains these options:</maml:para>
+            <maml:para>-- Show GUI: Displays the GUI window. Use close (X) button on the GUI itself to hide the GUI again.</maml:para>
+		    <maml:para>-- Show/Hide PS console: Show or hide the PowerShell console. Use this option to show or hide the console, do not use the buttons on the console itself.</maml:para>
+		    <maml:para>-- Exit: Close the GUI, PowerShell console, stop the server and close PowerShell process.</maml:para>
           </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">NoGUI</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">NoConsole</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Systray</command:parameterValue>
+          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -831,14 +841,26 @@ Administrator    System.Security.SecureString</dev:code>
           <maml:description>
             <maml:para>Use this parameter to set an HTML file as the 404 error page.</maml:para>
             <maml:para>This parameter must be an absolute or relative path to an HTML file. The content of the file will be displayed when the server cannot find the path (response code 404).</maml:para>
-            <maml:para>Valid file extensions: - .html</maml:para>
-            <maml:para>- .xhtml</maml:para>
-            <maml:para>- .htm</maml:para>
-            <maml:para>- .txt</maml:para>
+            <maml:para>Valid file extensions:</maml:para>
+            <maml:para>· .html</maml:para>
+			<maml:para>· .xhtml</maml:para>
+            <maml:para>· .htm</maml:para>
+            <maml:para>· .txt</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AsJob</maml:name>
+          <maml:description>
+            <maml:para>Use this parameter to start the server in a PowerShell background job. The prompt will be released to continue working.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
@@ -941,11 +963,16 @@ Administrator    System.Security.SecureString</dev:code>
         </dev:type>
         <dev:defaultValue>$PWD.path</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NoConsole, Silent, Hidden">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Display</maml:name>
         <maml:description>
-          <maml:para>This parameter accepts two values: - NoGUI: Set this value to not display the GUI WPF window. The content can only be viewed within a third-party web browser.</maml:para>
-          <maml:para>- NoConsole: Hide the powershell console.</maml:para>
+          <maml:para>This parameter specifies how the GUI and console are displayed. The acceptable values for this parameter are:</maml:para>
+		  <maml:para>- NoGUI: Set this value to not display the WPF GUI window. The content can only be viewed within a third-party web browser. The PowerShell console is still visible.</maml:para>
+          <maml:para>- NoConsole: Hide the PowerShell console but keeps the main WPF GUI visible.</maml:para>
+          <maml:para>- Systray: Minimize the GUI and PowerShell console to the system tray. The system tray icon will be the same as the window icon and a menu will be added to the system tray icon. The menu contains these options:</maml:para>
+          <maml:para>-- Show GUI: Displays the GUI window. Use close (X) button on the GUI itself to hide the GUI again.</maml:para>
+		  <maml:para>-- Show/Hide PS console: Show or hide the PowerShell console. Use this option to show or hide the console, do not use the buttons on the console itself.</maml:para>
+		  <maml:para>-- Exit: Close the GUI, PowerShell console, stop the server and close PowerShell process.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -983,14 +1010,27 @@ Administrator    System.Security.SecureString</dev:code>
         <maml:description>
           <maml:para>Use this parameter to set an HTML file as the 404 error page.</maml:para>
           <maml:para>This parameter must be an absolute or relative path to an HTML file. The content of the file will be displayed when the server cannot find the path (response code 404).</maml:para>
-          <maml:para>Valid file extensions: - .html</maml:para>
-          <maml:para>- .xhtml</maml:para>
-          <maml:para>- .htm</maml:para>
-          <maml:para>- .txt</maml:para>
+          <maml:para>Valid file extensions:</maml:para>
+		  <maml:para>· .html</maml:para>
+          <maml:para>· .xhtml</maml:para>
+          <maml:para>· .htm</maml:para>
+          <maml:para>· .txt</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>AsJob</maml:name>
+        <maml:description>
+          <maml:para>Use this parameter to start the server in a PowerShell background job. The prompt will be released to continue working.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
@@ -1164,11 +1204,7 @@ Administrator    System.Security.SecureString</dev:code>
           <maml:name>Force</maml:name>
           <maml:description>
             <maml:para>Set this parameter to kill the powershell process where the instance is listening.</maml:para>
-            <maml:para>Use this parameter when the instance is not responding to</maml:para>
-            <maml:para></maml:para>
-            <maml:para>/stop()</maml:para>
-            <maml:para></maml:para>
-            <maml:para>requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
+            <maml:para>Use this parameter when the instance is not responding to "/stop()" requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1195,11 +1231,7 @@ Administrator    System.Security.SecureString</dev:code>
         <maml:name>Force</maml:name>
         <maml:description>
           <maml:para>Set this parameter to kill the powershell process where the instance is listening.</maml:para>
-          <maml:para>Use this parameter when the instance is not responding to</maml:para>
-          <maml:para></maml:para>
-          <maml:para>/stop()</maml:para>
-          <maml:para></maml:para>
-          <maml:para>requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
+          <maml:para>Use this parameter when the instance is not responding to "/stop()" requests, when you want to close the GUI window by command line or when you need to completely close powershell process.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1262,11 +1294,7 @@ Administrator    System.Security.SecureString</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Title</maml:name>
           <maml:description>
-            <maml:para>Specifies a title for the form. This title will appear as</maml:para>
-            <maml:para></maml:para>
-            <maml:para>&lt;h2&gt;</maml:para>
-            <maml:para></maml:para>
-            <maml:para>tag at the top of the form. The web page title will be modified too.</maml:para>
+            <maml:para>Specifies a title for the form. This title will appear as "&lt;h2&gt;" tag at the top of the form. The web page title will be modified too.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1278,11 +1306,7 @@ Administrator    System.Security.SecureString</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Description</maml:name>
           <maml:description>
-            <maml:para>Specifies a description for the form. This description will appear as</maml:para>
-            <maml:para></maml:para>
-            <maml:para>&lt;p&gt;</maml:para>
-            <maml:para></maml:para>
-            <maml:para>tag at the top of the form.</maml:para>
+            <maml:para>Specifies a description for the form. This description will appear as "&lt;p&gt;" tag at the top of the form.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1357,11 +1381,7 @@ Administrator    System.Security.SecureString</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Description</maml:name>
         <maml:description>
-          <maml:para>Specifies a description for the form. This description will appear as</maml:para>
-          <maml:para></maml:para>
-          <maml:para>&lt;p&gt;</maml:para>
-          <maml:para></maml:para>
-          <maml:para>tag at the top of the form.</maml:para>
+          <maml:para>Specifies a description for the form. This description will appear as "&lt;p&gt;" tag at the top of the form.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1397,11 +1417,7 @@ Administrator    System.Security.SecureString</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Title</maml:name>
         <maml:description>
-          <maml:para>Specifies a title for the form. This title will appear as</maml:para>
-          <maml:para></maml:para>
-          <maml:para>&lt;h2&gt;</maml:para>
-          <maml:para></maml:para>
-          <maml:para>tag at the top of the form. The web page title will be modified too.</maml:para>
+          <maml:para>Specifies a title for the form. This title will appear as "&lt;h2&gt;" tag at the top of the form. The web page title will be modified too.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
