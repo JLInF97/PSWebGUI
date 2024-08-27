@@ -298,6 +298,7 @@ Function Show-PSWebGUI
 
                 # URL for GUI
                 $guiURL="http://localhost:$port/"
+                $exiturl=$guiURL+"exit()"
 
                 # WebBrowser navigate to localhost
                 $WebBrowser = $Form.FindName("WebBrowser")
