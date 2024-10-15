@@ -495,7 +495,7 @@ Function Show-PSWebGUI
             }else{
                 
                 $global:_SERVER["REQUEST_METHOD"]="GET"
-                $global:_GET = $Context.Request.QueryString
+                $global:_GET = [System.Web.HttpUtility]::ParseQueryString($Context.Request.Url.Query)
             }
 
             #endregion
