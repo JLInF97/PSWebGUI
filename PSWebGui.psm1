@@ -22,12 +22,26 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][string]$Icon,
     [Parameter(Mandatory=$false)][string]$CssUri,
     [Parameter(Mandatory=$false)][Alias("Root")][string]$DocumentRoot=$PWD.path,
-    [Parameter(Mandatory=$false)][ValidateSet("NoGUI", "NoConsole")][string]$Display,
+    [Parameter(Mandatory=$false)][ValidateSet("NoGUI", "NoConsole", "Systray")][string]$Display,
     [Parameter(Mandatory=$false)][switch]$NoHeadTags,
     [Parameter(Mandatory=$false)][switch][Alias("Public")]$PublicServer,
-    [Parameter(Mandatory=$false)][string]$Page404
+    [Parameter(Mandatory=$false)][string]$Page404,
+    [Parameter(Mandatory=$false)][switch]$AsJob
 
     )
+
+    # Start the server in a background job. Calling the function itself in background and break the execution in foreground
+    if ($AsJob){
+        $parameters=$PSBoundParameters
+        $parameters.AsJob=$false
+
+        Start-Job -ScriptBlock {
+            $parameters=$using:parameters
+            Show-PSWebGUI @parameters
+        }
+
+        break # Avoid to continue normal execution in foreground
+    }
 
     # Hide the PS console if parameter -Display "NoConsole" is set
     if ($Display -eq "NoConsole"){
@@ -254,7 +268,7 @@ Function Show-PSWebGUI
         # Create a scriptblock that waits for the server to launch and then opens a web browser control
         $UserWindow = {
             
-            param ($port,$title,$iconpath)
+            param ($port,$title,$iconpath,$display)
 
                 # XAML
                 [void][System.Reflection.Assembly]::LoadWithPartialName('presentationframework')
@@ -284,29 +298,39 @@ Function Show-PSWebGUI
 
                 # URL for GUI
                 $guiURL="http://localhost:$port/"
+                $exiturl=$guiURL+"exit()"
 
                 # WebBrowser navigate to localhost
                 $WebBrowser = $Form.FindName("WebBrowser")
                 $WebBrowser.Navigate($guiURL)
 
-                # Show GUI
-                $Form.ShowDialog()
-                Start-Sleep -Seconds 1
+                if ($Display -eq "Systray"){
+                    Show-SystrayMenu
+                }
+                else{
+                    # Show GUI
+                    $Form.ShowDialog()
+                    Start-Sleep -Seconds 1
 
-                # Once the end user closes out of the browser we send the exit url to tell the server to shut down.
-                $exiturl=$guiURL+"exit()"
-                (New-Object System.Net.WebClient).DownloadString($exiturl);
+                    # Once the end user closes out of the browser we send the exit url to tell the server to shut down.
+                    (New-Object System.Net.WebClient).DownloadString($exiturl);
+                }
         }
  
-        
+        # Prepare the initial session state for runspace. Pass the Show-SystrayMenu function definition
+        $ShowSystrayMenu_function_definition = Get-Content Function:\Show-SystrayMenu
+        $SessionStateFunction = New-Object System.Management.Automation.Runspaces.SessionStateFunctionEntry -ArgumentList 'Show-SystrayMenu', $ShowSystrayMenu_function_definition
+        $InitialSessionState= [InitialSessionState]::CreateDefault()
+        $InitialSessionState.Commands.Add($SessionStateFunction)
+
         # Create runspace for GUI
-        $RunspacePool = [RunspaceFactory]::CreateRunspacePool()
+        $RunspacePool = [RunspaceFactory]::CreateRunspacePool($InitialSessionState)
         $RunspacePool.ApartmentState = "STA"
         $RunspacePool.Open()
         $Jobs = @()
  
         # Create job and add to runspace
-        $Job = [powershell]::Create().AddScript($UserWindow).AddArgument($port).AddArgument($title).AddArgument($iconpath)#.AddArgument($_)
+        $Job = [powershell]::Create().AddScript($UserWindow).AddArgument($port).AddArgument($title).AddArgument($iconpath).AddArgument($display)#.AddArgument($_)
         $Job.RunspacePool = $RunspacePool
         $Jobs += New-Object PSObject -Property @{
             RunNum = $_
@@ -390,8 +414,8 @@ Function Show-PSWebGUI
             $SimpleServer.Stop()
             Write-Verbose "Server stopped"
 
-            # -Display NoGUI, dont close a non-existent Window
-            if ($Display -ne "NoGUI"){
+            # -Display NoGUI or Systray, dont close a non-existent Window
+            if ($Display -ne "NoGUI" -and $Display -ne "Systray"){
                 $RunspacePool.Close()
                 Write-Verbose "GUI closed"
      
@@ -471,7 +495,7 @@ Function Show-PSWebGUI
             }else{
                 
                 $global:_SERVER["REQUEST_METHOD"]="GET"
-                $global:_GET = $Context.Request.QueryString
+                $global:_GET = [System.Web.HttpUtility]::ParseQueryString($Context.Request.Url.Query)
             }
 
             #endregion
@@ -954,6 +978,130 @@ function Stop-PSWebGui {
     }
 }
 
+# Internal function. Do not export
+function Show-SystrayMenu{
+    [void][System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
+    [void][System.Reflection.Assembly]::LoadWithPartialName('System.Drawing')
+    [void][System.Reflection.Assembly]::LoadWithPartialName('WindowsFormsIntegration')
+
+    <#
+    ===================================================================
+                             ICON PROCESSING
+    ===================================================================
+    #>
+
+    # If icon was set by parameter, convert to ico file
+    if ($iconpath){
+        $bitmap = New-Object Drawing.Bitmap $iconpath 
+        $bitmap.SetResolution(72, 72); 
+        $systray_icon = [System.Drawing.Icon]::FromHandle($bitmap.GetHicon());
+    }
+    # If icon was not set by parameter, use powershell icon
+    else{
+        $systray_icon = [System.Drawing.Icon]::ExtractAssociatedIcon("$PSHOME\powershell.exe")
+    }
+
+
+    <#
+    ===================================================================
+                      MENU & ITEMS OBJECTS CREATION
+    ===================================================================
+    #>
+
+    # Main system tray menu creation
+    $Systray_Menu = New-Object System.Windows.Forms.NotifyIcon
+    $Systray_Menu.Text = $title
+    $Systray_Menu.Icon = $systray_icon
+    $Systray_Menu.Visible = $true
+
+    # Menu item to show the GUI creation
+    $Menu_ShowGUI = New-Object System.Windows.Forms.MenuItem
+    $Menu_ShowGUI.Text = "Show GUI"
+
+    # Menu item to show the Powershell console creation
+    $Menu_ShowConsole = New-Object System.Windows.Forms.MenuItem
+    $Menu_ShowConsole.Text = "Show PS console"
+
+    # Menu item to hide the Powershell console creation
+    $Menu_HideConsole = New-Object System.Windows.Forms.MenuItem
+    $Menu_HideConsole.Visible = $false
+    $Menu_HideConsole.Text = "Hide PS console"
+
+    # Menu item to exit creation
+    $Menu_Exit = New-Object System.Windows.Forms.MenuItem
+    $Menu_Exit.Text = "Exit"
+
+    # Context menu creation and menu items adition
+    $contextmenu = New-Object System.Windows.Forms.ContextMenu
+    $Systray_Menu.ContextMenu = $contextmenu
+    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_ShowGUI)
+    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_ShowConsole)
+    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_HideConsole)
+    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_Exit)
+
+
+    <#
+    ===================================================================
+                          ACTIONS FOR THE MENU ITEMS
+    ===================================================================
+    #>
+
+    # Systray double click opens GUI
+    $Systray_Menu.Add_DoubleClick({
+        $Form.ShowDialog()
+        $Form.Activate()
+    })
+ 
+    # Show GUI action
+    $Menu_ShowGUI.add_Click({
+        $Menu_ShowGUI.Visible=$false
+        $Form.ShowDialog()
+        $Form.Activate()
+    })
+
+    # Show PS console action
+    $Menu_ShowConsole.add_Click({
+        Show-PSConsole
+        $Menu_ShowConsole.Visible=$false
+        $Menu_HideConsole.Visible=$true
+    })
+
+    # Hide PS console action
+    $Menu_HideConsole.add_Click({
+        Hide-PSConsole
+        $Menu_ShowConsole.Visible=$true
+        $Menu_HideConsole.Visible=$false
+    })
+
+    # Exit action
+    $Menu_Exit.add_Click({
+        Invoke-WebRequest -Uri "http://localhost/exit()" | Out-Null
+        Stop-Process $pid
+    })
+
+    # Hide GUI instead of closing it when close button (X) clicked
+    $Form.Add_Closing({
+        $_.Cancel = $true
+        $Menu_ShowGUI.Visible=$true
+        $Form.Hide()
+    })
+
+    <#
+    ===================================================================
+                          RUN THE APPLICATION
+    ===================================================================
+    #>
+
+    # Hide PS console
+    Hide-PSConsole
+
+    # GC
+    [System.GC]::Collect()
+
+    # Run the windows form application
+    $appContext = New-Object System.Windows.Forms.ApplicationContext
+    [void][System.Windows.Forms.Application]::Run($appContext)
+}
 
 #region Function alias
 Set-Alias -Name Start-PSGUI -Value Show-PSWebGUI
