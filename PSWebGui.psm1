@@ -1046,13 +1046,6 @@ function Show-SystrayMenu{
     ===================================================================
     #>
 
-    # Systray normal click opens context menu
-    $Systray_Menu.Add_Click({                    
-        If ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
-            $Systray_Menu.GetType().GetMethod("ShowContextMenu",[System.Reflection.BindingFlags]::Instance -bor [System.Reflection.BindingFlags]::NonPublic).Invoke($Systray_Menu,$null)
-        }
-    })
-
     # Systray double click opens GUI
     $Systray_Menu.Add_DoubleClick({
         $Form.ShowDialog()
