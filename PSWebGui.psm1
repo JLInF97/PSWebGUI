@@ -517,15 +517,22 @@ Function Show-PSWebGUI
                     
                 # $localpath is a file
                 if (Test-Path "FileServer:$localpath" -PathType Leaf){
-                        
-                    # Add type for [System.Web.MimeMapping] method
-                    Add-Type -AssemblyName "System.Web"
+                    
+                    $getContentParams=@{
+                        Path="FileServer:$localpath"
+                        ReadCount=0
+                    }
+
+                    # Compatibility with newest and older PS Version for Get-Content command
+                    if ($PSVersionTable.PSVersion.Major -gt 6){
+                        $getContentParams.AsByteStream=$true
+                    }
+                    else{
+                        $getContentParams.Encoding="Byte"
+                    }
 
                     # Convert the file content to bytes from path
-                    $buffer = Get-Content -Encoding Byte -Path "FileServer:$localpath" -ReadCount 0
-
-                    # Let the browser know the MIME type of content
-                    $Context.Response.ContentType = [System.Web.MimeMapping]::GetMimeMapping($localpath)
+                    $buffer = Get-Content @getContentParams
 
                     
                 # $InputObject is a string and $localpath is in /
