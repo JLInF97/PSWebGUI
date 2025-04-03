@@ -20,7 +20,6 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][int]$Port=80,
     [Parameter(Mandatory=$false)][string]$Title="PoweShell Web GUI",
     [Parameter(Mandatory=$false)][string]$Icon,
-    [Parameter(Mandatory=$false)][string]$CssUri,
     [Parameter(Mandatory=$false)][Alias("Root")][string]$DocumentRoot=$PWD.path,
     [Parameter(Mandatory=$false)][ValidateSet("NoGUI", "NoConsole", "Systray")][string]$Display,
     [Parameter(Mandatory=$false)][switch]$NoHeadTags,
@@ -243,7 +242,7 @@ Function Show-PSWebGUI
     $SimpleServer.Start()
 
     # Load bootstrap
-    $bootstrap=Get-Content "$PSScriptRoot\Assets\bootstrap.min.css"
+    $bootstrapContent=Get-Content "$PSScriptRoot\Assets\bootstrap.min.css"
 
     #Load CSS
     if ($CssUri -ne ""){
@@ -442,15 +441,11 @@ Function Show-PSWebGUI
         # If -NoHeadTags is set, do not display html header tags
         If ($NoHeadTags -eq $false){
 
-            # Defining some meta tags
-            $charset='<meta charset="utf-8">'
-            $httpequiv='<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">'
-            $style="<style>"+$bootstrap+$css+"</style>"
-            $viewport='<meta name="viewport" content="width=device-width, initial-scale=1">'
-            $faviconlink="<link rel='shortcut icon' href='$favicon'>"
-
             # Make html head template
-            $htmlhead="<!Doctype html>`n<html>`n<head>`n$charset`n$httpequiv`n$viewport`n$faviconlink`n<title>$title</title>`n$style`n</head>`n<body>`n"
+            $htmlhead=(Get-Content -Path "$PSScriptRoot\Assets\htmlHeadTemplate.html" -Encoding UTF8).Replace("@@favicon",$favicon).Replace("@@style",$bootstrapContent).Replace("@@title",$title)
+
+            # Style can't be applied with a <link href=''> tag because the browsers security restriction to access system local paths. For this reason, the style must be applied in
+            # raw format right between a <style> tag.
 
             # Closing tags
             $htmlclosing="`n</body>`n</html>"
