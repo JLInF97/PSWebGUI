@@ -244,11 +244,6 @@ Function Show-PSWebGUI
     # Load bootstrap
     $bootstrapContent=Get-Content "$PSScriptRoot\Assets\bootstrap.min.css"
 
-    #Load CSS
-    if ($CssUri -ne ""){
-        $css=Get-Content $CssUri
-    }
-
     Write-Host "GUI started" -ForegroundColor Green
 
     #endregion
