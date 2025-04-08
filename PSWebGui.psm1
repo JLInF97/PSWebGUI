@@ -646,17 +646,12 @@ function Format-Html {
         ===================================================================
         #>
         }else{
-            
-            # Convert command output object to CSV
-            $csv=$result | ConvertTo-Csv -NoTypeInformation
 
-            # Get CSV object
-            $csvobj=$csv | ConvertFrom-Csv
+            # Get all properties of the object passed
+            $objs=$result | Select-Object -Property *
 
             # Get only property names (headers)
-            $headers=$csv[0].Replace('"','').Split(",")
-
-
+            $headers=($objs | Get-Member -MemberType Property,NoteProperty).Name
 
             #region Process switch parameters
             <#
@@ -699,7 +694,7 @@ function Format-Html {
                 "<div class='row row-cols-$Cards'>"
 
                 # For each row in CSV displays a bootstrap card
-                foreach ($obj in $csvobj){
+                foreach ($obj in $objs){
                     
                     "<div class='card col'>
 		                <div class='card-body'>
@@ -738,7 +733,7 @@ function Format-Html {
                 "<tbody>"
 
                 # For each row in CSV add a table row
-                foreach ($obj in $csvobj){
+                foreach ($obj in $objs){
                     "<tr>"
 
                     # For each CSV property name gets associated value (within a row)
