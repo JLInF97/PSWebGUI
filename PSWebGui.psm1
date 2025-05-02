@@ -937,6 +937,7 @@ function Show-SystrayMenu{
     # Menu item to show the GUI creation
     $Menu_ShowGUI = New-Object System.Windows.Forms.MenuItem
     $Menu_ShowGUI.Text = "Show GUI"
+    $Menu_ShowGUI.Visible = $false
 
     # Menu item to show the Powershell console creation
     $Menu_ShowConsole = New-Object System.Windows.Forms.MenuItem
@@ -1014,6 +1015,9 @@ function Show-SystrayMenu{
 
     # Hide PS console
     Hide-PSConsole
+
+    # Show GUI
+    $Form.ShowDialog()
 
     # GC
     [System.GC]::Collect()
