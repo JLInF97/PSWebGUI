@@ -900,7 +900,7 @@ function Stop-PSWebGui {
 
 # Internal function. Do not export
 function Show-SystrayMenu{
-    [void][System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
+    Add-Type -AssemblyName System.Windows.Forms
     [void][System.Reflection.Assembly]::LoadWithPartialName('System.Drawing')
     [void][System.Reflection.Assembly]::LoadWithPartialName('WindowsFormsIntegration')
 
@@ -917,8 +917,13 @@ function Show-SystrayMenu{
         $systray_icon = [System.Drawing.Icon]::FromHandle($bitmap.GetHicon());
     }
     # If icon was not set by parameter, use powershell icon
-    else{
+    # Windows Poweshell 5.1 icon
+    elseif (Test-Path -Path "$PSHOME\powershell.exe"){
         $systray_icon = [System.Drawing.Icon]::ExtractAssociatedIcon("$PSHOME\powershell.exe")
+    }
+    # Poweshell 7
+    elseif (Test-Path -Path "$PSHOME\pwsh.exe"){
+        $systray_icon = [System.Drawing.Icon]::ExtractAssociatedIcon("$PSHOME\pwsh.exe")
     }
 
 
@@ -935,31 +940,31 @@ function Show-SystrayMenu{
     $Systray_Menu.Visible = $true
 
     # Menu item to show the GUI creation
-    $Menu_ShowGUI = New-Object System.Windows.Forms.MenuItem
+    $Menu_ShowGUI = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_ShowGUI.Text = "Show GUI"
     $Menu_ShowGUI.Visible = $false
 
     # Menu item to show the Powershell console creation
-    $Menu_ShowConsole = New-Object System.Windows.Forms.MenuItem
+    $Menu_ShowConsole = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_ShowConsole.Text = "Show PS console"
 
     # Menu item to hide the Powershell console creation
-    $Menu_HideConsole = New-Object System.Windows.Forms.MenuItem
+    $Menu_HideConsole = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_HideConsole.Visible = $false
     $Menu_HideConsole.Text = "Hide PS console"
 
     # Menu item to exit creation
-    $Menu_Exit = New-Object System.Windows.Forms.MenuItem
+    $Menu_Exit = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_Exit.Text = "Exit"
 
     # Context menu creation and menu items adition
-    $contextmenu = New-Object System.Windows.Forms.ContextMenu
-    $Systray_Menu.ContextMenu = $contextmenu
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_ShowGUI)
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_ShowConsole)
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_HideConsole)
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_Exit)
+    $contextmenu = New-Object System.Windows.Forms.ContextMenuStrip
+    $contextmenu.Items.Add($Menu_ShowGUI)
+    $contextmenu.Items.Add($Menu_ShowConsole)
+    $contextmenu.Items.Add($Menu_HideConsole)
+    $contextmenu.Items.Add($Menu_Exit)
 
+    $Systray_Menu.ContextMenuStrip=$contextmenu
 
     <#
     ===================================================================
