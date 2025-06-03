@@ -14,12 +14,12 @@ Formats and stylizes PowerShell commands output using HTML and Bootstrap.
 
 ### Table (Default)
 ```powershell
-Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [-Id <String>] [<CommonParameters>]
+Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [-Id <String>] [-Class <array>] [<CommonParameters>]
 ```
 
 ### Cards
 ```powershell
-Format-Html [-InputObject] <PSObject> -Cards <Int32> [<CommonParameters>]
+Format-Html [-InputObject] <PSObject> -Cards <Int32> [-Id <String>] [-Class <array>] [<CommonParameters>]
 ```
 
 ### Raw
@@ -70,10 +70,10 @@ PS> Get-Service | Format-Html
 
 ### EXAMPLE 2
 ```powershell
-PS> Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Hover
+PS> Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Hover -Id "myTable" -Class "myClass","yourClass"
 
 
-<table class='table table-striped table-hover'>
+<table class='table table-striped table-hover myClass yourClass' id='myTable'>
 <thead class='thead-dark'>
 <tr>
 <th>CPU</th>
@@ -99,16 +99,20 @@ PS> Get-Process | Select-Object Cpu, Name | Format-Html -Darkheader -Striped -Ho
 PS> Get-Service | Select-Object Status, DisplayName | Format-Html -Cards 3
 
 <div class='row row-cols-3'>
-<div class='card col'>
+<div class='col mb-1'>
+<div class='card h-100'>
 <div class='card-body'>
 <h5 class='card-title'>Stopped</h5>
 <p class='card-text'>AJRouter</p>
 </div>
 </div>
-<div class='card col'>
+</div>
+<div class='col mb-1'>
+<div class='card h-100'>
 <div class='card-body'>
 <h5 class='card-title'>Running</h5>
 <p class='card-text'>ALG</p>
+</div>
 </div>
 </div>
 ...
@@ -218,7 +222,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-Use this parameter to set an id attribute for the table.
+Use this parameter to set an id attribute.
 
 ```html
 <table id="table1">...</table>
@@ -226,7 +230,7 @@ Use this parameter to set an id attribute for the table.
 
 ```yaml
 Type: String
-Parameter Sets: Table
+Parameter Sets: Cards, Table
 Aliases:
 
 Required: False
@@ -252,6 +256,28 @@ Aliases:
 Required: True
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Class
+Use this parameter to set an array of classes for the table or cards.
+
+```html
+<table clas="table myClass">...</table>
+```
+```html
+<div class="row-cols-3 myClass" >...</div>
+```
+
+```yaml
+Type: Array
+Parameter Sets: Cards, Table
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
