@@ -20,7 +20,6 @@ Function Show-PSWebGUI
     [Parameter(Mandatory=$false)][int]$Port=80,
     [Parameter(Mandatory=$false)][string]$Title="PoweShell Web GUI",
     [Parameter(Mandatory=$false)][string]$Icon,
-    [Parameter(Mandatory=$false)][string]$CssUri,
     [Parameter(Mandatory=$false)][Alias("Root")][string]$DocumentRoot=$PWD.path,
     [Parameter(Mandatory=$false)][ValidateSet("NoGUI", "NoConsole", "Systray")][string]$Display,
     [Parameter(Mandatory=$false)][switch]$NoHeadTags,
@@ -243,12 +242,7 @@ Function Show-PSWebGUI
     $SimpleServer.Start()
 
     # Load bootstrap
-    $bootstrap=Get-Content "$PSScriptRoot\Assets\bootstrap.min.css"
-
-    #Load CSS
-    if ($CssUri -ne ""){
-        $css=Get-Content $CssUri
-    }
+    $bootstrapContent=Get-Content "$PSScriptRoot\Assets\bootstrap.min.css"
 
     Write-Host "GUI started" -ForegroundColor Green
 
@@ -442,15 +436,11 @@ Function Show-PSWebGUI
         # If -NoHeadTags is set, do not display html header tags
         If ($NoHeadTags -eq $false){
 
-            # Defining some meta tags
-            $charset='<meta charset="utf-8">'
-            $httpequiv='<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">'
-            $style="<style>"+$bootstrap+$css+"</style>"
-            $viewport='<meta name="viewport" content="width=device-width, initial-scale=1">'
-            $faviconlink="<link rel='shortcut icon' href='$favicon'>"
-
             # Make html head template
-            $htmlhead="<!Doctype html>`n<html>`n<head>`n$charset`n$httpequiv`n$viewport`n$faviconlink`n<title>$title</title>`n$style`n</head>`n<body>`n"
+            $htmlhead=(Get-Content -Path "$PSScriptRoot\Assets\htmlHeadTemplate.html" -Encoding UTF8).Replace("@@favicon",$favicon).Replace("@@style",$bootstrapContent).Replace("@@title",$title)
+
+            # Style can't be applied with a <link href=''> tag because the browsers security restriction to access system local paths. For this reason, the style must be applied in
+            # raw format right between a <style> tag.
 
             # Closing tags
             $htmlclosing="`n</body>`n</html>"
@@ -517,15 +507,22 @@ Function Show-PSWebGUI
                     
                 # $localpath is a file
                 if (Test-Path "FileServer:$localpath" -PathType Leaf){
-                        
-                    # Add type for [System.Web.MimeMapping] method
-                    Add-Type -AssemblyName "System.Web"
+                    
+                    $getContentParams=@{
+                        Path="FileServer:$localpath"
+                        ReadCount=0
+                    }
+
+                    # Compatibility with newest and older PS Version for Get-Content command
+                    if ($PSVersionTable.PSVersion.Major -gt 6){
+                        $getContentParams.AsByteStream=$true
+                    }
+                    else{
+                        $getContentParams.Encoding="Byte"
+                    }
 
                     # Convert the file content to bytes from path
-                    $buffer = Get-Content -Encoding Byte -Path "FileServer:$localpath" -ReadCount 0
-
-                    # Let the browser know the MIME type of content
-                    $Context.Response.ContentType = [System.Web.MimeMapping]::GetMimeMapping($localpath)
+                    $buffer = Get-Content @getContentParams
 
                     
                 # $InputObject is a string and $localpath is in /
@@ -611,12 +608,13 @@ function Format-Html {
     [CmdletBinding(DefaultParameterSetName="Table")]
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline,Position=0)][psobject]$InputObject,
+        [Parameter(ParameterSetName="Table",Mandatory=$false)][Parameter(ParameterSetName="Cards",Mandatory=$false)][string]$Id,
+        [Parameter(ParameterSetName="Table",Mandatory=$false)][Parameter(ParameterSetName="Cards",Mandatory=$false)][array]$Class,
         
         [Parameter(ParameterSetName="Table",Mandatory=$false)][Alias("Tabledark","Table-dark")][switch]$Darktable,
         [Parameter(ParameterSetName="Table",Mandatory=$false)][Alias("Theaddark","Thead-dark")][switch]$Darkheader,
         [Parameter(ParameterSetName="Table",Mandatory=$false)][switch]$Striped,
         [Parameter(ParameterSetName="Table",Mandatory=$false)][switch]$Hover,
-        [Parameter(ParameterSetName="Table",Mandatory=$false)][string]$Id,
 
         [Parameter(ParameterSetName="Cards",Mandatory=$true)][ValidateRange(1,6)][int]$Cards,
 
@@ -649,46 +647,17 @@ function Format-Html {
         ===================================================================
         #>
         }else{
-            
-            # Convert command output object to CSV
-            $csv=$result | ConvertTo-Csv -NoTypeInformation
 
-            # Get CSV object
-            $csvobj=$csv | ConvertFrom-Csv
+            # Get all properties of the object passed
+            $objs=$result | Select-Object -Property *
 
             # Get only property names (headers)
-            $headers=$csv[0].Replace('"','').Split(",")
+            $headers=($objs | Get-Member -MemberType Property,NoteProperty).Name
 
-
-
-            #region Process switch parameters
-            <#
-            ===================================================================
-                                  Process switch parameters
-            ===================================================================
-            #>
-            $tableClass="table"
-
-            if ($Darktable){
-                $tableClass+=" table-dark"
-
-            }elseif ($Darkheader){
-                $theaddark="class='thead-dark'"
-            }
-
-            if ($Striped){
-                $tableClass+=" table-striped"
-            }
-
-            if ($Hover){
-                $tableClass+=" table-hover"
-            }
 
             if ($Id){
                 $idTag="id='$id'"
             }
-            #endregion
-
 
 
             #region Card layout
@@ -698,18 +667,23 @@ function Format-Html {
             ===================================================================
             #>
             if (($cards -ge 1) -and ($Cards -le 6)){
+
+                $Class+="row","row-cols-$Cards"
+                $rowClass=$Class -join ' '
                               
-                "<div class='row row-cols-$Cards'>"
+                "<div class='$rowClass' $idTag>"
 
                 # For each row in CSV displays a bootstrap card
-                foreach ($obj in $csvobj){
+                foreach ($obj in $objs){
                     
-                    "<div class='card col'>
+                    "<div class='col mb-1'>
+                    <div class='card h-100'>
 		                <div class='card-body'>
 			                <h5 class='card-title'>"+$obj.($headers[0])+"</h5>
 			                <p class='card-text'>"+$obj.($headers[1])+"</p>
 		                </div>
-		            </div>"  
+		            </div>
+                    </div>"
 
                 }
 
@@ -727,6 +701,21 @@ function Format-Html {
             ===================================================================
             #>
             else{
+                $Class+="table"
+
+                if ($Darktable){
+                    $Class+="table-dark"
+
+                }elseif ($Darkheader){
+                    $theaddark="class='thead-dark'"
+                }
+
+                if ($Striped){$Class+="table-striped"}
+
+                if ($Hover){$Class+="table-hover"}
+
+                $tableClass=$Class -join ' '
+
                 "<table class='$tableClass' $idTag>"
                 "<thead $theaddark>"
                 "<tr>"
@@ -741,7 +730,7 @@ function Format-Html {
                 "<tbody>"
 
                 # For each row in CSV add a table row
-                foreach ($obj in $csvobj){
+                foreach ($obj in $objs){
                     "<tr>"
 
                     # For each CSV property name gets associated value (within a row)
@@ -857,78 +846,6 @@ function Hide-PSConsole
     [void][Console.Window]::ShowWindow($consolePtr, 0)
 }
 
-
-#.ExternalHelp en-us\PSWebGui-help.xml
-function Show-PSWebGUIExample{
-
-$routes=@{
-
-    "/showProcesses" = {
-        Set-Title -Title "Processes"
-        "<div class='container-fluid'>
-            <a href='/'>Main Menu</a>
-            <form action='/filterProcesses'>Filter:<input Name='Name'></input></form>"
-            Get-Process | Select-Object cpu,name | Format-Html -Striped -Darkheader -Hover
-        "</div>"
-    }
-
-    "/filterProcesses" = {
-        "<a href='/'>Main Menu</a>
-        <form action='/filterProcesses'>Filter:<input Name='Name'></input></form>"
-        Get-Process $_GET["Name"] | Select-Object cpu, name | Format-Html
-     }
-
-    "/showServices" = {
-        "<a href='/'>Main Menu</a>
-        <form action='/filterServices' method='post'>Filter:<input Name='Name'></input></form>"
-        Get-Service | Select-Object Name,Status | Format-Html -Cards 6
-    }
-
-    "/filterServices" = {
-        "<a href='/'>Main Menu</a>
-        <form action='/filterServices' method='post'>Filter:<input Name='Name'></input></form>"
-        Get-Service $_POST["Name"] | Select-Object Status,Name,DisplayName | Format-Html    
-    }
-
-    "/showDate" = {"<a href='/'>Main Menu</a><br/>$(Get-Date | Format-Html -Raw)"}
-
-
-    "/loginform"={
-        Write-CredentialForm -FormTitle "Login" -Action "/login"
-    }
-
-    "/login"={
-        $creds=Get-CredentialForm
-
-        "<a href='/'>Main Menu</a>"
-        $creds | Format-Html
-    }
-
-
-    "/" = {
-        $title="Index"
-        "<div class='container-fluid'>
-            <h1>My Simple Task Manager</h1>
-            <a href='showProcesses'><h2>Show Running Processes</h2></a>
-            <a href='/showServices'><h2>Show Running Services</h2></a>
-            <a href='/showDate'><h2>Show current datetime</h2></a>
-            <a href='/loginform'><h2>Login</h2></a>
-        </div>"
-    }
-
-
-}
-
-
-Show-PSWebGUI -InputObject $routes -Icon "/panel.png" -Root "$PSScriptRoot\Assets"
-
-return $routes
-
-[System.GC]::Collect()
-
-}
-
-
 #.ExternalHelp en-us\PSWebGui-help.xml
 function Stop-PSWebGui {
     param(
@@ -980,7 +897,7 @@ function Stop-PSWebGui {
 
 # Internal function. Do not export
 function Show-SystrayMenu{
-    [void][System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
+    Add-Type -AssemblyName System.Windows.Forms
     [void][System.Reflection.Assembly]::LoadWithPartialName('System.Drawing')
     [void][System.Reflection.Assembly]::LoadWithPartialName('WindowsFormsIntegration')
 
@@ -997,8 +914,13 @@ function Show-SystrayMenu{
         $systray_icon = [System.Drawing.Icon]::FromHandle($bitmap.GetHicon());
     }
     # If icon was not set by parameter, use powershell icon
-    else{
+    # Windows Poweshell 5.1 icon
+    elseif (Test-Path -Path "$PSHOME\powershell.exe"){
         $systray_icon = [System.Drawing.Icon]::ExtractAssociatedIcon("$PSHOME\powershell.exe")
+    }
+    # Poweshell 7
+    elseif (Test-Path -Path "$PSHOME\pwsh.exe"){
+        $systray_icon = [System.Drawing.Icon]::ExtractAssociatedIcon("$PSHOME\pwsh.exe")
     }
 
 
@@ -1015,30 +937,35 @@ function Show-SystrayMenu{
     $Systray_Menu.Visible = $true
 
     # Menu item to show the GUI creation
-    $Menu_ShowGUI = New-Object System.Windows.Forms.MenuItem
-    $Menu_ShowGUI.Text = "Show GUI"
+    $Menu_ShowGUI = New-Object System.Windows.Forms.ToolStripMenuItem
+    $Menu_ShowGUI.Text = "Show $title"
+    $Menu_ShowGUI.Visible = $false
 
     # Menu item to show the Powershell console creation
-    $Menu_ShowConsole = New-Object System.Windows.Forms.MenuItem
+    $Menu_ShowConsole = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_ShowConsole.Text = "Show PS console"
 
     # Menu item to hide the Powershell console creation
-    $Menu_HideConsole = New-Object System.Windows.Forms.MenuItem
+    $Menu_HideConsole = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_HideConsole.Visible = $false
     $Menu_HideConsole.Text = "Hide PS console"
 
     # Menu item to exit creation
-    $Menu_Exit = New-Object System.Windows.Forms.MenuItem
+    $Menu_Exit = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_Exit.Text = "Exit"
 
-    # Context menu creation and menu items adition
-    $contextmenu = New-Object System.Windows.Forms.ContextMenu
-    $Systray_Menu.ContextMenu = $contextmenu
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_ShowGUI)
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_ShowConsole)
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_HideConsole)
-    $Systray_Menu.contextMenu.MenuItems.AddRange($Menu_Exit)
+    # Menu divider
+    $Menu_Divider = New-Object System.Windows.Forms.ToolStripSeparator
 
+    # Context menu creation and menu items adition
+    $contextmenu = New-Object System.Windows.Forms.ContextMenuStrip
+    $contextmenu.Items.Add($Menu_ShowGUI)
+    $contextmenu.Items.Add($Menu_ShowConsole)
+    $contextmenu.Items.Add($Menu_HideConsole)
+    $contextmenu.Items.Add($Menu_Divider)
+    $contextmenu.Items.Add($Menu_Exit)
+
+    $Systray_Menu.ContextMenuStrip=$contextmenu
 
     <#
     ===================================================================
@@ -1075,7 +1002,7 @@ function Show-SystrayMenu{
 
     # Exit action
     $Menu_Exit.add_Click({
-        Invoke-WebRequest -Uri "http://localhost/exit()" | Out-Null
+        Invoke-WebRequest -Uri "http://localhost:$port/exit()" | Out-Null
         Stop-Process $pid
     })
 
@@ -1094,6 +1021,9 @@ function Show-SystrayMenu{
 
     # Hide PS console
     Hide-PSConsole
+
+    # Show GUI
+    $Form.ShowDialog()
 
     # GC
     [System.GC]::Collect()

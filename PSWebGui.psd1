@@ -12,7 +12,7 @@
 RootModule = 'PSWebGui.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.19.2'
+ModuleVersion = '1.0.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@ PowerShellVersion = '5.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = "Show-PSWebGUI","Show-PSWebGUIExample","Format-Html","Set-GuiLocation","Write-CredentialForm","Get-CredentialForm","Set-Title","Stop-PsWebGui","Hide-PSConsole","Show-PSConsole"
+FunctionsToExport = "Show-PSWebGUI","Format-Html","Set-GuiLocation","Write-CredentialForm","Get-CredentialForm","Set-Title","Stop-PsWebGui","Hide-PSConsole","Show-PSConsole"
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -87,7 +87,7 @@ AliasesToExport = "Start-PSGUI","Show-PSGUI","Show-WebGUI","Start-WebGUI","FH","
 # ModuleList = @()
 
 # List of all files packaged with this module
-FileList = @("Assets\bootstrap.min.css","Assets\panel.png","Snippets\PSWebGui Basic Structure.snippets.ps1xml","Snippets\PSWebGui Login.snippets.ps1xml")
+FileList = @("Assets\bootstrap.min.css","Snippets\PSWebGui Basic Structure.snippets.ps1xml","Snippets\PSWebGui Login.snippets.ps1xml")
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{

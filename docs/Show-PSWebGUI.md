@@ -13,8 +13,8 @@ Displays a styled graphical user interface (GUI) for PowerShell from an object p
 ## SYNTAX
 
 ```powershell
-Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>]
- [-DocumentRoot <String>] [-Display {NoGUI | NoConsole | Systray}] [-NoHeadTags] [-Page404 <String>] [-AsJob] [<CommonParameters>]
+Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-DocumentRoot <String>]
+ [-Display {NoGUI | NoConsole | Systray}] [-NoHeadTags] [-PublicServer] [-Page404 <String>] [-AsJob] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,17 +42,17 @@ Show-PSWebGUI -InputObject $routes -Title "My custom GUI"
 
 ### EXAMPLE 3
 ```powershell
-Show-PSWebGUI -InputObject $routes -Title "My custom GUI" -Port 8080 -CssUri "C:\myresources\style.css" -Icon "C:\myresources\icon.png"
+Show-PSWebGUI -InputObject $routes -DocumentRoot "C:\myresources" -Icon "/icon.png" -Port 8080 -PublicServer
 ```
 
 ### EXAMPLE 4
 ```powershell
-Show-PSWebGUI -InputObject $routes -CssUri "C:\myresources\style.css" -DocumentRoot "C:\myresources" -Icon "/icon.png"
+Show-PSWebGUI -InputObject $routes -Display Systray
 ```
 
 ### EXAMPLE 5
 ```powershell
-Show-PSWebGUI -InputObject $routes -PublicServer
+Show-PSWebGUI -InputObject $routes -PublicServer -AsJob
 ```
 
 ## PARAMETERS
@@ -136,23 +136,6 @@ Accept wildcard characters: False
 Specifies the path for the icon used on the window and on the HTML page.
 This path can be absolute or relative to the document root.
 If the path is not within the document root, it will only be displayed on window.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -CssUri
-Specifies the CSS URI to use in addition to Bootstrap.
-It can be a local file or an Internet URL.
-It can not be relative path, must be absolute.
 
 ```yaml
 Type: String

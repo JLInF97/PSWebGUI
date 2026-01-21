@@ -1,52 +1,46 @@
 # PSWebGUI
-A fast way to create and display PowerShell graphical interfaces using HTML.
-
-This PowerShell module is a set of tools that allows you to quickly create and display fancy HTML graphical user interfaces. The module allows to interact with PowerShell cmdlets, functions, or scripts and join the result to the graphic design in HTML.
-
-PowerShell acts, in this module, as a web server language, like PHP. You can define custom routes or navigate through your file system.
-
-The HTML is styled with Bootstrap CSS framework to provide better look and responsive content in a fast way.
-
-**Important note!** To use this module, you must **_run PowerShell as an Administrator_**.
-
-**Important note!** From v0.13.0 the server exit URL has been modified, from ```/exit``` to ```/exit()``` or ```/stop()```.
-
-[Visit about file for more detailed info](../main/docs/about_PSWebGui.md)
+**PSWebGUI** is a PowerShell module that lets you quickly and easily create web-based graphical interfaces using HTML and Bootstrap. It's perfect for users who want to integrate PowerShell scripts into a simple and functional web interface.
 
 
-## How to install
-This module is in prerelease version, there may be serious bugs and cause stability problems in your computer. The core is frequently modified. Install at your own risk.
+## Key Features
+- **Built-in web server**: Run a lightweight web server directly from PowerShell.
 
-### Download from PowerShell Gallery
-The module is available in PowerShell Gallery. Use this cmdlet to get the lastest version.
+- **Custom routes**: Define web routes (```/```) and link them to PowerShell functions or scripts.
+  
+- **HTML + Bootstrap support**: Design attractive, responsive web interfaces effortlessly.
+  
+- **GET and POST method support**: Easily handle form input via ```$_GET[]``` and ```$_POST[]```.
+  
+- **Run and display PowerShell scripts**: Execute and show output from scripts or cmdlets in a separate window or in the browser.
+
+## Requirements
+- PowerShell must be run as **Administrator**.
+
+- PowerShell version 5.1 or higher.
+
+## Installation
+
+### From PowerShell Gallery:
 ```powershell
-PS> Install-Module -Name PSWebGui -AllowPrerelease
+PS> Install-Module -Name PSWebGui
 ```
 
-### Download from Github repository
+### Manually from Github
 1. Download the lastest version of the module from this Github repository.
 2. Extract the content of the ZIP into ```C:\Program Files\WindowsPowerShell\Modules```
 
-
-## Main functions
-### Show-PSWebGui
-#### Syntax
+#### Test
+Open PowerShell as an Administrator and run the following command:
 ```powershell
-Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon <String>] [-CssUri <String>] [-DocumentRoot <String>] [-Display <String>] [-NoHeadTags] [-PublicServer] [-Page404 <String>] [<CommonParameters>]
+PS> Show-PSWebGUI "Hello World!"
 ```
+This should open a new window with the text "Hello World!".
 
-#### Description
-Starts a simple web server to display the structure and content passed within an object.
+## Usage
 
-The content can be a string, an HTML page, cmdlets, functions or complex powershell scripts. The HTML content will be stylized with Bootstrap CSS framework.
-The server can execute and display local HTML or PS1 files. Custom CSS and Javascript are also compatible.
-    
-POST and GET methods are available and can be accesses by ```$_POST[]``` and ```$_GET[]``` variables, just like within PHP.
-
-Use ```-PublicServer``` switch parameter for the web server to listen on all interfaces, making the server reachable from any address. Otherwise the server will only listen on localhost.
-
-#### Example: How to create basic graphic interface
+### Launch a simple web UI
 ```powershell
+# Routes definition
 PS> $routes = @{
   "/"={
     "<div>
@@ -66,34 +60,43 @@ PS> $routes = @{
     }
 }
 
+# Launch the interface
 PS> Show-PSWebGui -InputObject $routes
 ```
+A new window should have opened. Or you can open your browser at ```http://localhost``` to view the interface.
+
+### Customize the port and page title
+```powershell
+PS> Show-PSWebGui -InputObject $routes -Port 9090 -Title "Admin Panel"
+```
+
+## Available Commands
+### Show-PSWebGUI
+Starts the web server and displays the interface defined by the provided routes.
+
+**Common parameters:**
+
+- ```-InputObject```: Defines routes and their associated content.
+
+- ```-Port```: Server port (default is 80).
+
+- ```-Title```: Sets the page title.
+
+- ```-PublicServer```: Makes the server accessible from other devices on the network.
+
+- ```-Display```: Set the behavior of windows: 'NoGUI' to hide the interface, 'NoConsole' to hide the PowerShell console (terminal/command prompt) or 'Systray' to minimize all to the system tray.
+
+- ```-Icon```: Set the icon for both the interface window and in browser favicon.
 
 #### More info
-```powershell
-PS> Get-Help Show-PSWebGui -Full
-```
+[Visit command documentation for more detailed info](../main/docs/Show-PSWebGUI.md)
 
 ### Format-Html
-#### Syntax
+Converts PowerShell output into styled HTML tables or cards using Bootstrap.
+
+#### Example:
 ```powershell
-Format-Html [-InputObject] <PSObject> [-Darktable] [-Darkheader] [-Striped] [-Hover] [-Id <String>] [<CommonParameters>]
-
-Format-Html [-InputObject] <PSObject> -Cards <Int32> [<CommonParameters>]
-
-Format-Html [-InputObject] <PSObject> -Raw [<CommonParameters>]
-```
-#### Description
-PowerShell cmdlets need to be formated in HTML with Bootstrap style before being displayed. This function converts the output of PowerShell commands, passed by pipeline, to HTML format and adds Bootstrap style classes.
-    
-Depending on the set of parameters, the output can be converted to table format, card format, or raw (no style). If no parameters are set, by default it is converted to table format.
-        
-In essence, it is like ```ConvertTo-Html -Fragment``` PowerShell cmdlet but with Bootstrap styling built-in and another features.
-
-#### Example
-Get the name and the CPU usage of all running processes in a table format (Bootstrap style).
-```powershell
-PS> Get-Process | Select-Object Name, CPU | Sort-Object -Property CPU -Descending | Format-Html
+PS> Get-Process | Select-Object Name, CPU | Format-Html
 
 <table class='table'>
 <thead>
@@ -117,28 +120,18 @@ PS> Get-Process | Select-Object Name, CPU | Sort-Object -Property CPU -Descendin
 </table>
 ```
 
-
-
 #### More info
-```powershell
-PS> Get-Help Format-Html -Full
-```
+[Visit command documentation for more detailed info](../main/docs/Format-Html.md)
 
-### Show-PSWebGuiExample
-#### Description
-Displays a basic GUI example to show how this module runs. This funtion returns the object with the structure and content used to display the graphical interface.
-
-#### Example
-```powershell
-PS> Show-PSWebGuiExample
-```
-
-### Hide-PSConsole
-#### Description
-Hide the current PowerShell console window.
-Usefull for any script that needs to hide the console.
-
-#### Example
+### Hide-PSConsole / Show-PSConsole
+Hides / show the PowerShell console window (the terminal). Useful for background scripts.
 ```powershell
 PS> Hide-PSConsole
+PS> Show-PSConsole
 ```
+
+## Example project
+Previously there was a built-in function within this module designed to show the posibilities and how this module works.
+This function has now been moved, as a standalone script, to a separate project.
+
+[Visit Show-PSWebGUIExample project](https://github.com/JLInF97/PSWebGUIExample)
