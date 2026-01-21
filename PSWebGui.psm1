@@ -998,7 +998,7 @@ function Show-SystrayMenu{
 
     # Exit action
     $Menu_Exit.add_Click({
-        Invoke-WebRequest -Uri "http://localhost/exit()" | Out-Null
+        Invoke-WebRequest -Uri "http://localhost:$port/exit()" | Out-Null
         Stop-Process $pid
     })
 
