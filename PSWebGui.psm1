@@ -938,7 +938,7 @@ function Show-SystrayMenu{
 
     # Menu item to show the GUI creation
     $Menu_ShowGUI = New-Object System.Windows.Forms.ToolStripMenuItem
-    $Menu_ShowGUI.Text = "Show GUI"
+    $Menu_ShowGUI.Text = "Show $title"
     $Menu_ShowGUI.Visible = $false
 
     # Menu item to show the Powershell console creation
@@ -954,11 +954,15 @@ function Show-SystrayMenu{
     $Menu_Exit = New-Object System.Windows.Forms.ToolStripMenuItem
     $Menu_Exit.Text = "Exit"
 
+    # Menu divider
+    $Menu_Divider = New-Object System.Windows.Forms.ToolStripSeparator
+
     # Context menu creation and menu items adition
     $contextmenu = New-Object System.Windows.Forms.ContextMenuStrip
     $contextmenu.Items.Add($Menu_ShowGUI)
     $contextmenu.Items.Add($Menu_ShowConsole)
     $contextmenu.Items.Add($Menu_HideConsole)
+    $contextmenu.Items.Add($Menu_Divider)
     $contextmenu.Items.Add($Menu_Exit)
 
     $Systray_Menu.ContextMenuStrip=$contextmenu
