@@ -126,7 +126,7 @@ PS> Get-Date | Format-Html -Raw
 Martes, 25 de junio de 2019 14:53:32
 ```
 
-## PARAMETROS
+## PARÁMETROS
 
 ### -InputObject
 Comando u objeto para ser formateado en HTML, pasado por tubería.
