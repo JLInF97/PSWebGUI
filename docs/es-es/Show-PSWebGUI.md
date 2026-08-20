@@ -8,7 +8,7 @@ schema: 2.0.0
 # Show-PSWebGUI
 
 ## SINOPSIS
-Muestra una ventana de interfáz gráfica de usuario (GUI) en PowerShell, con contenido HTML y PowerShell, desde un objeto dado.
+Inicia el servidor de PSWebGui y muestra una ventana de interfáz gráfica (GUI) con el contenido HTML y PowerShell definido.
 
 ## SINTAXIS
 
@@ -18,15 +18,15 @@ Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon
 ```
 
 ## DESCRIPCIÓN
-Inicia un servidor web simple para mostrar la estructura y contenido pasado en un objeto.
+Inicia un servidor web simple para mostrar la estructura y el contenido pasado en un objeto de PowerShell.
 
 Por defecto, muestra un navegador web muy simple en una ventana WPF para mostrar el contenido pasado por parámetro.
 
 El contenido puede ser una cadena de texto, una página HTML, comandos, funciones o scripts de PowerShell complejos. El contenido HTML es estilizado usando el framework CSS Bootstrap.
-El servidor puede ejecutar y mostrar archivos HTML o PS1 locales.
+El servidor puede ejecutar y mostrar archivos locales, como HTML, TXT, imágenes o scripts en PS1.
 Tambien es compatible con CSS y Javascript personalizados.
 
-Están disponibles los métodos POST y GET y se puede acceder a ellos a través de las variables ```$_POST[]``` y ```$_GET[]```, igual que se haría en PHP.
+Los métodos POST y GET están disponibles y se puede acceder a ellos a través de las variables ```$_POST[]``` y ```$_GET[]```, igual que se haría en PHP.
 
 ## EJEMPLOS
 
@@ -60,9 +60,9 @@ Show-PSWebGUI -InputObject $routes -PublicServer -AsJob
 ### -InputObject
 Especifica el objeto que contiene la estructura y el contenido para mostrar en la GUI.
 
-La forma para definir las rutas personalizadas con HTML y PowerShell asociado es a través de una tabla matríz (hashtable) y bloques de script (scriptblock) dentro de ella.
+La forma para definir las rutas personalizadas con HTML y PowerShell es a través de una tabla matríz (hashtable) y bloques de script (scriptblock) dentro de ella.
 Las tablas matrices estan compuestas por claves y sus valores asociados.
-Las claves son rutas relativas personalizadas y siempre deben comenzar con ```"/"```; los valores son cadenas de texto, HTML y scripts PowerShell contenidos en un bloque de script.
+En este caso, las claves serán rutas personalizadas y siempre deben comenzar con ```"/"```;  y sus valores asociados son cadenas de texto, HTML y scripts PowerShell contenidos en un bloque de script.
 
 Un ejemplo de una estructura de GUI pasado como parámetro de entrada:
 
@@ -102,8 +102,8 @@ Accept wildcard characters: False
 ```
 
 ### -Port
-Especifica el número de puerto TCP para escuchar.
-Por defecto el 80.
+Especifica el número de puerto TCP en el que el servidor escucha.
+Por defecto es el 80.
 
 ```yaml
 Type: Int32
@@ -133,7 +133,7 @@ Accept wildcard characters: False
 ```
 
 ### -Icon
-Especifica la ruta del icono que se usará en la ventana y en la página HTML.
+Especifica la ruta del icono personalizado que se mostrará en la ventana y en la página HTML.
 Esta ruta puede ser absoluta o relativa a la raíz del servidor.
 Si la ruta no está dentro del directorio raíz del servidor, el icono solo se mostrará en la ventana.
 
@@ -167,15 +167,6 @@ Accept wildcard characters: False
 ```
 
 ### -Display
-This parameter specifies how the GUI and console are displayed.
-The acceptable values for this parameter are:
-- NoGUI: Set this value to not display the WPF GUI window. The content can only be viewed within a third-party web browser. The PowerShell console is still visible.
-- NoConsole: Hide the PowerShell console but keeps the main WPF GUI visible.
-- Systray: Minimize the GUI and PowerShell console to the system tray. The system tray icon will be the same as the window icon and a menu will be added to the system tray icon. The menu contains these options:
-	- Show GUI: Displays the GUI window. Use close (X) button on the GUI itself to hide the GUI again.
-	- Show/Hide PS console: Show or hide the PowerShell console. Use this option to show or hide the console, do not use the buttons on the console itself.
-	- Exit: Close the GUI, PowerShell console, stop the server and close PowerShell process.
-
 Este parámetro especifica cómo se muestran la interfaz gráfica (GUI) y la consola de PowerShell.
 Los valores aceptados para este parámetro son:
 - NoGUI: Establece que no se muestre la ventana de la GUI. El contenido solo puede verse desde un navegador web de terceros. La consola de PowerShell sigue siendo visible.
@@ -199,8 +190,8 @@ Accept wildcard characters: False
 ```
 
 ### -NoHeadTags
-Establece este parámetro para que el servidor no añada las etiquetas por defecto: ```<html>```, ```<head>```, ```<meta>```, ```<link>```, ```<style>``` y ```<body>```.
-Con esta opción, el contenido no se formateará de forma predeterminada. El usuario tendrá que agregar sus propia estructura HTML y CSS.
+Establece este parámetro para que el servidor no añada, por defecto, las etiquetas: ```<html>```, ```<head>```, ```<meta>```, ```<link>```, ```<style>``` y ```<body>```.
+Con este parámetro establecido, el contenido no se formateará de forma predeterminada. El usuario tendrá que agregar su propia estructura HTML y CSS.
 
 ```yaml
 Type: SwitchParameter
@@ -215,7 +206,7 @@ Accept wildcard characters: False
 ```
 
 ### -PublicServer
-Usa este parámetro para establecer que el servidor escuche en todas las interfaces red del equipo, haciendo que el servidor sea visible desde cualquier dirección.
+Define este parámetro para que el servidor escuche en todas las interfaces de red del equipo, haciendo que el servidor sea visible desde cualquier dirección.
 Si no se especifica, el servidor solo escucha en localhost.
 
 ```yaml
@@ -233,7 +224,7 @@ Accept wildcard characters: False
 ### -Page404
 Usa este parámetro para definir un **archivo HTML** como página de error 404.
 
-Este parámetro debe ser una ruta, absoluta o relativa, a un archivo HTML. El contenido del archivo se mostrará cuando el servidor no puede encontrar una ruta (código de respuesta 404).
+Este parámetro debe ser una ruta, absoluta o relativa, a un archivo HTML. El contenido del archivo se mostrará cuando el servidor no pueda encontrar una ruta (código de respuesta 404).
 
 Extensiones de archivo válidas:
 - .html
