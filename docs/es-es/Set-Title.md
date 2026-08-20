@@ -17,7 +17,7 @@ Set-Title [-Title] <string>  [<CommonParameters>]
 
 ## DESCRIPCIÓN
 Establece el título de la página web. Sobrescribe el título la página actual (establecido con la función Show-PSWebGui).
-Solo para el título de la página web, no para el título de la ventana.
+Solo actualiza el título de la página web, no cambia el título de la ventana.
 
 ## EJEMPLOS
 

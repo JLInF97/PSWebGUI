@@ -17,7 +17,7 @@ Hide-PSConsole
 ```
 
 ## DESCRIPCIÓN
-Oculta la ventana de consola de PowerShell actual.
+Oculta la ventana de consola actual de PowerShell.
 Establece la variable ```$GLOBAL:CONSOLE_DISPLAY``` a 0
 
 ## EJEMPLOS
