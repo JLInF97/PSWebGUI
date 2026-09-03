@@ -18,7 +18,7 @@ Show-PSWebGUI [[-InputObject] <Object>] [-Port <Int32>] [-Title <String>] [-Icon
 ```
 
 ## DESCRIPCIÓN
-Inicia un servidor web simple para mostrar la estructura y el contenido pasado en un objeto de PowerShell.
+Inicia un servidor web simple para mostrar la estructura y el contenido definido en un objeto de PowerShell.
 
 Por defecto, muestra un navegador web muy simple en una ventana WPF para mostrar el contenido pasado por parámetro.
 

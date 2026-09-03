@@ -30,7 +30,7 @@ Format-Html [-InputObject] <PSObject> [-Raw] [<CommonParameters>]
 ## DESCRIPCIÓN
 Convierte la salida de los comandos de PowerShell, pasados por la tubería, a formato HTML y añade clases del estilo de Bootstrap.
 
-Dependiendo del conjunto de parámetros, la salida se puede convertir a formato tabla, formato cartas o sin formato.
+Dependiendo del conjunto de parámetros, la salida se puede convertir a formato tabla, formato tarjetas o sin formato.
 Si no se especifica ningún parametro, por defecto se convierte a formato tabla.
     
 En esencia, es como el comando ```ConverTo-Html -Fragment``` pero con estilos de Bootstrap añadidos y otras características.
@@ -129,7 +129,7 @@ Martes, 25 de junio de 2019 14:53:32
 ## PARÁMETROS
 
 ### -InputObject
-Comando u objeto para ser formateado en HTML, pasado por tubería.
+Comando u objeto para ser formateado en HTML.
 
 ```yaml
 Type: PSObject
@@ -222,7 +222,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-Usa este parámetro para establecer el atributo id.
+Usa este parámetro para establecer el atributo id en la etiqueta '<table>'.
 
 ```html
 <table id="table1">...</table>
@@ -261,7 +261,7 @@ Accept wildcard characters: False
 ```
 
 ### -Class
-Usa este parámetro para establecer una matriz de las clases para la tabla o las tarjetas.
+Usa este parámetro para establecer una lista de clases para aplicar a la tabla o a las tarjetas.
 
 ```html
 <table clas="table myClass">...</table>
