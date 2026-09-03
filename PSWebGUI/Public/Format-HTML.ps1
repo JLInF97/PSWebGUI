@@ -47,7 +47,7 @@
             $objs=$result | Select-Object -Property *
 
             # Get only property names (headers)
-            $headers=($objs | Get-Member -MemberType Property,NoteProperty).Name
+            $headers=$objs[0] | ForEach-Object {$_.psobject.properties.name}
 
             #region Process switch parameters
             <#
